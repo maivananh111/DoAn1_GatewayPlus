@@ -1,0 +1,35 @@
+core_cm4.h:1688:22:void __NVIC_EnableIRQ(IRQn_Type)	2
+core_cm4.h:1724:22:void __NVIC_DisableIRQ(IRQn_Type)	2
+core_cm4.h:1777:22:void __NVIC_ClearPendingIRQ(IRQn_Type)	2
+core_cm4.h:1816:22:void __NVIC_SetPriority(IRQn_Type, uint32_t)	2
+core_cm4.h:1939:34:void __NVIC_SystemReset()	1
+dma.cpp:26:1:dma::dma(DMA_TypeDef*)	1
+dma.cpp:30:6:void dma::ClearIFCR(uint32_t)	2
+dma.cpp:33:6:void dma::ClearAllIntrFlag()	1
+dma.cpp:37:15:volatile uint32_t dma::GetISR()	2
+dma.cpp:43:11:stm_ret_t dma::init(dma_config_t*)	10
+dma.cpp:117:6:void dma::register_event_handler(void (*)(void*, dma_event_t), void*)	1
+dma.cpp:122:11:stm_ret_t dma::start(uint32_t, uint32_t, uint32_t)	5
+dma.cpp:170:11:stm_ret_t dma::stop()	3
+dma.cpp:208:11:stm_ret_t dma::poll_for_tranfer(dma_interruptselect_t, uint32_t)	13
+dma.cpp:276:10:uint16_t dma::get_counter()	1
+dma.cpp:280:15:dma_config_t* dma::get_config()	1
+dma.cpp:285:6:void DMA_IRQ_Handler(DMA_TypeDef*, DMA_Stream_TypeDef*, dma*)	14
+dma.cpp:330:6:void DMA1_Stream0_IRQHandler()	1
+dma.cpp:338:6:void DMA1_Stream1_IRQHandler()	1
+dma.cpp:346:6:void DMA1_Stream2_IRQHandler()	1
+dma.cpp:354:6:void DMA1_Stream3_IRQHandler()	1
+dma.cpp:362:6:void DMA1_Stream4_IRQHandler()	1
+dma.cpp:371:6:void DMA1_Stream5_IRQHandler()	1
+dma.cpp:379:6:void DMA1_Stream6_IRQHandler()	1
+dma.cpp:387:6:void DMA1_Stream7_IRQHandler()	1
+dma.cpp:401:6:void DMA2_Stream0_IRQHandler()	1
+dma.cpp:409:6:void DMA2_Stream1_IRQHandler()	1
+dma.cpp:417:6:void DMA2_Stream2_IRQHandler()	1
+dma.cpp:425:6:void DMA2_Stream3_IRQHandler()	1
+dma.cpp:433:6:void DMA2_Stream4_IRQHandler()	1
+dma.cpp:441:6:void DMA2_Stream5_IRQHandler()	1
+dma.cpp:449:6:void DMA2_Stream6_IRQHandler()	1
+dma.cpp:457:6:void DMA2_Stream7_IRQHandler()	1
+dma.cpp:459:1:void __static_initialization_and_destruction_0(int, int)	3
+dma.cpp:459:1:cpp)	1

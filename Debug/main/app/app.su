@@ -1,0 +1,7 @@
+../main/app/app.cpp:22:6:void firebase_init(char*, char*)	24	static
+../main/app/app.cpp:39:6:void firebase_new_device(dev_struct_t*)	72	static
+../main/app/app.cpp:80:6:void firebase_remove_device(dev_struct_t*)	24	static
+../main/app/app.cpp:94:6:void send_envdata_to_firebase(dev_struct_t*)	72	static
+../main/app/app.cpp:111:6:void send_devctrl_to_firebase(dev_struct_t*)	40	static
+../main/app/app.cpp:128:6:void get_devctrl(dev_struct_t*)	24	static
+../main/app/app.cpp:142:6:void get_devsettings(dev_struct_t*)	24	static

@@ -1,0 +1,68 @@
+new:174:33:void* operator new(std::size_t, void*)	1
+stl_list.h:109:7:std::__detail::_List_node_header::_List_node_header()	1
+stl_list.h:149:7:void std::__detail::_List_node_header::_M_init()	1
+stl_list.h:374:14:std::__cxx11::_List_base<loraif_dev_t*, std::allocator<loraif_dev_t*> >::_List_impl::~_List_impl()	1
+stl_list.h:460:7:std::__cxx11::_List_base<_Tp, _Alloc>::_List_base() [with _Tp = loraif_dev_t*; _Alloc = std::allocator<loraif_dev_t*>]	1
+stl_list.h:673:7:std::__cxx11::list<_Tp, _Alloc>::list() [with _Tp = loraif_dev_t*; _Alloc = std::allocator<loraif_dev_t*>]	1
+loraif.cpp:68:13:void loraif_debug(char*, int, const char*)	1
+loraif.cpp:74:13:void show_device_list()	2
+loraif.cpp:83:13:bool device_is_available(uint32_t)	3
+loraif.cpp:94:6:void loraif_init(sx127x*, tim_t, uint32_t, uint8_t)	1
+loraif.cpp:108:13:void loraif_transmit(char*)	1
+loraif.cpp:115:6:void loraif_register_event_handler(void (*)(lora_event_t, char*))	1
+loraif.cpp:119:6:void lora_request(uint32_t, lora_event_t, char*)	1
+loraif.cpp:133:13:void set_response_ok(uint32_t, lora_event_t)	2
+loraif.cpp:150:6:void loraif_process(void*)	14
+loraif.cpp:274:6:void loraif_response()	2
+loraif.cpp:283:6:void loraif_check_timeout()	5
+loraif.cpp:309:6:void loraif_new_device(char*, void*)	3
+loraif.cpp:336:6:void loraif_remove_device(char*)	6
+loraif.cpp:370:15:loraif_dev_t* loraif_select_device(char*)	6
+stl_list.h:379:2:std::__cxx11::_List_base<_Tp, _Alloc>::_List_impl::_List_impl() [with _Tp = loraif_dev_t*; _Alloc = std::allocator<loraif_dev_t*>]	1
+allocator.h:182:7:std::allocator< <template-parameter-1-1> >::~allocator() [with _Tp = std::_List_node<loraif_dev_t*>]	1
+stl_list.h:498:7:std::__cxx11::_List_base<_Tp, _Alloc>::~_List_base() [with _Tp = loraif_dev_t*; _Alloc = std::allocator<loraif_dev_t*>]	1
+stl_list.h:945:7:std::__cxx11::list<_Tp, _Alloc>::iterator std::__cxx11::list<_Tp, _Alloc>::begin() [with _Tp = loraif_dev_t*; _Alloc = std::allocator<loraif_dev_t*>]	1
+stl_list.h:963:7:std::__cxx11::list<_Tp, _Alloc>::iterator std::__cxx11::list<_Tp, _Alloc>::end() [with _Tp = loraif_dev_t*; _Alloc = std::allocator<loraif_dev_t*>]	1
+stl_list.h:252:7:bool std::operator!=(const _Self&, const _Self&)	1
+stl_list.h:217:7:std::_List_iterator< <template-parameter-1-1> >::_Self& std::_List_iterator< <template-parameter-1-1> >::operator++() [with _Tp = loraif_dev_t*]	1
+stl_list.h:209:7:_Tp& std::_List_iterator< <template-parameter-1-1> >::operator*() const [with _Tp = loraif_dev_t*]	1
+stl_list.h:1211:7:void std::__cxx11::list<_Tp, _Alloc>::push_back(const value_type&) [with _Tp = loraif_dev_t*; _Alloc = std::allocator<loraif_dev_t*>]	1
+stl_list.h:1055:7:bool std::__cxx11::list<_Tp, _Alloc>::empty() const [with _Tp = loraif_dev_t*; _Alloc = std::allocator<loraif_dev_t*>]	1
+stl_list.h:247:7:bool std::operator==(const _Self&, const _Self&)	1
+stl_list.h:286:7:std::_List_const_iterator< <template-parameter-1-1> >::_List_const_iterator(const iterator&) [with _Tp = loraif_dev_t*]	1
+list.tcc:150:5:std::__cxx11::list<_Tp, _Alloc>::iterator std::__cxx11::list<_Tp, _Alloc>::erase(std::__cxx11::list<_Tp, _Alloc>::const_iterator) [with _Tp = loraif_dev_t*; _Alloc = std::allocator<loraif_dev_t*>]	1
+allocator.h:164:7:std::allocator< <template-parameter-1-1> >::allocator() [with _Tp = std::_List_node<loraif_dev_t*>]	1
+new_allocator.h:89:7:__gnu_cxx::new_allocator<_Tp>::~new_allocator() [with _Tp = std::_List_node<loraif_dev_t*>]	1
+list.tcc:66:5:void std::__cxx11::_List_base<_Tp, _Alloc>::_M_clear() [with _Tp = loraif_dev_t*; _Alloc = std::allocator<loraif_dev_t*>]	2
+stl_list.h:200:7:std::_List_iterator< <template-parameter-1-1> >::_List_iterator(std::__detail::_List_node_base*) [with _Tp = loraif_dev_t*]	1
+stl_list.h:170:18:_Tp* std::_List_node<_Tp>::_M_valptr() [with _Tp = loraif_dev_t*]	1
+stl_list.h:1909:8:) [with _Args = {loraif_dev_t* const&}; _Tp = loraif_dev_t*; _Alloc = std::allocator<loraif_dev_t*>]	1
+stl_list.h:1919:7:void std::__cxx11::list<_Tp, _Alloc>::_M_erase(std::__cxx11::list<_Tp, _Alloc>::iterator) [with _Tp = loraif_dev_t*; _Alloc = std::allocator<loraif_dev_t*>]	1
+stl_list.h:290:7:std::_List_const_iterator< <template-parameter-1-1> >::iterator std::_List_const_iterator< <template-parameter-1-1> >::_M_const_cast() const [with _Tp = loraif_dev_t*]	1
+new_allocator.h:79:7:__gnu_cxx::new_allocator<_Tp>::new_allocator() [with _Tp = std::_List_node<loraif_dev_t*>]	1
+stl_list.h:452:7:std::__cxx11::_List_base<_Tp, _Alloc>::_Node_alloc_type& std::__cxx11::_List_base<_Tp, _Alloc>::_M_get_Node_allocator() [with _Tp = loraif_dev_t*; _Alloc = std::allocator<loraif_dev_t*>]	1
+alloc_traits.h:527:2:static void std::allocator_traits<std::allocator<_Tp1> >::destroy(std::allocator_traits<std::allocator<_Tp1> >::allocator_type&, _Up*) [with _Up = loraif_dev_t*; _Tp = std::_List_node<loraif_dev_t*>]	1
+stl_list.h:445:7:void std::__cxx11::_List_base<_Tp, _Alloc>::_M_put_node(typename std::__cxx11::_List_base<_Tp, _Alloc>::_Node_alloc_traits::pointer) [with _Tp = loraif_dev_t*; _Alloc = std::allocator<loraif_dev_t*>]	1
+aligned_buffer.h:72:7:_Tp* __gnu_cxx::__aligned_membuf<_Tp>::_M_ptr() [with _Tp = loraif_dev_t*]	1
+move.h:76:5:constexpr _Tp&& std::forward(typename std::remove_reference<_Tp>::type&) [with _Tp = loraif_dev_t* const&]	1
+stl_list.h:632:2:) [with _Args = {loraif_dev_t* const&}; _Tp = loraif_dev_t*; _Alloc = std::allocator<loraif_dev_t*>]	1
+stl_list.h:408:12:void std::__cxx11::_List_base<_Tp, _Alloc>::_M_inc_size(std::size_t) [with _Tp = loraif_dev_t*; _Alloc = std::allocator<loraif_dev_t*>]	1
+stl_list.h:410:12:void std::__cxx11::_List_base<_Tp, _Alloc>::_M_dec_size(std::size_t) [with _Tp = loraif_dev_t*; _Alloc = std::allocator<loraif_dev_t*>]	1
+new_allocator.h:160:2:void __gnu_cxx::new_allocator<_Tp>::destroy(_Up*) [with _Up = loraif_dev_t*; _Tp = std::_List_node<loraif_dev_t*>]	1
+alloc_traits.h:491:7:static void std::allocator_traits<std::allocator<_Tp1> >::deallocate(std::allocator_traits<std::allocator<_Tp1> >::allocator_type&, std::allocator_traits<std::allocator<_Tp1> >::pointer, std::allocator_traits<std::allocator<_Tp1> >::size_type) [with _Tp = std::_List_node<loraif_dev_t*>]	1
+aligned_buffer.h:64:7:void* __gnu_cxx::__aligned_membuf<_Tp>::_M_addr() [with _Tp = loraif_dev_t*]	1
+stl_list.h:441:7:typename std::__cxx11::_List_base<_Tp, _Alloc>::_Node_alloc_traits::pointer std::__cxx11::_List_base<_Tp, _Alloc>::_M_get_node() [with _Tp = loraif_dev_t*; _Alloc = std::allocator<loraif_dev_t*>]	1
+allocated_ptr.h:52:7:std::__allocated_ptr<_Alloc>::__allocated_ptr(_Alloc&, std::__allocated_ptr<_Alloc>::pointer) [with _Alloc = std::allocator<std::_List_node<loraif_dev_t*> >]	1
+allocated_ptr.h:70:7:std::__allocated_ptr<_Alloc>::~__allocated_ptr() [with _Alloc = std::allocator<std::_List_node<loraif_dev_t*> >]	2
+alloc_traits.h:507:2:) [with _Up = loraif_dev_t*; _Args = {loraif_dev_t* const&}; _Tp = std::_List_node<loraif_dev_t*>]	1
+allocated_ptr.h:78:7:std::__allocated_ptr<_Alloc>& std::__allocated_ptr<_Alloc>::operator=(std::nullptr_t) [with _Alloc = std::allocator<std::_List_node<loraif_dev_t*> >]	1
+new_allocator.h:126:7:void __gnu_cxx::new_allocator<_Tp>::deallocate(_Tp*, __gnu_cxx::new_allocator<_Tp>::size_type) [with _Tp = std::_List_node<loraif_dev_t*>]	1
+alloc_traits.h:459:7:static _Tp* std::allocator_traits<std::allocator<_Tp1> >::allocate(std::allocator_traits<std::allocator<_Tp1> >::allocator_type&, std::allocator_traits<std::allocator<_Tp1> >::size_type) [with _Tp = std::_List_node<loraif_dev_t*>]	1
+move.h:49:5:constexpr _Tp* std::__addressof(_Tp&) [with _Tp = std::allocator<std::_List_node<loraif_dev_t*> >]	1
+new_allocator.h:154:2:) [with _Up = loraif_dev_t*; _Args = {loraif_dev_t* const&}; _Tp = std::_List_node<loraif_dev_t*>]	1
+new_allocator.h:103:7:_Tp* __gnu_cxx::new_allocator<_Tp>::allocate(__gnu_cxx::new_allocator<_Tp>::size_type, const void*) [with _Tp = std::_List_node<loraif_dev_t*>]	1
+new_allocator.h:191:7:constexpr __gnu_cxx::new_allocator<_Tp>::size_type __gnu_cxx::new_allocator<_Tp>::_M_max_size() const [with _Tp = std::_List_node<loraif_dev_t*>]	1
+stl_list.h:827:7:std::__cxx11::list<_Tp, _Alloc>::~list() [with _Tp = loraif_dev_t*; _Alloc = std::allocator<loraif_dev_t*>]	1
+loraif.cpp:399:1:void __static_initialization_and_destruction_0(int, int)	5
+loraif.cpp:399:1:cpp)	1
+loraif.cpp:399:1:cpp)	1

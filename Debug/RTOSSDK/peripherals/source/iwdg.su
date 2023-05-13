@@ -1,0 +1,4 @@
+../RTOSSDK/peripherals/source/iwdg.cpp:27:11:stm_ret_t iwdg_init(uint32_t, uint32_t)	48	static
+../RTOSSDK/peripherals/source/iwdg.cpp:44:6:void iwdg_enable_in_debugmode()	4	static
+../RTOSSDK/peripherals/source/iwdg.cpp:48:6:void iwdg_disable_in_debugmode()	4	static
+../RTOSSDK/peripherals/source/iwdg.cpp:52:6:void iwdg_refresh()	4	static

@@ -1,0 +1,46 @@
+core_cm4.h:1688:22:void __NVIC_EnableIRQ(IRQn_Type)	2
+core_cm4.h:1724:22:void __NVIC_DisableIRQ(IRQn_Type)	2
+core_cm4.h:1777:22:void __NVIC_ClearPendingIRQ(IRQn_Type)	2
+core_cm4.h:1816:22:void __NVIC_SetPriority(IRQn_Type, uint32_t)	2
+core_cm4.h:1939:34:void __NVIC_SystemReset()	1
+cmath:165:3:constexpr float std::ceil(float)	1
+usart.cpp:28:1:usart::usart(USART_TypeDef*)	1
+usart.cpp:32:11:stm_ret_t usart::init(usart_config_t*)	21
+usart.cpp:179:11:stm_ret_t usart::deinit()	10
+usart.cpp:222:11:stm_ret_t usart::register_event_handler(void (*)(usart_event_t, void*), void*)	2
+usart.cpp:241:11:stm_ret_t usart::transmit(uint8_t)	2
+usart.cpp:260:11:stm_ret_t usart::transmit(uint8_t*, uint16_t)	3
+usart.cpp:278:11:stm_ret_t usart::send_string(char*)	3
+usart.cpp:295:11:stm_ret_t usart::receive(uint8_t*)	2
+usart.cpp:311:11:stm_ret_t usart::receive(uint16_t)	5
+usart.cpp:344:9:uint8_t usart::get_data()	1
+usart.cpp:349:11:stm_ret_t usart::transmit_start_it(uint8_t*, uint16_t)	5
+usart.cpp:402:11:stm_ret_t usart::receive_start_it(uint16_t)	5
+usart.cpp:451:11:stm_ret_t usart::transmit_stop_it()	5
+usart.cpp:480:11:stm_ret_t usart::receive_stop_it()	6
+usart.cpp:518:11:stm_ret_t usart::transmit_start_dma(uint8_t*, uint16_t)	4
+usart.cpp:542:11:stm_ret_t usart::receive_start_dma(uint16_t)	6
+usart.cpp:587:11:stm_ret_t usart::transmit_stop_dma()	5
+usart.cpp:618:11:stm_ret_t usart::receive_stop_dma()	6
+usart.cpp:661:11:stm_ret_t usart::receive_to_idle_start_it(uint16_t)	1
+usart.cpp:670:11:stm_ret_t usart::receive_to_idle_stop_it()	1
+usart.cpp:679:11:stm_ret_t usart::receive_to_idle_start_it_dma(uint16_t)	1
+usart.cpp:692:11:stm_ret_t usart::receive_to_idle_stop_it_dma()	1
+usart.cpp:701:11:stm_ret_t usart::receive_to_endchar_start_it(uint16_t, char)	1
+usart.cpp:710:11:stm_ret_t usart::receive_to_endchar_stop_it()	1
+usart.cpp:716:11:stm_ret_t usart::receive_to_endchar_start_dma(uint16_t, char)	1
+usart.cpp:728:11:stm_ret_t usart::receive_to_endchar_stop_dma()	1
+usart.cpp:734:11:stm_ret_t usart::get_buffer(uint8_t**)	3
+usart.cpp:764:10:uint16_t usart::get_bufferlen()	1
+usart.cpp:768:17:usart_config_t* usart::get_config()	1
+usart.cpp:773:6:void USART_IRQ_Handler(usart*)	14
+usart.cpp:847:6:void USART1_IRQHandler()	1
+usart.cpp:854:6:void USART2_IRQHandler()	1
+usart.cpp:861:6:void USART3_IRQHandler()	1
+usart.cpp:868:6:void UART4_IRQHandler()	1
+usart.cpp:875:6:void UART5_IRQHandler()	1
+usart.cpp:882:6:void USART6_IRQHandler()	1
+usart.cpp:889:6:void UART7_IRQHandler()	1
+usart.cpp:896:6:void UART8_IRQHandler()	1
+usart.cpp:898:1:void __static_initialization_and_destruction_0(int, int)	3
+usart.cpp:898:1:cpp)	1

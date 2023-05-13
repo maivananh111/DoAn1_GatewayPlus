@@ -1,0 +1,4 @@
+iwdg.cpp:27:11:stm_ret_t iwdg_init(uint32_t, uint32_t)	1
+iwdg.cpp:44:6:void iwdg_enable_in_debugmode()	1
+iwdg.cpp:48:6:void iwdg_disable_in_debugmode()	1
+iwdg.cpp:52:6:void iwdg_refresh()	1

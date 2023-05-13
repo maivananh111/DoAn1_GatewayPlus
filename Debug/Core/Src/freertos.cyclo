@@ -1,0 +1,4 @@
+freertos.c:62:13:vApplicationIdleHook	1
+freertos.c:77:13:vApplicationTickHook	1
+freertos.c:88:13:vApplicationStackOverflowHook	1
+freertos.c:97:13:vApplicationMallocFailedHook	1

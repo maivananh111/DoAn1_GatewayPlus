@@ -1,0 +1,17 @@
+../Drivers/CMSIS/Include/core_cm4.h:1688:22:void __NVIC_EnableIRQ(IRQn_Type)	16	static
+../Drivers/CMSIS/Include/core_cm4.h:1724:22:void __NVIC_DisableIRQ(IRQn_Type)	16	static,ignoring_inline_asm
+../Drivers/CMSIS/Include/core_cm4.h:1777:22:void __NVIC_ClearPendingIRQ(IRQn_Type)	16	static
+../Drivers/CMSIS/Include/core_cm4.h:1816:22:void __NVIC_SetPriority(IRQn_Type, uint32_t)	16	static
+../Drivers/CMSIS/Include/core_cm4.h:1939:34:void __NVIC_SystemReset()	4	static,ignoring_inline_asm
+../RTOSSDK/peripherals/source/exti.cpp:44:11:stm_ret_t exti_init(GPIO_TypeDef*, uint16_t, exti_edgedetect_t, uint32_t)	32	static
+../RTOSSDK/peripherals/source/exti.cpp:94:6:void exti_deinit(GPIO_TypeDef*, uint16_t)	24	static
+../RTOSSDK/peripherals/source/exti.cpp:117:6:void exti_register_event_handler(uint16_t, void (*)(void*), void*)	24	static
+../RTOSSDK/peripherals/source/exti.cpp:122:6:void exti_unregister_event_handler(uint16_t)	16	static
+../RTOSSDK/peripherals/source/exti.cpp:127:6:void EXTI_IRQHandler(uint16_t)	16	static
+../RTOSSDK/peripherals/source/exti.cpp:135:6:void EXTI0_IRQHandler()	8	static
+../RTOSSDK/peripherals/source/exti.cpp:139:6:void EXTI1_IRQHandler()	8	static
+../RTOSSDK/peripherals/source/exti.cpp:143:6:void EXTI2_IRQHandler()	8	static
+../RTOSSDK/peripherals/source/exti.cpp:147:6:void EXTI3_IRQHandler()	8	static
+../RTOSSDK/peripherals/source/exti.cpp:151:6:void EXTI4_IRQHandler()	8	static
+../RTOSSDK/peripherals/source/exti.cpp:155:6:void EXTI9_5_IRQHandler()	8	static
+../RTOSSDK/peripherals/source/exti.cpp:163:6:void EXTI15_10_IRQHandler()	8	static

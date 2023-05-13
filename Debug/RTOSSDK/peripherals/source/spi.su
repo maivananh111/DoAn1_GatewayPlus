@@ -1,0 +1,32 @@
+../Drivers/CMSIS/Include/core_cm4.h:1724:22:void __NVIC_DisableIRQ(IRQn_Type)	16	static,ignoring_inline_asm
+../Drivers/CMSIS/Include/core_cm4.h:1777:22:void __NVIC_ClearPendingIRQ(IRQn_Type)	16	static
+../Drivers/CMSIS/Include/core_cm4.h:1816:22:void __NVIC_SetPriority(IRQn_Type, uint32_t)	16	static
+../Drivers/CMSIS/Include/core_cm4.h:1939:34:void __NVIC_SystemReset()	4	static,ignoring_inline_asm
+../RTOSSDK/peripherals/source/spi.cpp:30:1:spi::spi(SPI_TypeDef*)	16	static
+../RTOSSDK/peripherals/source/spi.cpp:34:11:stm_ret_t spi::init(spi_config_t*)	24	static
+../RTOSSDK/peripherals/source/spi.cpp:175:11:stm_ret_t spi::deinit()	24	static
+../RTOSSDK/peripherals/source/spi.cpp:221:11:stm_ret_t spi::register_event_handler(void (*)(spi_event_t, void*), void*)	24	static
+../RTOSSDK/peripherals/source/spi.cpp:239:15:spi_config_t* spi::get_config()	16	static
+../RTOSSDK/peripherals/source/spi.cpp:243:11:stm_ret_t spi::transmit(uint32_t, uint32_t)	56	static
+../RTOSSDK/peripherals/source/spi.cpp:301:11:stm_ret_t spi::receive(uint32_t, uint32_t)	56	static
+../RTOSSDK/peripherals/source/spi.cpp:369:11:stm_ret_t spi::transmit_receive(uint32_t, uint32_t, uint32_t)	56	static
+../RTOSSDK/peripherals/source/spi.cpp:441:11:stm_ret_t spi::transmit_start_it(uint32_t, uint32_t)	24	static
+../RTOSSDK/peripherals/source/spi.cpp:468:11:stm_ret_t spi::receive_start_it(uint32_t, uint32_t)	40	static
+../RTOSSDK/peripherals/source/spi.cpp:499:11:stm_ret_t spi::transmit_receive_start_it(uint32_t, uint32_t, uint32_t)	24	static
+../RTOSSDK/peripherals/source/spi.cpp:526:11:stm_ret_t spi::transmit_start_dma(uint32_t, uint32_t)	56	static
+../RTOSSDK/peripherals/source/spi.cpp:570:11:stm_ret_t spi::receive_start_dma(uint32_t, uint32_t)	64	static
+../RTOSSDK/peripherals/source/spi.cpp:621:11:stm_ret_t spi::transmit_receive_start_dma(uint32_t, uint32_t, uint32_t)	56	static
+../RTOSSDK/peripherals/source/spi.cpp:678:11:stm_ret_t spi::transmit_stop_dma()	32	static
+../RTOSSDK/peripherals/source/spi.cpp:706:11:stm_ret_t spi::receive_stop_dma()	32	static
+../RTOSSDK/peripherals/source/spi.cpp:734:11:stm_ret_t spi::transmit_receive_stop_dma()	32	static
+../RTOSSDK/peripherals/source/spi.cpp:775:11:stm_ret_t SPI_Tx_ISR(spi*)	56	static
+../RTOSSDK/peripherals/source/spi.cpp:823:11:stm_ret_t SPI_Rx_ISR(spi*)	48	static
+../RTOSSDK/peripherals/source/spi.cpp:855:6:void SPI_IRQHandler(spi*)	48	static
+../RTOSSDK/peripherals/source/spi.cpp:895:6:void SPI1_IRQHandler()	8	static
+../RTOSSDK/peripherals/source/spi.cpp:902:6:void SPI2_IRQHandler()	8	static
+../RTOSSDK/peripherals/source/spi.cpp:909:6:void SPI3_IRQHandler()	8	static
+../RTOSSDK/peripherals/source/spi.cpp:916:6:void SPI4_IRQHandler()	8	static
+../RTOSSDK/peripherals/source/spi.cpp:923:6:void SPI5_IRQHandler()	8	static
+../RTOSSDK/peripherals/source/spi.cpp:930:6:void SPI6_IRQHandler()	8	static
+../RTOSSDK/peripherals/source/spi.cpp:932:1:void __static_initialization_and_destruction_0(int, int)	16	static
+../RTOSSDK/peripherals/source/spi.cpp:932:1:cpp)	8	static

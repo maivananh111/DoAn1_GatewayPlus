@@ -1,0 +1,9 @@
+core_cm4.h:1939:34:void __NVIC_SystemReset()	1
+cmath:165:3:constexpr float std::ceil(float)	1
+startup.cpp:44:5:int main_application()	2
+startup.cpp:101:6:void app_main_task(void*)	1
+startup.cpp:109:7:void vApplicationIdleHook()	1
+startup.cpp:118:7:void vApplicationStackOverflowHook(TaskHandle_t, signed char*)	1
+startup.cpp:124:7:void vApplicationMallocFailedHook()	0
+startup.cpp:132:13:void uart_log_init()	12
+startup.cpp:170:13:void uart_log(char*)	7

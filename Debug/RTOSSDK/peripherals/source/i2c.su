@@ -1,0 +1,28 @@
+../RTOSSDK/peripherals/source/i2c.cpp:28:1:i2c::i2c(I2C_TypeDef*)	16	static
+../RTOSSDK/peripherals/source/i2c.cpp:32:11:stm_ret_t i2c::init(i2c_config_t*)	40	static
+../RTOSSDK/peripherals/source/i2c.cpp:117:6:void i2c::ACKError_Action()	16	static
+../RTOSSDK/peripherals/source/i2c.cpp:122:6:void i2c::ClearADDR()	24	static
+../RTOSSDK/peripherals/source/i2c.cpp:127:11:stm_ret_t i2c::WaitBusy()	40	static
+../RTOSSDK/peripherals/source/i2c.cpp:143:11:stm_ret_t i2c::send_start()	40	static
+../RTOSSDK/peripherals/source/i2c.cpp:166:11:stm_ret_t i2c::send_repeatstart()	40	static
+../RTOSSDK/peripherals/source/i2c.cpp:181:11:stm_ret_t i2c::send_slaveaddress(uint16_t, i2c_action_t)	56	static
+../RTOSSDK/peripherals/source/i2c.cpp:203:11:stm_ret_t i2c::send_start_slaveaddress(uint16_t, i2c_action_t)	40	static
+../RTOSSDK/peripherals/source/i2c.cpp:222:11:stm_ret_t i2c::send_repeatstart_slaveaddress(uint16_t, i2c_action_t)	40	static
+../RTOSSDK/peripherals/source/i2c.cpp:241:11:stm_ret_t i2c::check_device(uint16_t, uint8_t, uint16_t)	48	static
+../RTOSSDK/peripherals/source/i2c.cpp:301:11:stm_ret_t i2c::transmit(uint8_t*, uint16_t)	64	static
+../RTOSSDK/peripherals/source/i2c.cpp:344:11:stm_ret_t i2c::transmit(uint8_t)	56	static
+../RTOSSDK/peripherals/source/i2c.cpp:368:11:stm_ret_t i2c::receive(uint8_t*, uint16_t)	64	static
+../RTOSSDK/peripherals/source/i2c.cpp:483:11:stm_ret_t i2c::receive(uint8_t*)	56	static
+../RTOSSDK/peripherals/source/i2c.cpp:505:11:stm_ret_t i2c::send_stop()	16	static
+../RTOSSDK/peripherals/source/i2c.cpp:513:11:stm_ret_t i2c::transmit_start_dma(uint8_t*, uint16_t)	48	static
+../RTOSSDK/peripherals/source/i2c.cpp:540:11:stm_ret_t i2c::receive_start_dma(uint8_t*, uint16_t)	48	static
+../RTOSSDK/peripherals/source/i2c.cpp:572:11:stm_ret_t i2c::transmit_stop_dma()	32	static
+../RTOSSDK/peripherals/source/i2c.cpp:595:11:stm_ret_t i2c::receive_stop_dma()	32	static
+../RTOSSDK/peripherals/source/i2c.cpp:620:11:stm_ret_t i2c::i2c_write_register(uint16_t, uint16_t, uint8_t, uint8_t*, uint16_t)	48	static
+../RTOSSDK/peripherals/source/i2c.cpp:662:11:stm_ret_t i2c::i2c_read_register(uint16_t, uint16_t, uint8_t, uint8_t*, uint16_t)	48	static
+../RTOSSDK/peripherals/source/i2c.cpp:715:6:void I2C_IRQHandler(i2c*)	16	static
+../RTOSSDK/peripherals/source/i2c.cpp:724:6:void I2C1_IRQHandler()	4	static
+../RTOSSDK/peripherals/source/i2c.cpp:732:6:void I2C2_IRQHandler()	4	static
+../RTOSSDK/peripherals/source/i2c.cpp:740:6:void I2C3_IRQHandler()	4	static
+../RTOSSDK/peripherals/source/i2c.cpp:742:1:void __static_initialization_and_destruction_0(int, int)	16	static
+../RTOSSDK/peripherals/source/i2c.cpp:742:1:cpp)	8	static
