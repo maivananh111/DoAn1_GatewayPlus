@@ -1,0 +1,5 @@
+../RTOSSDK/peripherals/source/rng.cpp:18:6:void rng_init()	8	static
+../RTOSSDK/peripherals/source/rng.cpp:26:10:uint32_t rng_random()	16	static
+../RTOSSDK/peripherals/source/rng.cpp:40:10:uint32_t rng_random_invert()	16	static
+../RTOSSDK/peripherals/source/rng.cpp:44:6:void rng_set_seed(uint32_t)	0	static
+../RTOSSDK/peripherals/source/rng.cpp:48:10:uint32_t rng_generate_random_number()	40	static

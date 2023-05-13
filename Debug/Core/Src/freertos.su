@@ -1,0 +1,4 @@
+../Core/Src/freertos.c:62:13:vApplicationIdleHook	0	static
+../Core/Src/freertos.c:77:13:vApplicationTickHook	0	static
+../Core/Src/freertos.c:88:13:vApplicationStackOverflowHook	0	static
+../Core/Src/freertos.c:97:13:vApplicationMallocFailedHook	0	static

@@ -1,0 +1,2 @@
+adc.cpp:18:1:adc::adc(ADC_TypeDef*)	1
+adc.cpp:23:11:stm_ret_t adc::init(adc_config_t*)	28

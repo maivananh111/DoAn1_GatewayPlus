@@ -1,0 +1,39 @@
+../RTOSSDK/peripherals/source/usart.cpp:28:1:usart::usart(USART_TypeDef*)	0	static
+../RTOSSDK/peripherals/source/usart.cpp:32:11:stm_ret_t usart::init(usart_config_t*)	72	static,ignoring_inline_asm
+../RTOSSDK/peripherals/source/usart.cpp:185:11:stm_ret_t usart::deinit()	24	static,ignoring_inline_asm
+../RTOSSDK/peripherals/source/usart.cpp:228:11:stm_ret_t usart::register_event_handler(void (*)(usart_event_t, void*), void*)	16	static
+../RTOSSDK/peripherals/source/usart.cpp:247:11:stm_ret_t usart::transmit(uint8_t)	40	static
+../RTOSSDK/peripherals/source/usart.cpp:266:11:stm_ret_t usart::transmit(uint8_t*, uint16_t)	48	static
+../RTOSSDK/peripherals/source/usart.cpp:284:11:stm_ret_t usart::send_string(char*)	48	static
+../RTOSSDK/peripherals/source/usart.cpp:301:11:stm_ret_t usart::receive(uint8_t*)	40	static
+../RTOSSDK/peripherals/source/usart.cpp:317:11:stm_ret_t usart::receive(uint16_t)	48	static
+../RTOSSDK/peripherals/source/usart.cpp:350:9:uint8_t usart::get_data()	0	static
+../RTOSSDK/peripherals/source/usart.cpp:355:11:stm_ret_t usart::transmit_start_it(uint8_t*, uint16_t)	56	static
+../RTOSSDK/peripherals/source/usart.cpp:408:11:stm_ret_t usart::receive_start_it(uint16_t)	24	static
+../RTOSSDK/peripherals/source/usart.cpp:457:11:stm_ret_t usart::transmit_stop_it()	16	static,ignoring_inline_asm
+../RTOSSDK/peripherals/source/usart.cpp:486:11:stm_ret_t usart::receive_stop_it()	16	static,ignoring_inline_asm
+../RTOSSDK/peripherals/source/usart.cpp:524:11:stm_ret_t usart::transmit_start_dma(uint8_t*, uint16_t)	40	static
+../RTOSSDK/peripherals/source/usart.cpp:548:11:stm_ret_t usart::receive_start_dma(uint16_t)	48	static
+../RTOSSDK/peripherals/source/usart.cpp:593:11:stm_ret_t usart::transmit_stop_dma()	24	static
+../RTOSSDK/peripherals/source/usart.cpp:624:11:stm_ret_t usart::receive_stop_dma()	32	static
+../RTOSSDK/peripherals/source/usart.cpp:667:11:stm_ret_t usart::receive_to_idle_start_it(uint16_t)	24	static
+../RTOSSDK/peripherals/source/usart.cpp:676:11:stm_ret_t usart::receive_to_idle_stop_it()	16	static,ignoring_inline_asm
+../RTOSSDK/peripherals/source/usart.cpp:685:11:stm_ret_t usart::receive_to_idle_start_it_dma(uint16_t)	48	static
+../RTOSSDK/peripherals/source/usart.cpp:698:11:stm_ret_t usart::receive_to_idle_stop_it_dma()	32	static
+../RTOSSDK/peripherals/source/usart.cpp:707:11:stm_ret_t usart::receive_to_endchar_start_it(uint16_t, char)	32	static
+../RTOSSDK/peripherals/source/usart.cpp:716:11:stm_ret_t usart::receive_to_endchar_stop_it()	16	static,ignoring_inline_asm
+../RTOSSDK/peripherals/source/usart.cpp:722:11:stm_ret_t usart::receive_to_endchar_start_dma(uint16_t, char)	48	static
+../RTOSSDK/peripherals/source/usart.cpp:734:11:stm_ret_t usart::receive_to_endchar_stop_dma()	32	static
+../RTOSSDK/peripherals/source/usart.cpp:740:11:stm_ret_t usart::get_buffer(uint8_t**)	32	static
+../RTOSSDK/peripherals/source/usart.cpp:770:10:uint16_t usart::get_bufferlen()	0	static
+../RTOSSDK/peripherals/source/usart.cpp:774:17:usart_config_t* usart::get_config()	0	static
+../RTOSSDK/peripherals/source/usart.cpp:779:6:void USART_IRQ_Handler(usart*)	32	static
+../RTOSSDK/peripherals/source/usart.cpp:853:6:void USART1_IRQHandler()	32	static
+../RTOSSDK/peripherals/source/usart.cpp:860:6:void USART2_IRQHandler()	32	static
+../RTOSSDK/peripherals/source/usart.cpp:867:6:void USART3_IRQHandler()	32	static
+../RTOSSDK/peripherals/source/usart.cpp:874:6:void UART4_IRQHandler()	32	static
+../RTOSSDK/peripherals/source/usart.cpp:881:6:void UART5_IRQHandler()	32	static
+../RTOSSDK/peripherals/source/usart.cpp:888:6:void USART6_IRQHandler()	32	static
+../RTOSSDK/peripherals/source/usart.cpp:895:6:void UART7_IRQHandler()	32	static
+../RTOSSDK/peripherals/source/usart.cpp:902:6:void UART8_IRQHandler()	32	static
+../RTOSSDK/peripherals/source/usart.cpp:904:1:cpp)	20	static

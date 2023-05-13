@@ -1,0 +1,41 @@
+sx127x.cpp:18:1:sx127x::sx127x(GPIO_TypeDef*, uint16_t, GPIO_TypeDef*, uint16_t, GPIO_TypeDef*, uint16_t)	1
+sx127x.cpp:28:6:bool sx127x::init(spi_t, long int, uint8_t, uint32_t)	5
+sx127x.cpp:65:6:void sx127x::register_event_handler(void (*)(void*), void (*)(void*, uint8_t))	1
+sx127x.cpp:70:6:bool sx127x::beginPacket(bool)	4
+sx127x.cpp:84:6:bool sx127x::endPacket(bool)	5
+sx127x.cpp:98:6:bool sx127x::isTransmitting()	3
+sx127x.cpp:106:9:uint8_t sx127x::parsePacket(uint8_t)	5
+sx127x.cpp:138:5:int sx127x::packetRssi()	1
+sx127x.cpp:142:7:float sx127x::packetSnr()	1
+sx127x.cpp:146:6:long int sx127x::packetFrequencyError()	3
+sx127x.cpp:162:9:int16_t sx127x::rssi()	1
+sx127x.cpp:166:8:size_t sx127x::transmit(uint8_t)	2
+sx127x.cpp:170:8:size_t sx127x::transmit(const uint8_t*, size_t)	4
+sx127x.cpp:182:9:uint8_t sx127x::available()	1
+sx127x.cpp:186:9:uint8_t sx127x::receive(char*)	2
+sx127x.cpp:196:9:uint8_t sx127x::peek()	2
+sx127x.cpp:208:6:void sx127x::Receive(uint8_t)	3
+sx127x.cpp:223:6:void sx127x::idle()	1
+sx127x.cpp:227:6:void sx127x::sleep()	1
+sx127x.cpp:231:6:void sx127x::setTxPower(uint8_t, uint8_t)	3
+sx127x.cpp:256:6:void sx127x::setFrequency(long int)	1
+sx127x.cpp:266:9:uint8_t sx127x::getSpreadingFactor()	1
+sx127x.cpp:288:6:long int sx127x::getSignalBandwidth()	2
+sx127x.cpp:325:6:void sx127x::setLdoFlag()	3
+sx127x.cpp:270:6:void sx127x::setSpreadingFactor(uint8_t)	4
+sx127x.cpp:307:6:void sx127x::setSignalBandwidth(long int)	9
+sx127x.cpp:336:6:void sx127x::setCodingRate4(uint8_t)	1
+sx127x.cpp:345:6:void sx127x::setPreambleLength(long int)	1
+sx127x.cpp:350:6:void sx127x::setSyncWord(uint8_t)	1
+sx127x.cpp:354:6:void sx127x::enableCrc()	1
+sx127x.cpp:358:6:void sx127x::disableCrc()	1
+sx127x.cpp:362:6:void sx127x::enableInvertIQ()	1
+sx127x.cpp:367:6:void sx127x::disableInvertIQ()	1
+sx127x.cpp:372:6:void sx127x::setOCP(uint8_t)	3
+sx127x.cpp:381:6:void sx127x::setGain(uint8_t)	2
+sx127x.cpp:397:6:void sx127x::explicitHeaderMode()	1
+sx127x.cpp:403:6:void sx127x::implicitHeaderMode()	1
+sx127x.cpp:409:6:void sx127x::IRQHandler()	7
+sx127x.cpp:434:9:uint8_t sx127x::readRegister(uint8_t)	1
+sx127x.cpp:438:6:void sx127x::writeRegister(uint8_t, uint8_t)	1
+sx127x.cpp:442:9:uint8_t sx127x::singleTransfer(uint8_t, uint8_t)	1

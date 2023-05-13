@@ -1,0 +1,29 @@
+../RTOSSDK/peripherals/source/dma.cpp:27:1:dma::dma(DMA_TypeDef*)	0	static
+../RTOSSDK/peripherals/source/dma.cpp:32:6:void dma::ClearIFCR(uint32_t)	8	static
+../RTOSSDK/peripherals/source/dma.cpp:39:6:void dma::ClearAllIntrFlag()	0	static
+../RTOSSDK/peripherals/source/dma.cpp:46:15:volatile uint32_t dma::GetISR()	8	static
+../RTOSSDK/peripherals/source/dma.cpp:59:11:stm_ret_t dma::init(dma_config_t*)	40	static,ignoring_inline_asm
+../RTOSSDK/peripherals/source/dma.cpp:171:6:void dma::register_event_handler(void (*)(dma_event_t, void*), void*)	0	static
+../RTOSSDK/peripherals/source/dma.cpp:176:11:stm_ret_t dma::start(uint32_t, uint32_t, uint32_t)	40	static
+../RTOSSDK/peripherals/source/dma.cpp:253:11:stm_ret_t dma::stop()	40	static,ignoring_inline_asm
+../RTOSSDK/peripherals/source/dma.cpp:306:11:stm_ret_t dma::poll_for_tranfer(dma_interruptselect_t, uint32_t)	72	static
+../RTOSSDK/peripherals/source/dma.cpp:415:10:uint16_t dma::get_counter()	0	static
+../RTOSSDK/peripherals/source/dma.cpp:423:15:dma_config_t* dma::get_config()	0	static
+../RTOSSDK/peripherals/source/dma.cpp:461:6:void DMA_IRQ_Handler(DMA_TypeDef*, DMA_Stream_TypeDef*, dma*)	4	static
+../RTOSSDK/peripherals/source/dma.cpp:627:13:void DMA1_Stream0_IRQHandler()	0	static
+../RTOSSDK/peripherals/source/dma.cpp:634:13:void DMA1_Stream1_IRQHandler()	0	static
+../RTOSSDK/peripherals/source/dma.cpp:641:13:void DMA1_Stream2_IRQHandler()	0	static
+../RTOSSDK/peripherals/source/dma.cpp:648:13:void DMA1_Stream3_IRQHandler()	0	static
+../RTOSSDK/peripherals/source/dma.cpp:655:13:void DMA1_Stream4_IRQHandler()	0	static
+../RTOSSDK/peripherals/source/dma.cpp:663:13:void DMA1_Stream5_IRQHandler()	0	static
+../RTOSSDK/peripherals/source/dma.cpp:670:13:void DMA1_Stream6_IRQHandler()	0	static
+../RTOSSDK/peripherals/source/dma.cpp:677:13:void DMA1_Stream7_IRQHandler()	0	static
+../RTOSSDK/peripherals/source/dma.cpp:690:13:void DMA2_Stream0_IRQHandler()	0	static
+../RTOSSDK/peripherals/source/dma.cpp:697:13:void DMA2_Stream1_IRQHandler()	0	static
+../RTOSSDK/peripherals/source/dma.cpp:704:13:void DMA2_Stream2_IRQHandler()	0	static
+../RTOSSDK/peripherals/source/dma.cpp:711:13:void DMA2_Stream3_IRQHandler()	0	static
+../RTOSSDK/peripherals/source/dma.cpp:718:13:void DMA2_Stream4_IRQHandler()	0	static
+../RTOSSDK/peripherals/source/dma.cpp:725:13:void DMA2_Stream5_IRQHandler()	0	static
+../RTOSSDK/peripherals/source/dma.cpp:732:13:void DMA2_Stream6_IRQHandler()	0	static
+../RTOSSDK/peripherals/source/dma.cpp:739:13:void DMA2_Stream7_IRQHandler()	0	static
+../RTOSSDK/peripherals/source/dma.cpp:741:1:cpp)	36	static

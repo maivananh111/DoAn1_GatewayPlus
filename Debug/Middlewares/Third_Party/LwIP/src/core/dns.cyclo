@@ -1,0 +1,10 @@
+dns.c:942:1:dns_call_found	22
+dns.c:748:1:dns_send.isra	9
+dns.c:1047:1:dns_check_entry	20
+dns.c:1170:1:dns_recv	54
+dns.c:315:1:dns_init	1
+dns.c:361:1:dns_setserver	3
+dns.c:381:1:dns_getserver	2
+dns.c:395:1:dns_tmr	20
+dns.c:1547:1:dns_gethostbyname_addrtype	77
+dns.c:1526:1:dns_gethostbyname	1
