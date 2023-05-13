@@ -1,0 +1,11 @@
+../main/app_main.cpp:239:6:void wifi_request(char*)	0	static
+../main/app_main.cpp:109:6:void task_loratx(void*)	8	static
+../main/app_main.cpp:117:6:void task_lorarx(void*)	24	static
+../main/app_main.cpp:139:6:void gpioA0_event_handler(void*)	0	static
+../main/app_main.cpp:163:6:void loraif_event_handler(lora_event_t, char*)	8	static
+../main/app_main.cpp:142:6:void lora_event_handler(void*, uint8_t)	48	static
+../main/app_main.cpp:245:6:void wifi_command_handler(wifi_cmd_t, void*)	8	static
+../main/app_main.cpp:265:6:void wifi_uart_handler(usart_event_t, void*)	40	static
+../main/app_main.cpp:91:6:void app_main()	16	static
+../main/app_main.cpp:201:6:void task_wifi(void*)	16	static
+../main/app_main.cpp:280:1:cpp)	24	static

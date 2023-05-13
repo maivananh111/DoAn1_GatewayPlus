@@ -1,0 +1,9 @@
+app.cpp:23:6:void dev_init(dev_struct_t*, char*)	3
+app.cpp:53:6:void dev_deinit(dev_struct_t*)	6
+app.cpp:63:6:void firebase_init(char*, char*)	2
+app.cpp:80:6:void firebase_new_device(dev_struct_t*)	3
+app.cpp:121:6:void firebase_remove_device(dev_struct_t*)	2
+app.cpp:135:6:void send_envdata_to_firebase(dev_struct_t*)	2
+app.cpp:152:6:void send_devctrl_to_firebase(dev_struct_t*)	2
+app.cpp:169:6:void get_devctrl(dev_struct_t*)	2
+app.cpp:183:6:void get_devsettings(dev_struct_t*)	2

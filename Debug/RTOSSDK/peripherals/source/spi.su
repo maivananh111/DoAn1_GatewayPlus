@@ -1,0 +1,27 @@
+../RTOSSDK/peripherals/source/spi.cpp:30:1:spi::spi(SPI_TypeDef*)	0	static
+../RTOSSDK/peripherals/source/spi.cpp:34:11:stm_ret_t spi::init(spi_config_t*)	24	static,ignoring_inline_asm
+../RTOSSDK/peripherals/source/spi.cpp:195:11:stm_ret_t spi::deinit()	24	static,ignoring_inline_asm
+../RTOSSDK/peripherals/source/spi.cpp:241:11:stm_ret_t spi::register_event_handler(void (*)(spi_event_t, void*), void*)	16	static
+../RTOSSDK/peripherals/source/spi.cpp:259:15:spi_config_t* spi::get_config()	0	static
+../RTOSSDK/peripherals/source/spi.cpp:263:11:stm_ret_t spi::transmit(uint32_t, uint32_t)	48	static
+../RTOSSDK/peripherals/source/spi.cpp:321:11:stm_ret_t spi::receive(uint32_t, uint32_t)	48	static
+../RTOSSDK/peripherals/source/spi.cpp:389:11:stm_ret_t spi::transmit_receive(uint32_t, uint32_t, uint32_t)	48	static
+../RTOSSDK/peripherals/source/spi.cpp:461:11:stm_ret_t spi::transmit_start_it(uint32_t, uint32_t)	8	static
+../RTOSSDK/peripherals/source/spi.cpp:488:11:stm_ret_t spi::receive_start_it(uint32_t, uint32_t)	24	static
+../RTOSSDK/peripherals/source/spi.cpp:519:11:stm_ret_t spi::transmit_receive_start_it(uint32_t, uint32_t, uint32_t)	8	static
+../RTOSSDK/peripherals/source/spi.cpp:546:11:stm_ret_t spi::transmit_start_dma(uint32_t, uint32_t)	32	static
+../RTOSSDK/peripherals/source/spi.cpp:641:11:stm_ret_t spi::transmit_receive_start_dma(uint32_t, uint32_t, uint32_t)	32	static
+../RTOSSDK/peripherals/source/spi.cpp:590:11:stm_ret_t spi::receive_start_dma(uint32_t, uint32_t)	48	static
+../RTOSSDK/peripherals/source/spi.cpp:698:11:stm_ret_t spi::transmit_stop_dma()	24	static
+../RTOSSDK/peripherals/source/spi.cpp:726:11:stm_ret_t spi::receive_stop_dma()	24	static
+../RTOSSDK/peripherals/source/spi.cpp:754:11:stm_ret_t spi::transmit_receive_stop_dma()	24	static
+../RTOSSDK/peripherals/source/spi.cpp:795:11:stm_ret_t SPI_Tx_ISR(spi*)	56	static
+../RTOSSDK/peripherals/source/spi.cpp:843:11:stm_ret_t SPI_Rx_ISR(spi*)	40	static
+../RTOSSDK/peripherals/source/spi.cpp:875:6:void SPI_IRQHandler(spi*)	24	static
+../RTOSSDK/peripherals/source/spi.cpp:919:6:void SPI1_IRQHandler()	24	static
+../RTOSSDK/peripherals/source/spi.cpp:926:6:void SPI2_IRQHandler()	24	static
+../RTOSSDK/peripherals/source/spi.cpp:933:6:void SPI3_IRQHandler()	24	static
+../RTOSSDK/peripherals/source/spi.cpp:940:6:void SPI4_IRQHandler()	24	static
+../RTOSSDK/peripherals/source/spi.cpp:947:6:void SPI5_IRQHandler()	24	static
+../RTOSSDK/peripherals/source/spi.cpp:954:6:void SPI6_IRQHandler()	24	static
+../RTOSSDK/peripherals/source/spi.cpp:956:1:cpp)	16	static

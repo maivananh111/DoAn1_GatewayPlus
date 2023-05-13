@@ -1,0 +1,14 @@
+../RTOSSDK/components/loraif/loraif.cpp:151:13:void set_response_ok(uint32_t, lora_event_t)	32	static
+../RTOSSDK/components/loraif/loraif.cpp:95:6:void loraif_init(sx127x*, tim_t, uint32_t, uint8_t)	64	static
+../RTOSSDK/components/loraif/loraif.cpp:111:6:void loraif_register_event_handler(void (*)(lora_event_t, char*))	0	static
+../RTOSSDK/components/loraif/loraif.cpp:115:6:bool loraif_check_crc(char*)	40	static
+../RTOSSDK/components/loraif/loraif.cpp:293:6:void loraif_response()	24	static
+../RTOSSDK/components/loraif/loraif.cpp:330:6:void loraif_request(uint32_t, lora_event_t, char*)	56	static
+../RTOSSDK/components/loraif/loraif.cpp:363:6:void loraif_new_device(char*, void*)	48	static
+../RTOSSDK/components/loraif/loraif.cpp:389:6:void loraif_remove_device(char*)	40	static
+../RTOSSDK/components/loraif/loraif.cpp:423:15:loraif_dev_t* loraif_select_device(char*)	32	static
+../RTOSSDK/components/loraif/loraif.cpp:168:6:void loraif_process(void*)	72	static
+../RTOSSDK/components/loraif/loraif.cpp:302:6:void loraif_check_timeout()	56	static
+../RTOSSDK/components/loraif/loraif.cpp:350:6:void loraif_request_data()	16	static
+../RTOSSDK/components/loraif/loraif.cpp:452:1:cpp)	0	static
+../RTOSSDK/components/loraif/loraif.cpp:452:1:cpp)	16	static

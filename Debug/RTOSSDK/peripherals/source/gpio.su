@@ -1,0 +1,14 @@
+../RTOSSDK/peripherals/source/gpio.cpp:18:6:void gpio_allport_clock_enable()	0	static
+../RTOSSDK/peripherals/source/gpio.cpp:59:6:void gpio_port_clock_enable(GPIO_TypeDef*)	0	static
+../RTOSSDK/peripherals/source/gpio.cpp:98:6:void gpio_init(gpio_config_t*)	12	static
+../RTOSSDK/peripherals/source/gpio.cpp:163:6:void gpio_deinit(GPIO_TypeDef*, uint16_t)	12	static
+../RTOSSDK/peripherals/source/gpio.cpp:205:6:void gpio_set_mode(GPIO_TypeDef*, uint16_t, gpio_mode_t)	32	static
+../RTOSSDK/peripherals/source/gpio.cpp:340:6:void gpio_set_alternatefunction(GPIO_TypeDef*, uint16_t, gpio_alternatefunction_t)	8	static
+../RTOSSDK/peripherals/source/gpio.cpp:385:6:void gpio_set_alternatefunction_type(GPIO_TypeDef*, uint16_t, gpio_mode_t)	0	static
+../RTOSSDK/peripherals/source/gpio.cpp:412:6:void gpio_set_pullup(GPIO_TypeDef*, uint16_t)	0	static
+../RTOSSDK/peripherals/source/gpio.cpp:430:6:void gpio_set_pulldown(GPIO_TypeDef*, uint16_t)	0	static
+../RTOSSDK/peripherals/source/gpio.cpp:448:6:void gpio_set(GPIO_TypeDef*, uint16_t)	0	static
+../RTOSSDK/peripherals/source/gpio.cpp:461:6:void gpio_reset(GPIO_TypeDef*, uint16_t)	0	static
+../RTOSSDK/peripherals/source/gpio.cpp:474:6:void gpio_toggle(GPIO_TypeDef*, uint16_t)	4	static
+../RTOSSDK/peripherals/source/gpio.cpp:488:6:void gpio_set_level(GPIO_TypeDef*, uint16_t, int)	0	static
+../RTOSSDK/peripherals/source/gpio.cpp:502:5:int gpio_get_level(GPIO_TypeDef*, uint16_t)	0	static

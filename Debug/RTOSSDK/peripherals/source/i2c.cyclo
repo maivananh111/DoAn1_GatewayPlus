@@ -1,0 +1,27 @@
+i2c.cpp:28:1:i2c::i2c(I2C_TypeDef*)	1
+i2c.cpp:32:11:stm_ret_t i2c::init(i2c_config_t*)	14
+i2c.cpp:124:6:void i2c::ACKError_Action()	1
+i2c.cpp:129:6:void i2c::ClearADDR()	1
+i2c.cpp:134:11:stm_ret_t i2c::WaitBusy()	2
+i2c.cpp:150:11:stm_ret_t i2c::send_start()	4
+i2c.cpp:173:11:stm_ret_t i2c::send_repeatstart()	2
+i2c.cpp:188:11:stm_ret_t i2c::send_slaveaddress(uint16_t, i2c_action_t)	5
+i2c.cpp:210:11:stm_ret_t i2c::send_start_slaveaddress(uint16_t, i2c_action_t)	3
+i2c.cpp:229:11:stm_ret_t i2c::send_repeatstart_slaveaddress(uint16_t, i2c_action_t)	4
+i2c.cpp:248:11:stm_ret_t i2c::check_device(uint16_t, uint8_t, uint16_t)	13
+i2c.cpp:308:11:stm_ret_t i2c::transmit(uint8_t*, uint16_t)	11
+i2c.cpp:351:11:stm_ret_t i2c::transmit(uint8_t)	5
+i2c.cpp:375:11:stm_ret_t i2c::receive(uint8_t*, uint16_t)	15
+i2c.cpp:490:11:stm_ret_t i2c::receive(uint8_t*)	3
+i2c.cpp:512:11:stm_ret_t i2c::send_stop()	1
+i2c.cpp:520:11:stm_ret_t i2c::transmit_start_dma(uint8_t*, uint16_t)	3
+i2c.cpp:547:11:stm_ret_t i2c::receive_start_dma(uint8_t*, uint16_t)	4
+i2c.cpp:579:11:stm_ret_t i2c::transmit_stop_dma()	3
+i2c.cpp:602:11:stm_ret_t i2c::receive_stop_dma()	3
+i2c.cpp:627:11:stm_ret_t i2c::i2c_write_register(uint16_t, uint16_t, uint8_t, uint8_t*, uint16_t)	8
+i2c.cpp:669:11:stm_ret_t i2c::i2c_read_register(uint16_t, uint16_t, uint8_t, uint8_t*, uint16_t)	11
+i2c.cpp:722:6:void I2C_IRQHandler(i2c*)	1
+i2c.cpp:731:6:void I2C1_IRQHandler()	1
+i2c.cpp:739:6:void I2C2_IRQHandler()	1
+i2c.cpp:747:6:void I2C3_IRQHandler()	1
+i2c.cpp:749:1:cpp)	1

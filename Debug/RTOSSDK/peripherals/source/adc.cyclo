@@ -1,0 +1,11 @@
+adc.cpp:18:1:adc::adc(ADC_TypeDef*)	1
+adc.cpp:23:11:stm_ret_t adc::init(adc_config_t*)	29
+adc.cpp:110:6:void adc::start()	1
+adc.cpp:119:6:void adc::stop()	1
+adc.cpp:127:10:uint16_t adc::get_value()	1
+adc.cpp:131:11:stm_ret_t adc::start_dma(uint16_t*, uint16_t)	2
+adc.cpp:151:11:stm_ret_t adc::stop_dma()	3
+adc.cpp:177:6:void ADC_IRQHandler(adc*)	1
+adc.cpp:188:6:void ADC1_2_IRQHandler()	1
+adc.cpp:196:6:void ADC3_IRQHandler()	1
+adc.cpp:198:1:cpp)	1

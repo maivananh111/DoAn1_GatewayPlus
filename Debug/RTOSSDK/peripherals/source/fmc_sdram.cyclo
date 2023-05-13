@@ -1,0 +1,5 @@
+fmc_sdram.cpp:121:11:stm_ret_t fmc_sdram_sendcommand(sdram_command_t)	1
+fmc_sdram.cpp:137:6:void fmc_sdram_setrefreshrate(uint32_t)	1
+fmc_sdram.cpp:153:6:void sdram_init()	1
+fmc_sdram.cpp:186:6:void fmc_sdram_hardware_init()	1
+fmc_sdram.cpp:35:6:void fmc_sdram_init(sdram_config_t*)	6

@@ -1,0 +1,13 @@
+ret_err.cpp:31:11:stm_err_t check_flag_in_register(volatile uint32_t*, uint32_t, flaglevel_t)	2
+ret_err.cpp:46:6:void wait_flag_in_register(volatile uint32_t*, uint32_t, flaglevel_t)	4
+ret_err.cpp:62:11:stm_ret_t wait_flag_in_register_timeout(volatile uint32_t*, uint32_t, flaglevel_t, uint16_t)	9
+ret_err.cpp:92:11:stm_ret_t wait_check_flag_in_register_timeout(volatile uint32_t*, uint32_t, flaglevel_t, volatile uint32_t*, uint32_t, flaglevel_t, uint16_t)	25
+ret_err.cpp:123:6:void set_return(stm_ret_t*, stm_err_t, uint32_t)	1
+ret_err.cpp:137:6:void set_return_line(stm_ret_t*, uint16_t)	1
+ret_err.cpp:150:6:bool is_err(stm_ret_t*)	1
+ret_err.cpp:164:6:bool is_oke(stm_ret_t*)	1
+ret_err.cpp:178:6:bool is_timeout(stm_ret_t*)	1
+ret_err.cpp:192:6:bool is_unsupported(stm_ret_t*)	1
+ret_err.cpp:206:6:bool is_busy(stm_ret_t*)	1
+ret_err.cpp:220:6:bool is_ready(stm_ret_t*)	1
+ret_err.cpp:234:6:bool is_notavailable(stm_ret_t*)	1

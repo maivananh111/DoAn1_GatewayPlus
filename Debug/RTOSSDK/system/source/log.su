@@ -1,0 +1,12 @@
+../RTOSSDK/system/source/log.cpp:112:6:void log_init(void (*)(char*))	0	static
+../RTOSSDK/system/source/log.cpp:147:6:)	64	static
+../RTOSSDK/system/source/log.cpp:182:6:)	60	static
+../RTOSSDK/system/source/log.cpp:217:6:)	60	static
+../RTOSSDK/system/source/log.cpp:252:6:)	60	static
+../RTOSSDK/system/source/log.cpp:125:6:void set_log(char*, log_type_t)	16	static
+../RTOSSDK/system/source/log.cpp:287:6:)	60	static
+../RTOSSDK/system/source/log.cpp:322:6:)	60	static
+../RTOSSDK/system/source/log.cpp:357:6:)	60	static
+../RTOSSDK/system/source/log.cpp:392:6:)	60	static
+../RTOSSDK/system/source/log.cpp:427:6:void LOG_RES(stm_ret_t)	8	static
+../RTOSSDK/system/source/log.cpp:438:6:void LOG_MEMORY()	40	static
