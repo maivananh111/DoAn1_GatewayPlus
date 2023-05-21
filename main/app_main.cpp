@@ -57,7 +57,7 @@ void task_lorarx(void *);
 usart_config_t wf_uart_conf = {
 	.baudrate = 115200,
 	.control = USART_INTERRUPT_CONTROL,
-	.interruptselect = USART_RECEIVE_INTERRUPT,
+	.interruptoption = USART_RECEIVE_INTERRUPT,
 	.interruptpriority = 6,
 	.txport = GPIOA,
 	.txpin = 9,
@@ -95,8 +95,10 @@ void app_main(void){
 	gpio_port_clock_enable(GPIOC);
 	gpio_set_mode(GPIOC, 13, GPIO_OUTPUT_PUSHPULL);
 
-	xTaskCreate(task_lorarx, "task_lorarx", byte_to_word(8192), NULL, 5, NULL);
+	xTaskCreate(task_lorarx, "task_lorarx", byte_to_word(8192), NULL, 8, NULL);
 	xTaskCreate(task_loratx, "task_loratx", byte_to_word(8192), NULL, 5, NULL);
+
+//	xTaskCreate(task_wifi, "task_wifi", byte_to_word(8192), NULL, 4, NULL);
 
 	while(1){
 		gpio_toggle(GPIOC, 13);
@@ -110,7 +112,8 @@ void task_loratx(void *){
 
 	while(1){
 		loraif_request_data();
-		vTaskDelay(100);
+		LOG_MEM(TAG, "Free heap = %lu.", sys_get_free_heap_size());
+		vTaskDelay(5000);
 	}
 }
 
@@ -122,7 +125,7 @@ void task_lorarx(void *){
 	else LOG_ERROR(TAG, "Lora Initialize Failed.");
 
 	lora_queue = xQueueCreate(10, sizeof(uint32_t));
-	loraif_init(&lora, tim2, 25000, 3);
+	loraif_init(&lora, tim2, 10000, 3);
 	loraif_register_event_handler(loraif_event_handler);
 
 	lora.setSyncWord(0x3F);
@@ -130,7 +133,7 @@ void task_lorarx(void *){
 	lora.Receive(0);
 
 	while(1){
-		loraif_process(&lora_queue);
+		loraif_rx_process(&lora_queue);
 		loraif_response();
 		vTaskDelay(20);
 	}
@@ -146,7 +149,7 @@ void lora_event_handler(void *, uint8_t len){
 		lora_RxBuf = (char *)malloc(packetSize+1);
 		lora.receive(lora_RxBuf);
 		lora_RxBuf[packetSize] = '\0';
-		LOG_INFO(TAG, "Receive: %s, packet RSSI = %d, SNR = %.02f, RSSI = %d", lora_RxBuf, lora.packetRssi(), lora.packetSnr(), lora.rssi());
+		LOG_INFO(TAG, "Receive: %s, packet RSSI = %d, RSSI = %d", lora_RxBuf, lora.packetRssi(), lora.rssi());
 
 		if(loraif_check_crc(lora_RxBuf) == true){
 			BaseType_t pxHigherPriorityTaskWoken = pdFALSE;
@@ -161,36 +164,39 @@ void lora_event_handler(void *, uint8_t len){
 }
 
 void loraif_event_handler(lora_event_t event, char *data){
-//	if(data != NULL) LOG_WARN(TAG, "LoRa data: %s", data);
+	if(data != NULL) LOG_WARN(TAG, "LoRa data: %s", data);
 	switch(event){
 		case LORA_REQ_ADDRESS:
-			LOG_WARN(TAG, "LORA_REQ_ADDRESS");
+			LOG_EVENT(TAG, "LORA_REQ_ADDRESS");
 		break;
 		case LORA_UPDATE_ADDRESS:{
 //			dev_struct_t *dev = (dev_struct_t *)malloc(sizeof(dev_struct_t));
-			LOG_WARN(TAG, "LORA_UPDATE_ADDRESS");
+			LOG_EVENT(TAG, "LORA_UPDATE_ADDRESS");
 //			dev_init(dev, data);
 			loraif_new_device(data, NULL);
 		}
 		break;
 		case LORA_UPDATE_STATE:
-			LOG_WARN(TAG, "LORA_UPDATE_STATE");
+			LOG_EVENT(TAG, "LORA_UPDATE_STATE");
 		break;
 		case LORA_UPDATE_SETTINGS:
-			LOG_WARN(TAG, "LORA_UPDATE_SETTINGS");
+			LOG_EVENT(TAG, "LORA_UPDATE_SETTINGS");
 		break;
 		case LORA_REQ_DATA:
-			LOG_WARN(TAG, "LORA_REQ_DATA");
+			LOG_EVENT(TAG, "LORA_REQ_DATA");
 		break;
 		case LORA_UPDATE_DATA:
-			LOG_WARN(TAG, "LORA_UPDATE_DATA");
+			LOG_EVENT(TAG, "LORA_UPDATE_DATA");
 		break;
 		case LORA_DEL_DEVICE:
-			LOG_WARN(TAG, "LORA_DEL_DEVICE");
+			LOG_EVENT(TAG, "LORA_DEL_DEVICE");
 			loraif_remove_device(data);
 		break;
+		case LORA_ERR:
+			LOG_EVENT(TAG, "LORA_ERR");
+		break;
 		default:
-			LOG_WARN(TAG, "LoRa other event.");
+			LOG_EVENT(TAG, "LoRa other event.");
 		break;
 
 	}
@@ -217,8 +223,6 @@ void task_wifi(void *){
 
 	firebase_new_device(&kho3);
 	firebase_remove_device(&kho3);
-	wifiif_http_client_set_url((char *)"/.json?auth=YAg8QGH48Xlbjpk9UMh5JkjgYCCbeMSM4Ak5SNHp");
-	wifiif_http_client_set_url((char *)"/.json?auth=YAg8QGH48Xlbjpk9UMh5JkjgYCCbeMSM4Ak5SNHpsdgdfgsfdhfgdsvhjfvbygv cygfjsduygcevhbjdygfduvcbhjsxdygfvchbxsjuyfdgvch bwsxcdygvfch wbsxhcydgfvcwbshcgdvytdhfbjycdugfvhbxycgfvc bdshxcgydvt bhdcgyvydb tvg xhfdvt");
 
 	while(1){
 		if(!wifiif_state_is_running()) {
@@ -248,17 +252,17 @@ void wifi_command_handler(wifi_cmd_t cmd, void *param){
 	switch(cmd){
 		case WIFI_ERR:
 			wifiif_state_running(false);
-			LOG_WARN(TAG, "WiFi module error reset.");
+			LOG_EVENT(TAG, "WiFi module error reset.");
 		break;
 		case WIFI_SCAN:
-			LOG_INFO("WIFI_CMD_WIFI_SCAN", "%s.", resp_data);
+			LOG_EVENT("WIFI_CMD_WIFI_SCAN", "%s.", resp_data);
 		break;
 		case WIFI_HTTP_CLIENT_RESPONSE:
-			LOG_INFO("HTTP DATA", "%s.", resp_data);
+			LOG_EVENT("HTTP DATA", "%s.", resp_data);
 		break;
 
 		default:
-			LOG_INFO(TAG, "WiFi module responded: %s.", resp_data);
+			LOG_EVENT(TAG, "WiFi module responded: %s.", resp_data);
 		break;
 	}
 }
@@ -270,7 +274,6 @@ void wifi_uart_handler(usart_event_t event, void *param){
 			LOG_ERROR(TAG, "Can't get UART data.");
 			return;
 		}
-//		LOG_WARN(TAG, "%s", rxdata);
 		if(strcmp(rxdata, "WIFI_RESTART: OK") == 0) wifiif_state_running(false);
 
 		wifiif_set_response_state(rxdata);

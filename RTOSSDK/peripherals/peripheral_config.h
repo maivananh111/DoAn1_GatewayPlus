@@ -12,17 +12,17 @@
 #include st_header
 
 #define ENABLE_EXTI         1
-#define ENABLE_IWDG			1
+#define ENABLE_IWDG			0
 #define ENABLE_ADC          1
 #define ENABLE_TIM			1
 #define ENABLE_DMA			1
 #define ENABLE_USART		1
 #define ENABLE_SPI			1
 #define ENABLE_I2C			1
-#define ENABLE_FMC          0
-#define ENABLE_RNG          0
+#define ENABLE_FMC          1
+#define ENABLE_RNG          1
 
-#define ENABLE_ETH			0
+#define ENABLE_ETH			1
 #define ENABLE_USB          0
 
 
@@ -37,7 +37,7 @@
 /**
  * GPIO.
  */
-#define GPIO_OUTPUTSPEED_DEFAULT GPIO_Speed_High
+#define GPIO_OUTPUTSPEED_DEFAULT GPIO_Speed_VeryHigh
 
 
 

@@ -70,7 +70,7 @@ void LOG_INFO (const char *tag,  const char *format, ...);
 void LOG_WARN (const char *tag,  const char *format, ...);
 void LOG_ERROR(const char *tag,  const char *format, ...);
 void LOG_DEBUG(const char *tag,  const char *format, ...);
-void LOG_PARAM(const char *tag,  const char *format, ...);
+void LOG_EVENT(const char *tag,  const char *format, ...);
 void LOG_MEM  (const char *tag,  const char *format, ...);
 void LOG_RET  (const char *tag,  const char *format, ...);
 

@@ -25,7 +25,7 @@ static log_type_t logw = SIMP_YELLOW;   // Warning.
 static log_type_t loge = SIMP_RED;		// Error.
 static log_type_t logd = SIMP_BLUE;		// Debug.
 static log_type_t logm = SIMP_WHITE;	// Memory.
-static log_type_t logp = SIMP_CYAN;	    // Parameter.
+static log_type_t logv = SIMP_CYAN;	    // Parameter.
 static log_type_t logr = SIMP_PURPLE;	// Result.
 
 #if CONFIG_LOG_LEVEL_SHORT
@@ -35,7 +35,7 @@ static const char *log_level_str[] = {
 	"E",
 	"D",
 	"M",
-	"P",
+	"V",
 	"R",
 };
 #else
@@ -45,7 +45,7 @@ static const char *log_level_str[] = {
 	"ERROR ",
 	"DEBUG ",
 	"MEMORY",
-	"PARAM ",
+	"EVENT ",
 	"RESULT",
 };
 #endif
@@ -128,7 +128,7 @@ void set_log(char *func, log_type_t log_type){
 	else if(strcmp(func, (char *)"ERROR")  == 0) loge = log_type;
 	else if(strcmp(func, (char *)"DEBUG")  == 0) logd = log_type;
 	else if(strcmp(func, (char *)"MEMORY") == 0) logm = log_type;
-	else if(strcmp(func, (char *)"PARAM")  == 0) logp = log_type;
+	else if(strcmp(func, (char *)"PARAM")  == 0) logv = log_type;
 	else if(strcmp(func, (char *)"RESULT") == 0) logr = log_type;
 	else LOG_ERROR("Parameter Error", "Unknown function %s.", func);
 }
@@ -346,7 +346,7 @@ void LOG_MEM(const char *tag,  const char *format, ...){
 }
 
 /**
- * @fn void LOG_PARAM(const char*, const char*, ...)
+ * @fn void LOG_EVENT(const char*, const char*, ...)
  * @brief
  *
  * @pre
@@ -354,7 +354,7 @@ void LOG_MEM(const char *tag,  const char *format, ...){
  * @param tag
  * @param format
  */
-void LOG_PARAM(const char *tag,  const char *format, ...){
+void LOG_EVENT(const char *tag,  const char *format, ...){
 #if CONFIG_LOG_TICK_TIME
 #if !defined(HAL_TICK)
 	uint32_t time = get_tick();
@@ -370,7 +370,7 @@ void LOG_PARAM(const char *tag,  const char *format, ...){
 
 	char *Output_buffer;
 #if CONFIG_LOG_TICK_TIME
-	asprintf(&Output_buffer, "\r\n%s%s [%lu] %s: %s%s", LOG_COLOR[logp], log_level_str[5], time, tag, Temp_buffer, COLOR_END);
+	asprintf(&Output_buffer, "\r\n%s%s [%lu] %s: %s%s", LOG_COLOR[logv], log_level_str[5], time, tag, Temp_buffer, COLOR_END);
 #else
 	asprintf(&Output_buffer, "\r\n%s%s %s: %s%s", LOG_COLOR[logp], log_level_str[5], tag, Temp_buffer, COLOR_END);
 #endif

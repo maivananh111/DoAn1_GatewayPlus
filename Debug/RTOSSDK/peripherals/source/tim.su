@@ -58,18 +58,18 @@
 ../RTOSSDK/peripherals/source/tim.cpp:1465:11:stm_ret_t tim::outputcompare_stop_dma(tim_channel_t)	32	static
 ../RTOSSDK/peripherals/source/tim.cpp:1471:11:stm_ret_t tim::set_pulse(tim_channel_t, uint32_t)	0	static
 ../RTOSSDK/peripherals/source/tim.cpp:1479:6:void TIM_IRQHandler(tim*)	0	static
-../RTOSSDK/peripherals/source/tim.cpp:1546:6:void TIM1_CC_IRQHandler()	0	static
-../RTOSSDK/peripherals/source/tim.cpp:1579:6:void TIM2_IRQHandler()	0	static
-../RTOSSDK/peripherals/source/tim.cpp:1588:6:void TIM3_IRQHandler()	0	static
-../RTOSSDK/peripherals/source/tim.cpp:1597:6:void TIM4_IRQHandler()	0	static
-../RTOSSDK/peripherals/source/tim.cpp:1606:6:void TIM5_IRQHandler()	0	static
-../RTOSSDK/peripherals/source/tim.cpp:1615:6:void TIM6_DAC_IRQHandler()	0	static
-../RTOSSDK/peripherals/source/tim.cpp:1627:6:void TIM7_IRQHandler()	0	static
-../RTOSSDK/peripherals/source/tim.cpp:1636:6:void TIM8_CC_IRQHandler()	0	static
-../RTOSSDK/peripherals/source/tim.cpp:1670:6:void TIM1_BRK_TIM9_IRQHandler()	8	static
-../RTOSSDK/peripherals/source/tim.cpp:1682:6:void TIM1_UP_TIM10_IRQHandler()	8	static
-../RTOSSDK/peripherals/source/tim.cpp:1694:6:void TIM1_TRG_COM_TIM11_IRQHandler()	8	static
-../RTOSSDK/peripherals/source/tim.cpp:1706:6:void TIM8_BRK_TIM12_IRQHandler()	8	static
-../RTOSSDK/peripherals/source/tim.cpp:1718:6:void TIM8_UP_TIM13_IRQHandler()	8	static
-../RTOSSDK/peripherals/source/tim.cpp:1730:6:void TIM8_TRG_COM_TIM14_IRQHandler()	8	static
-../RTOSSDK/peripherals/source/tim.cpp:1735:1:cpp)	36	static
+../RTOSSDK/peripherals/source/tim.cpp:1545:6:void TIM1_CC_IRQHandler()	0	static
+../RTOSSDK/peripherals/source/tim.cpp:1578:6:void TIM2_IRQHandler()	0	static
+../RTOSSDK/peripherals/source/tim.cpp:1587:6:void TIM3_IRQHandler()	0	static
+../RTOSSDK/peripherals/source/tim.cpp:1596:6:void TIM4_IRQHandler()	0	static
+../RTOSSDK/peripherals/source/tim.cpp:1605:6:void TIM5_IRQHandler()	0	static
+../RTOSSDK/peripherals/source/tim.cpp:1614:6:void TIM6_DAC_IRQHandler()	0	static
+../RTOSSDK/peripherals/source/tim.cpp:1626:6:void TIM7_IRQHandler()	0	static
+../RTOSSDK/peripherals/source/tim.cpp:1635:6:void TIM8_CC_IRQHandler()	0	static
+../RTOSSDK/peripherals/source/tim.cpp:1669:6:void TIM1_BRK_TIM9_IRQHandler()	8	static
+../RTOSSDK/peripherals/source/tim.cpp:1681:6:void TIM1_UP_TIM10_IRQHandler()	8	static
+../RTOSSDK/peripherals/source/tim.cpp:1693:6:void TIM1_TRG_COM_TIM11_IRQHandler()	8	static
+../RTOSSDK/peripherals/source/tim.cpp:1705:6:void TIM8_BRK_TIM12_IRQHandler()	8	static
+../RTOSSDK/peripherals/source/tim.cpp:1717:6:void TIM8_UP_TIM13_IRQHandler()	8	static
+../RTOSSDK/peripherals/source/tim.cpp:1729:6:void TIM8_TRG_COM_TIM14_IRQHandler()	8	static
+../RTOSSDK/peripherals/source/tim.cpp:1734:1:cpp)	36	static

@@ -37,7 +37,8 @@ RTOSSDK/components/loraif/loraif.o: \
  ../RTOSSDK/system/system/ret_err.h ../RTOSSDK/peripherals/periph/dma.h \
  ../RTOSSDK/components/sx127x/sx127x.h \
  ../RTOSSDK/peripherals/periph/spi.h ../RTOSSDK/components/crc/crc.h \
- ../RTOSSDK/system/system/log.h ../RTOSSDK/peripherals/periph/systick.h \
+ ../RTOSSDK/system/system/log.h ../RTOSSDK/system/system/system.h \
+ ../RTOSSDK/peripherals/periph/systick.h \
  ../RTOSSDK/peripherals/periph/rng.h \
  ../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h \
  ../Middlewares/Third_Party/FreeRTOS/Source/include/projdefs.h \
@@ -91,6 +92,7 @@ RTOSSDK/components/loraif/loraif.o: \
 ../RTOSSDK/peripherals/periph/spi.h:
 ../RTOSSDK/components/crc/crc.h:
 ../RTOSSDK/system/system/log.h:
+../RTOSSDK/system/system/system.h:
 ../RTOSSDK/peripherals/periph/systick.h:
 ../RTOSSDK/peripherals/periph/rng.h:
 ../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h:

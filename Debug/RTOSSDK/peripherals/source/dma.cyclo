@@ -6,7 +6,7 @@ dma.cpp:59:11:stm_ret_t dma::init(dma_config_t*)	13
 dma.cpp:171:6:void dma::register_event_handler(void (*)(dma_event_t, void*), void*)	1
 dma.cpp:176:11:stm_ret_t dma::start(uint32_t, uint32_t, uint32_t)	7
 dma.cpp:253:11:stm_ret_t dma::stop()	5
-dma.cpp:306:11:stm_ret_t dma::poll_for_tranfer(dma_interruptselect_t, uint32_t)	26
+dma.cpp:306:11:stm_ret_t dma::poll_for_tranfer(dma_interruptoption_t, uint32_t)	26
 dma.cpp:415:10:uint16_t dma::get_counter()	1
 dma.cpp:423:15:dma_config_t* dma::get_config()	1
 dma.cpp:461:6:void DMA_IRQ_Handler(DMA_TypeDef*, DMA_Stream_TypeDef*, dma*)	15

@@ -135,8 +135,14 @@ pkt_err_t json_get_object(char *src, pkt_json_t *dest, char *key){
 }
 
 pkt_err_t json_release_object(pkt_json_t *json){
-	if(json->key != NULL) free(json->key);
-	if(json->value != NULL) free(json->value);
+	if(json->key != NULL) {
+		free(json->key);
+		json->key = NULL;
+	}
+	if(json->value != NULL) {
+		free(json->value);
+		json->value = NULL;
+	}
 	json->leaf = false;
 
 	return PKT_ERR_OK;
@@ -186,8 +192,14 @@ pkt_err_t parse_packet(char *src, pkt_t *dest){
 }
 
 pkt_err_t release_packet(pkt_t *packet){
-	if(packet->cmd_str != NULL) free(packet->cmd_str);
-	if(packet->data_str != NULL) free(packet->data_str);
+	if(packet->cmd_str != NULL) {
+		free(packet->cmd_str);
+		packet->cmd_str = NULL;
+	}
+	if(packet->data_str != NULL) {
+		free(packet->data_str);
+		packet->data_str = NULL;
+	}
 
 	return PKT_ERR_OK;
 }

@@ -28,8 +28,7 @@ RTOSSDK/peripherals/source/iwdg.o: ../RTOSSDK/peripherals/source/iwdg.cpp \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr_ex.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_sd.h \
- ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_ll_sdmmc.h \
- ../RTOSSDK/peripherals/periph/iwdg.h ../RTOSSDK/system/system/ret_err.h
+ ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_ll_sdmmc.h
 ../RTOSSDK/peripherals/peripheral_config.h:
 ../RTOSSDK/config/sdkconfig.h:
 ../Core/Inc/FreeRTOSConfig.h:
@@ -61,5 +60,3 @@ RTOSSDK/peripherals/source/iwdg.o: ../RTOSSDK/peripherals/source/iwdg.cpp \
 ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr_ex.h:
 ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_sd.h:
 ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_ll_sdmmc.h:
-../RTOSSDK/peripherals/periph/iwdg.h:
-../RTOSSDK/system/system/ret_err.h:

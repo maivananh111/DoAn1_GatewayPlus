@@ -1,0 +1,20 @@
+spiflash.cpp:41:1:SPIFLASH::SPIFLASH(GPIO_TypeDef*, uint16_t)	1
+spiflash.cpp:47:1:SPIFLASH::SPIFLASH()	1
+spiflash.cpp:50:6:void SPIFLASH::CS_Active()	1
+spiflash.cpp:53:6:void SPIFLASH::CS_Idle()	1
+spiflash.cpp:58:6:void SPIFLASH::WriteEnable()	1
+spiflash.cpp:71:6:void SPIFLASH::WriteDisable()	1
+spiflash.cpp:83:9:uint8_t SPIFLASH::ReadStatusRegister(uint8_t)	4
+spiflash.cpp:119:6:void SPIFLASH::WriteStatusRegister(uint8_t, uint8_t)	6
+spiflash.cpp:151:6:void SPIFLASH::ProtectedChip()	1
+spiflash.cpp:154:6:void SPIFLASH::UnProtectedChip()	1
+spiflash.cpp:158:6:void SPIFLASH::Reset()	1
+spiflash.cpp:167:6:void SPIFLASH::WaitWriteEnd()	2
+spiflash.cpp:183:6:void SPIFLASH::SetAddress(uint32_t)	2
+spiflash.cpp:197:10:uint32_t SPIFLASH::ReadID()	1
+spiflash.cpp:220:10:uint32_t SPIFLASH::Init(spi_t)	7
+spiflash.cpp:270:6:void SPIFLASH::EraseSector(uint32_t)	3
+spiflash.cpp:288:6:void SPIFLASH::EraseBlock(uint32_t)	3
+spiflash.cpp:306:6:void SPIFLASH::EraseChip()	2
+spiflash.cpp:323:6:void SPIFLASH::ReadBytes(uint32_t, uint8_t*, uint16_t)	4
+spiflash.cpp:351:6:void SPIFLASH::WriteBytes(uint32_t, uint8_t*, uint16_t)	5

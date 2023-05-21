@@ -21,10 +21,13 @@ RM := rm -rf
 -include RTOSSDK/components/tftspi_st7735/source/subdir.mk
 -include RTOSSDK/components/sx127x/subdir.mk
 -include RTOSSDK/components/spiflash/subdir.mk
+-include RTOSSDK/components/pid/subdir.mk
 -include RTOSSDK/components/parse_packet/subdir.mk
 -include RTOSSDK/components/loraif/subdir.mk
+-include RTOSSDK/components/kalman_filter/subdir.mk
 -include RTOSSDK/components/ds3231/subdir.mk
 -include RTOSSDK/components/crc/subdir.mk
+-include RTOSSDK/components/button/subdir.mk
 -include Middlewares/Third_Party/LwIP/system/OS/subdir.mk
 -include Middlewares/Third_Party/LwIP/src/netif/ppp/subdir.mk
 -include Middlewares/Third_Party/LwIP/src/netif/subdir.mk

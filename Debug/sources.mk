@@ -54,10 +54,13 @@ Middlewares/Third_Party/LwIP/src/core/ipv6 \
 Middlewares/Third_Party/LwIP/src/netif \
 Middlewares/Third_Party/LwIP/src/netif/ppp \
 Middlewares/Third_Party/LwIP/system/OS \
+RTOSSDK/components/button \
 RTOSSDK/components/crc \
 RTOSSDK/components/ds3231 \
+RTOSSDK/components/kalman_filter \
 RTOSSDK/components/loraif \
 RTOSSDK/components/parse_packet \
+RTOSSDK/components/pid \
 RTOSSDK/components/spiflash \
 RTOSSDK/components/sx127x \
 RTOSSDK/components/tftspi_st7735/source \

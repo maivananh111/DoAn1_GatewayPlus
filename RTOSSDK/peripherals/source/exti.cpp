@@ -28,8 +28,10 @@ static const char *TAG = "EXTI";
 
 #if defined(STM32F1)
 #define EXTI_REGISTER AFIO
+#define GPIO_ADRRESS_OFFSET 0x0800UL
 #elif defined(STM32F4)
 #define EXTI_REGISTER SYSCFG
+#define GPIO_ADRRESS_OFFSET 0x0000UL
 #endif /* STM32F4 */
 
 void (*handler_callback[16])(void *param) = {NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL};
@@ -85,7 +87,8 @@ stm_ret_t exti_init(GPIO_TypeDef *Port, uint16_t Pin, exti_edgedetect_t Edge, ui
 	__IO uint32_t tmpreg = EXTI_REGISTER -> EXTICR[CRPos];
 
 	tmpreg &=~ (0x0F << ((Pin - CRPos*4U) * 4U));
-	tmpreg |= (uint32_t)(((((uint32_t)Port & 0xFF00U) >> 8U) / 4U) << ((Pin - CRPos*4U) * 4U));
+	tmpreg |= (uint32_t)(((((uint32_t)((uint32_t)(Port) - GPIO_ADRRESS_OFFSET) & 0xFF00U) >> 8U) / 4U) << ((Pin - CRPos*4U) * 4U));
+
 	EXTI_REGISTER -> EXTICR[CRPos] = tmpreg;
 
 	if(Edge & EXTI_RTSR_TR0) EXTI -> RTSR |= (1U << Pin);

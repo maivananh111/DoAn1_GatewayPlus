@@ -23,6 +23,8 @@
 #include "sx127x/sx127x.h"
 
 using namespace std;
+
+#define LORAIF_QUEUE_SIZE 30
 typedef enum {
 	LORA_ERR,
 
@@ -38,6 +40,7 @@ typedef enum {
 	 */
 	LORA_UPDATE_SETTINGS,
 	LORA_REQ_DATA,
+	LORA_RES_DATA,
 	LORA_UPDATE_DATA,
 
 	LORA_DEL_DEVICE,
@@ -65,9 +68,9 @@ void loraif_register_event_handler(void (*peventhandler)(lora_event_t event, cha
 
 bool loraif_check_crc(char *data);
 
-void loraif_request(uint32_t dev_address, lora_event_t cmd, char *data);
+void loraif_request(uint32_t dev_address, lora_event_t cmd, char *data, int require_resp);
 void loraif_request_data(void);
-void loraif_process(void *param);
+void loraif_rx_process(void *param);
 void loraif_response(void);
 void loraif_check_timeout(void);
 
