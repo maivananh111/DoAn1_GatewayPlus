@@ -32,12 +32,12 @@ RTOSSDK/components/loraif/loraif.o: \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_sd.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_ll_sdmmc.h \
  ../RTOSSDK/components/parse_packet/parse_packet.h \
- ../RTOSSDK/peripherals/periph/tim.h \
+ ../RTOSSDK/components/sx127x/sx127x.h \
+ ../RTOSSDK/peripherals/periph/spi.h \
  ../RTOSSDK/peripherals/peripheral_config.h \
  ../RTOSSDK/system/system/ret_err.h ../RTOSSDK/peripherals/periph/dma.h \
- ../RTOSSDK/components/sx127x/sx127x.h \
- ../RTOSSDK/peripherals/periph/spi.h ../RTOSSDK/components/crc/crc.h \
- ../RTOSSDK/system/system/log.h ../RTOSSDK/system/system/system.h \
+ ../RTOSSDK/components/crc/crc.h ../RTOSSDK/system/system/log.h \
+ ../RTOSSDK/system/system/system.h \
  ../RTOSSDK/peripherals/periph/systick.h \
  ../RTOSSDK/peripherals/periph/rng.h \
  ../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h \
@@ -84,12 +84,11 @@ RTOSSDK/components/loraif/loraif.o: \
 ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_sd.h:
 ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_ll_sdmmc.h:
 ../RTOSSDK/components/parse_packet/parse_packet.h:
-../RTOSSDK/peripherals/periph/tim.h:
+../RTOSSDK/components/sx127x/sx127x.h:
+../RTOSSDK/peripherals/periph/spi.h:
 ../RTOSSDK/peripherals/peripheral_config.h:
 ../RTOSSDK/system/system/ret_err.h:
 ../RTOSSDK/peripherals/periph/dma.h:
-../RTOSSDK/components/sx127x/sx127x.h:
-../RTOSSDK/peripherals/periph/spi.h:
 ../RTOSSDK/components/crc/crc.h:
 ../RTOSSDK/system/system/log.h:
 ../RTOSSDK/system/system/system.h:

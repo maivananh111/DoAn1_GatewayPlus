@@ -61,7 +61,7 @@ static void (*fpcommand_handler)(wifi_cmd_t cmd, void *param);
 static bool had_response = false;
 static char *response_data;
 
-static volatile bool wifi_state = false;
+static volatile bool wifi_state = false, wifi_connected = false;
 
 static void wifiif_debug(char *str, int line, char *func){
 #if ENABLE_COMPONENT_WIFIIF_DEBUG
@@ -108,24 +108,34 @@ static void wifiif_request(wifi_cmd_t cmd, char *data){
 
 			return;
 		}
-		if(wifiif_is_err(pkt.data_str) != 0){
+		if(wifiif_is_err(pkt.data_str) != 0){ // Is not wifi command error.
 			char *data = (char *)malloc(strlen(pkt.data_str)+1);
 			memcpy(data, pkt.data_str, strlen(pkt.data_str));
 			data[strlen(pkt.data_str)] = '\0';
 
 			wifi_cmd_t command = cmd;
-			if(command == WIFI_HTTP_CLIENT_REQUEST) command = WIFI_HTTP_CLIENT_RESPONSE;
-			if(fpcommand_handler) fpcommand_handler(command, data);
+			if(command == WIFI_ISCONNECTED){ // Check wifi connect state.
+				pkt_json_t json;
+				pkt_err_t err = json_get_object(pkt.data_str, &json, "isconnected");
+				if(err == PKT_ERR_OK){
+					if(strcmp(json.value, "1") == 0) wifi_connected = true;
+					else if(strcmp(json.value, "0") == 0) wifi_connected = false;
+				}
+				json_release_object(&json);
+			}
+
+			if(command == WIFI_HTTP_CLIENT_REQUEST) command = WIFI_HTTP_CLIENT_RESPONSE; //Send WIFI_HTTP_CLIENT_REQUEST get WIFI_HTTP_CLIENT_RESPONSE.
+			if(fpcommand_handler) fpcommand_handler(command, data);                      // Handle wifiif event.
 
 			if(data != NULL) free(data);
 		}
-		else{
+		else{ // Wifi command error.
 			wifiif_debug((char *)"WiFi module error.", __LINE__, (char *)__FUNCTION__);
 			if(fpcommand_handler) fpcommand_handler(WIFI_ERR, NULL);
 		}
 		release_packet(&pkt);
 	}
-	else{
+	else{ // Parse packet fail.
 		wifiif_debug((char *)"WiFi module not response the request.", __LINE__, (char *)__FUNCTION__);
 		if(fpcommand_handler) fpcommand_handler(WIFI_ERR, NULL);
 	}
@@ -165,8 +175,11 @@ void wifiif_restart(void){
 void wifiif_scan(void){
 	wifiif_request(WIFI_SCAN, (char *)"{}");
 }
-void wifiif_isconnect(void){
+void wifiif_checkconnect(void){
 	wifiif_request(WIFI_ISCONNECTED, (char *)"{}");
+}
+bool wifiif_wificonnected(void){
+	return wifi_connected;
 }
 void wifiif_connect(char *ssid, char *pass, char *auth){
 	char *data;

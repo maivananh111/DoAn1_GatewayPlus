@@ -108,8 +108,7 @@ main/app_main.o: ../main/app_main.cpp ../Core/Inc/main.h \
  ../Middlewares/Third_Party/LwIP/src/include/lwip/prot/icmp.h \
  ../RTOSSDK/components/wifiif/wifiif.h \
  ../RTOSSDK/components/loraif/loraif.h \
- ../RTOSSDK/components/parse_packet/parse_packet.h \
- ../RTOSSDK/peripherals/periph/tim.h ../main/app/app.h
+ ../RTOSSDK/components/parse_packet/parse_packet.h ../main/app/app.h
 ../Core/Inc/main.h:
 ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h:
 ../Core/Inc/stm32f4xx_hal_conf.h:
@@ -228,5 +227,4 @@ main/app_main.o: ../main/app_main.cpp ../Core/Inc/main.h \
 ../RTOSSDK/components/wifiif/wifiif.h:
 ../RTOSSDK/components/loraif/loraif.h:
 ../RTOSSDK/components/parse_packet/parse_packet.h:
-../RTOSSDK/peripherals/periph/tim.h:
 ../main/app/app.h:

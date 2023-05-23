@@ -35,6 +35,9 @@
 static const char *TAG = "Main";
 
 
+static volatile void exception_handler(void);
+static void beep_loop(uint8_t loop, uint16_t active_time, uint16_t idle_time);
+
 spi_config_t spi5_conf = {
 	.clkport  = GPIOF,
 	.clkpin   = 7,
@@ -53,6 +56,7 @@ void lora_request(char *str);
 void task_loratx(void *);
 void task_lorarx(void *);
 
+
 #define WF_BUFF_SIZE 2048
 usart_config_t wf_uart_conf = {
 	.baudrate = 115200,
@@ -64,6 +68,7 @@ usart_config_t wf_uart_conf = {
 	.rxport = GPIOA,
 	.rxpin = 10,
 };
+bool wifi_connected = false;
 void wifi_uart_handler(usart_event_t event, void *param);
 void wifi_command_handler(wifi_cmd_t cmd, void *param);
 void wifi_request(char *str);
@@ -92,8 +97,11 @@ void app_main(void){
 	extern void HAL_Driver_Init(void);
 	HAL_Driver_Init();
 
+	gpio_port_clock_enable(GPIOB);
 	gpio_port_clock_enable(GPIOC);
 	gpio_set_mode(GPIOC, 13, GPIO_OUTPUT_PUSHPULL);
+	gpio_set_mode(GPIOB, 14, GPIO_OUTPUT_PUSHPULL);
+	register_exception_handler(exception_handler);
 
 	xTaskCreate(task_lorarx, "task_lorarx", byte_to_word(8192), NULL, 8, NULL);
 	xTaskCreate(task_loratx, "task_loratx", byte_to_word(8192), NULL, 5, NULL);
@@ -125,7 +133,7 @@ void task_lorarx(void *){
 	else LOG_ERROR(TAG, "Lora Initialize Failed.");
 
 	lora_queue = xQueueCreate(10, sizeof(uint32_t));
-	loraif_init(&lora, tim2, 10000, 3);
+	loraif_init(&lora, 10000, 3);
 	loraif_register_event_handler(loraif_event_handler);
 
 	lora.setSyncWord(0x3F);
@@ -149,7 +157,7 @@ void lora_event_handler(void *, uint8_t len){
 		lora_RxBuf = (char *)malloc(packetSize+1);
 		lora.receive(lora_RxBuf);
 		lora_RxBuf[packetSize] = '\0';
-		LOG_INFO(TAG, "Receive: %s, packet RSSI = %d, RSSI = %d", lora_RxBuf, lora.packetRssi(), lora.rssi());
+//		LOG_INFO(TAG, "Receive: %s, packet RSSI = %d, RSSI = %d", lora_RxBuf, lora.packetRssi(), lora.rssi());
 
 		if(loraif_check_crc(lora_RxBuf) == true){
 			BaseType_t pxHigherPriorityTaskWoken = pdFALSE;
@@ -164,15 +172,16 @@ void lora_event_handler(void *, uint8_t len){
 }
 
 void loraif_event_handler(lora_event_t event, char *data){
-	if(data != NULL) LOG_WARN(TAG, "LoRa data: %s", data);
 	switch(event){
 		case LORA_REQ_ADDRESS:
 			LOG_EVENT(TAG, "LORA_REQ_ADDRESS");
+			beep_loop(2, 50, 50);
 		break;
 		case LORA_UPDATE_ADDRESS:{
-//			dev_struct_t *dev = (dev_struct_t *)malloc(sizeof(dev_struct_t));
 			LOG_EVENT(TAG, "LORA_UPDATE_ADDRESS");
-//			dev_init(dev, data);
+			beep_loop(1, 500, 1);
+			dev_struct_t *dev = (dev_struct_t *)malloc(sizeof(dev_struct_t));
+			dev_init(dev, data);
 			loraif_new_device(data, NULL);
 		}
 		break;
@@ -184,12 +193,13 @@ void loraif_event_handler(lora_event_t event, char *data){
 		break;
 		case LORA_REQ_DATA:
 			LOG_EVENT(TAG, "LORA_REQ_DATA");
+			beep_loop(1, 20, 20);
 		break;
 		case LORA_UPDATE_DATA:
 			LOG_EVENT(TAG, "LORA_UPDATE_DATA");
 		break;
 		case LORA_DEL_DEVICE:
-			LOG_EVENT(TAG, "LORA_DEL_DEVICE");
+			LOG_WARN(TAG, "LORA_DEL_DEVICE");
 			loraif_remove_device(data);
 		break;
 		case LORA_ERR:
@@ -198,8 +208,8 @@ void loraif_event_handler(lora_event_t event, char *data){
 		default:
 			LOG_EVENT(TAG, "LoRa other event.");
 		break;
-
 	}
+	if(data != NULL) LOG_INFO(TAG, "LoRa data: %s, packet RSSI = %d, RSSI = %d", data, lora.packetRssi(), lora.rssi());
 }
 
 
@@ -217,6 +227,8 @@ void task_wifi(void *){
 	if(!wifiif_state_is_running()) wifiif_restart();
 	vTaskDelay(1000);
 	wifiif_connect((char *)"FREE", (char *)"0986382835", (char *)"WIFI_AUTH_WPA2_PSK");
+
+	while(wifiif_wificonnected() == false) wifiif_checkconnect();
 	wifiif_state_running(true);
 
 	firebase_init((char *)"https://iotnhakho-default-rtdb.asia-southeast1.firebasedatabase.app", (char *)"YAg8QGH48Xlbjpk9UMh5JkjgYCCbeMSM4Ak5SNHp");
@@ -225,7 +237,8 @@ void task_wifi(void *){
 	firebase_remove_device(&kho3);
 
 	while(1){
-		if(!wifiif_state_is_running()) {
+		wifiif_checkconnect();
+		if(!wifiif_state_is_running() || wifiif_wificonnected() == false) {
 			LOG_ERROR(TAG, "WiFi module error reset.");
 			wifiif_reset_response_state();
 			goto restart_wifi;
@@ -241,15 +254,18 @@ void task_wifi(void *){
 	}
 }
 void wifi_request(char *str){
-	while(*str) {
+/*	while(*str) {
 		USART1 -> DR = *str++;
 		while(!(USART1 -> SR & USART_SR_TC));
-	}
+	}*/
+	usart1->transmit((uint8_t *)str, strlen(str));
 }
 void wifi_command_handler(wifi_cmd_t cmd, void *param){
 	char *resp_data = (char *)param;
 
 	switch(cmd){
+		case WIFI_ISCONNECTED:
+		break;
 		case WIFI_ERR:
 			wifiif_state_running(false);
 			LOG_EVENT(TAG, "WiFi module error reset.");
@@ -283,12 +299,22 @@ void wifi_uart_handler(usart_event_t event, void *param){
 }
 
 
+static void beep_loop(uint8_t loop, uint16_t active_time, uint16_t idle_time){
+	while(loop--){
+		gpio_set(GPIOB, 14);
+		vTaskDelay(active_time);
+		gpio_reset(GPIOB, 14);
+		vTaskDelay(idle_time);
+	}
+}
 
+static volatile  void exception_handler(void){
+	gpio_set(GPIOB, 14);
+}
 
-
-
-
-
+// No device:  148072
+// New device: 147904
+// Delete device: 148012
 
 
 

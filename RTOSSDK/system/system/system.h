@@ -47,6 +47,7 @@ void sys_calculate_cpu_load_percent(void);
 float sys_get_cpu_percent(void);
 float sys_get_ram_percent(void);
 
+void register_exception_handler(volatile void(*)(void));
 void exception_interrupt_handler(const char *tag, char *message);
 
 #if !defined(USE_HAL_DRIVER)

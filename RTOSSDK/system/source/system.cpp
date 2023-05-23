@@ -37,6 +37,8 @@ volatile uint32_t systick_idle_ticks = 0;
 volatile uint32_t last_systick_idle_ticks = 0;
 volatile float cpu_load_percent = 0.0;
 
+static volatile void (*exception_hander)(void);
+
 #if !defined(USE_HAL_DRIVER)
 static const char *Excep_TAG = "EXCEPTION";
 static const char *Inter_TAG = "INTERRUPT";
@@ -189,10 +191,14 @@ float sys_get_ram_percent(void){
 	return (float)(((float)total_ram_use / (float)total_ram_size) * 100.0F);
 }
 
+void register_exception_handler(volatile void(*p_exception_hander)(void)){
+	exception_hander = p_exception_hander;
+}
 
 void exception_interrupt_handler(const char *tag, char *message){
 #if CONFIG_USE_LOG_MONITOR
 	LOG_ERROR(tag, message);
+	if(exception_hander != NULL) exception_hander();
 #endif /* CONFIG_USE_LOG_MONITOR */
 }
 

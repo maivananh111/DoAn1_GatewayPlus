@@ -19,7 +19,6 @@
 
 #include "parse_packet/parse_packet.h"
 
-#include "periph/tim.h"
 #include "sx127x/sx127x.h"
 
 using namespace std;
@@ -63,7 +62,7 @@ extern list<loraif_dev_t *> loraif_device_list;
 extern "C"{
 #endif
 
-void loraif_init(sx127x *lora, tim_t tim, uint32_t timeout, uint8_t max_not_response);
+void loraif_init(sx127x *lora, uint32_t timeout, uint8_t max_not_response);
 void loraif_register_event_handler(void (*peventhandler)(lora_event_t event, char *data));
 
 bool loraif_check_crc(char *data);
