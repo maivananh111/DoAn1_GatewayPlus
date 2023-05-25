@@ -46,7 +46,8 @@ RTOSSDK/startup/startup.o: ../RTOSSDK/startup/startup.cpp \
  ../RTOSSDK/peripherals/periph/rcc.h ../RTOSSDK/system/system/ret_err.h \
  ../RTOSSDK/peripherals/periph/gpio.h \
  ../RTOSSDK/peripherals/periph/fmc_sdram.h \
- ../RTOSSDK/peripherals/periph/rng.h ../RTOSSDK/system/system/log.h
+ ../RTOSSDK/peripherals/periph/iwdg.h ../RTOSSDK/peripherals/periph/rng.h \
+ ../RTOSSDK/system/system/log.h
 ../RTOSSDK/startup/startup.h:
 ../RTOSSDK/config/sdkconfig.h:
 ../Core/Inc/FreeRTOSConfig.h:
@@ -96,5 +97,6 @@ RTOSSDK/startup/startup.o: ../RTOSSDK/startup/startup.cpp \
 ../RTOSSDK/system/system/ret_err.h:
 ../RTOSSDK/peripherals/periph/gpio.h:
 ../RTOSSDK/peripherals/periph/fmc_sdram.h:
+../RTOSSDK/peripherals/periph/iwdg.h:
 ../RTOSSDK/peripherals/periph/rng.h:
 ../RTOSSDK/system/system/log.h:

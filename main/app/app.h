@@ -55,8 +55,8 @@ typedef struct {
 	dev_prop_t prop;
 } dev_struct_t;
 
-void dev_init(dev_struct_t *dev, char *jdata);
-void dev_deinit(dev_struct_t *dev);
+dev_struct_t *add_device_properties(char *jdata);
+void remove_device_properties(char *jdata);
 
 void firebase_init(char *url, char *secret_key);
 

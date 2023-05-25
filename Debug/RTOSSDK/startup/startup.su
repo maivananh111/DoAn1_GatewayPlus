@@ -1,7 +1,7 @@
 ../Drivers/CMSIS/Include/core_cm4.h:1939:34:void __NVIC_SystemReset()	0	static,ignoring_inline_asm
 ../RTOSSDK/startup/startup.cpp:116:6:void app_main_task(void*)	8	static
-../RTOSSDK/startup/startup.cpp:185:13:void uart_log(char*)	32	static,ignoring_inline_asm
+../RTOSSDK/startup/startup.cpp:186:13:void uart_log(char*)	32	static,ignoring_inline_asm
 ../RTOSSDK/startup/startup.cpp:59:5:int main_application()	40	static
-../RTOSSDK/startup/startup.cpp:124:7:void vApplicationIdleHook()	0	static
+../RTOSSDK/startup/startup.cpp:124:7:void vApplicationIdleHook()	8	static
 ../RTOSSDK/startup/startup.cpp:133:7:void vApplicationStackOverflowHook(TaskHandle_t, signed char*)	8	static,ignoring_inline_asm
 ../RTOSSDK/startup/startup.cpp:139:7:void vApplicationMallocFailedHook()	8	static

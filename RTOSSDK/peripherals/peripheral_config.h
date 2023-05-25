@@ -12,7 +12,7 @@
 #include st_header
 
 #define ENABLE_EXTI         1
-#define ENABLE_IWDG			0
+#define ENABLE_IWDG			1
 #define ENABLE_ADC          1
 #define ENABLE_TIM			1
 #define ENABLE_DMA			1

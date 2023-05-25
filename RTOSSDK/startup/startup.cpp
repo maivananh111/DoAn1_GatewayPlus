@@ -179,6 +179,7 @@ static void uart_log_init(void){
 	DIV_Fraction = ceil(Fraction);
 	log_uart -> BRR = (DIV_Mantissa << 4) | (DIV_Fraction << 0);
 
+	uart_log((char *)"\r\n\r\n");
 	uart_log((char *)"\r\n\r\n*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*Target starting*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*\r\n");
 }
 

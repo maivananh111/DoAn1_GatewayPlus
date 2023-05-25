@@ -53,11 +53,10 @@ typedef enum {
 } wifi_cmd_t;
 
 
-void wifiif_register_request_function(void (*prequest)(char *));
+void wifiif_init(void (*prequest)(char *, uint16_t));
 void wifiif_register_command_handler(void (*pcommand_handler)(wifi_cmd_t cmd, void *param));
 
-void wifiif_set_response_state(char *resp_data);
-void wifiif_reset_response_state(void);
+void wifiif_get_break_data(char *brk_data);
 
 void wifiif_restart(void);
 void wifiif_scan(void);

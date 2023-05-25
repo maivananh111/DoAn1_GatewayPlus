@@ -1,6 +1,6 @@
 core_cm4.h:1939:34:void __NVIC_SystemReset()	1
 startup.cpp:116:6:void app_main_task(void*)	1
-startup.cpp:185:13:void uart_log(char*)	9
+startup.cpp:186:13:void uart_log(char*)	9
 startup.cpp:59:5:int main_application()	2
 startup.cpp:124:7:void vApplicationIdleHook()	1
 startup.cpp:133:7:void vApplicationStackOverflowHook(TaskHandle_t, signed char*)	1

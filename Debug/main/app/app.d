@@ -30,7 +30,8 @@ main/app/app.o: ../main/app/app.cpp ../main/app/app.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr_ex.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_sd.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_ll_sdmmc.h \
- ../RTOSSDK/components/parse_packet/parse_packet.h
+ ../RTOSSDK/components/parse_packet/parse_packet.h \
+ ../RTOSSDK/system/system/log.h ../RTOSSDK/system/system/ret_err.h
 ../main/app/app.h:
 ../RTOSSDK/components/wifiif/wifiif.h:
 ../RTOSSDK/components/component_config.h:
@@ -65,3 +66,5 @@ main/app/app.o: ../main/app/app.cpp ../main/app/app.h \
 ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_sd.h:
 ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_ll_sdmmc.h:
 ../RTOSSDK/components/parse_packet/parse_packet.h:
+../RTOSSDK/system/system/log.h:
+../RTOSSDK/system/system/ret_err.h:

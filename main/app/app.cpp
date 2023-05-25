@@ -9,7 +9,15 @@
 
 #include "wifiif/wifiif.h"
 #include "parse_packet/parse_packet.h"
+#include "list"
 
+#include "system/log.h"
+
+
+using namespace std;
+
+static const char *TAG = "Device";
+#define LOG_LEVEL LOG_DEBUG
 
 char *secret = NULL;
 char *data_struct = (char *)"{\"data\":{\"temp\":%.02f,\"humi\":%.02f,\"current\":%.02f,\"time\":\"%s\"}}";
@@ -18,46 +26,94 @@ char *set1_struct = (char *)"{\"mode\":%d,\"type\":%d,\"max_temp\":%.02f,\"min_t
 char *set2_struct = (char *)"{\"time_start\":\"10:25:15\",\"time_stop\":\"11:30:00\"}";
 char *prop_struct = (char *)"{\"properties\":{\"address\":\"0x%08x\",\"name\":\"%s\"}}";
 
+list<dev_struct_t *> device_properties_list;
 
+static void device_debug(char *str, int line, const char *func){
+#if ENABLE_COMPONENT_LORAIF_DEBUG
+	LOG_LEVEL(TAG, "%s, Line: %d Function: %s", str, line, func);
+#endif /* ENABLE_COMPONENT_LORAIF_DEBUG */
+}
 
-void dev_init(dev_struct_t *dev, char *jdata){
+static void show_device_list(void){
+    for (auto device = device_properties_list.begin(); device != device_properties_list.end(); ++device) {
+    	LOG_WARN(TAG, "Device 0x%08x[%s].", (unsigned int)(*device)->prop.address, (*device)->prop.name);
+    }
+}
+
+dev_struct_t *add_device_properties(char *jdata){
 	pkt_err_t err;
 	pkt_json_t json;
 
-	dev->env.temp = 0.0;
-	dev->env.humi = 0.0;
-	dev->env.curr = 0.0;
-	dev->ctrl.relay1 = 0;
-	dev->ctrl.relay2 = 0;
-	dev->ctrl.relay3 = 0;
-	dev->ctrl.relay4 = 0;
-	dev->sett.mode = 0;
-	dev->sett.type = 0;
-	dev->sett.max_temp = 0.0;
-	dev->sett.min_temp = 0.0;
-	asprintf(&(dev->sett.time_start), "00:00:00");
-	asprintf(&(dev->sett.time_stop), "00:00:00");
-	asprintf(&(dev->env.time), "14:30:00 05/05/23");
+	dev_struct_t *dev_prop = (dev_struct_t *)malloc(sizeof(dev_struct_t));
+
+	dev_prop->env.temp = 0.0;
+	dev_prop->env.humi = 0.0;
+	dev_prop->env.curr = 0.0;
+	dev_prop->ctrl.relay1 = 0;
+	dev_prop->ctrl.relay2 = 0;
+	dev_prop->ctrl.relay3 = 0;
+	dev_prop->ctrl.relay4 = 0;
+	dev_prop->sett.mode = 0;
+	dev_prop->sett.type = 0;
+	dev_prop->sett.max_temp = 0.0;
+	dev_prop->sett.min_temp = 0.0;
+	asprintf(&(dev_prop->sett.time_start), "00:00:00");
+	asprintf(&(dev_prop->sett.time_stop), "00:00:00");
+	asprintf(&(dev_prop->env.time), "14:30:00 05/05/23");
 
 	err = json_get_object(jdata, &json, (char *)"addr");
 	if(err == PKT_ERR_OK)
-		dev->prop.address = strtol(json.value, NULL, 16);
+		dev_prop->prop.address = strtol(json.value, NULL, 16);
 	json_release_object(&json);
 
 	err = json_get_object(jdata, &json, (char *)"name");
 	if(err == PKT_ERR_OK)
-		asprintf(&(dev->prop.name), "%s", json.value);
+		asprintf(&(dev_prop->prop.name), "%s", json.value);
 	json_release_object(&json);
+
+	device_properties_list.push_back(dev_prop);
+	show_device_list();
+
+	return dev_prop;
 }
 
-void dev_deinit(dev_struct_t *dev){
-	if(dev == NULL) return;
+void remove_device_properties(char *jdata){
+	pkt_err_t err;
+	pkt_json_t json;
+	uint32_t rm_addr = 0x00U;
 
-	if(dev->prop.name != NULL) free(dev->prop.name);
-	if(dev->sett.time_start != NULL) free(dev->sett.time_start);
-	if(dev->sett.time_stop != NULL) free(dev->sett.time_stop);
-	if(dev->env.time != NULL) free(dev->env.time);
-	free(dev);
+	err = json_get_object(jdata, &json, (char *)"addr");
+	if(err == PKT_ERR_OK)
+		rm_addr = strtol(json.value, NULL, 16);
+	json_release_object(&json);
+
+    if (device_properties_list.empty()) {
+    	device_debug((char *)"Device properties list empty", __LINE__, __FUNCTION__);
+        return;
+    }
+
+    auto device = device_properties_list.begin();
+    while (device != device_properties_list.end()) {
+        if ((*device)->prop.address == rm_addr) {
+            break;
+        }
+        ++device;
+    }
+
+    if (device == device_properties_list.end()) {
+    	device_debug((char *)"This device not available in device list", __LINE__, __FUNCTION__);
+        return;
+    }
+	if((*device) == NULL) return;
+
+	if((*device)->prop.name != NULL) free((*device)->prop.name);
+	if((*device)->sett.time_start != NULL) free((*device)->sett.time_start);
+	if((*device)->sett.time_stop != NULL) free((*device)->sett.time_stop);
+	if((*device)->env.time != NULL) free((*device)->env.time);
+	free((*device));
+
+	device_properties_list.erase(device);
+	show_device_list();
 }
 
 void firebase_init(char *url, char *secret_key){

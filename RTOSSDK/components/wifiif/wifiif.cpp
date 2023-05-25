@@ -20,6 +20,8 @@
 
 #include "FreeRTOS.h"
 #include "task.h"
+#include "queue.h"
+#include "event_groups.h"
 
 #if ENABLE_COMPONENT_WIFIIF_DEBUG
 static const char *TAG = "WiFiIF";
@@ -56,30 +58,70 @@ static const char *command_string[] = {
 };
 
 
-static void (*fprequest)(char *str) = NULL;
+static void (*fprequest)(char *str, uint16_t len) = NULL;
 static void (*fpcommand_handler)(wifi_cmd_t cmd, void *param);
-static bool had_response = false;
-static char *response_data;
-
 static volatile bool wifi_state = false, wifi_connected = false;
+static QueueHandle_t data_queue;
+static EventGroupHandle_t data_eventgrp;
+#define DATA_EVENTBIT (1<<8)
 
-static void wifiif_debug(char *str, int line, char *func){
+
+static void wifiif_debug(char *str, int line, const char *func){
 #if ENABLE_COMPONENT_WIFIIF_DEBUG
 	LOG_LEVEL(TAG, "%s, Line: %d Function: %s", str, line, func);
 #endif /* ENABLE_COMPONENT_WIFIIF_DEBUG */
 }
 
-static int wifiif_wait_response(void){
-	__IO uint32_t tick = get_tick();
+static void wifiif_transmit(char *str){
+	uint8_t MAX_UART_TX_BUFFER_SIZE = 100;
+	int16_t len = strlen(str);
+	int16_t remaining = len;
 
-	while(!had_response){
-		if(get_tick() - tick > WIFI_DEFAULT_TIMEOUT){
-			return 0;
-		}
-		vTaskDelay(100);
+	while(remaining > 0){
+		int16_t sendSize = (remaining > MAX_UART_TX_BUFFER_SIZE)? MAX_UART_TX_BUFFER_SIZE : remaining;
+		fprequest(str, sendSize);
+		remaining -= sendSize;
+		str += sendSize;
 	}
+	delay_ms(1);
+	fprequest((char *)"\r\nend\r\n", 7);
+}
 
-	return 1;
+void wifiif_get_break_data(char *brk_data){
+	BaseType_t xHigherPriorityTaskWoken = pdFALSE;
+    if(strcmp(brk_data, "\r\nend\r\n") != 0) {
+		if(xQueueSendFromISR(data_queue, &brk_data, &xHigherPriorityTaskWoken) != pdTRUE) LOG_ERROR(TAG, "Send to queue fail.");
+    }
+    else{
+    	free(brk_data);
+    	xEventGroupSetBitsFromISR(data_eventgrp, DATA_EVENTBIT, &xHigherPriorityTaskWoken);
+    }
+}
+
+static void wifiif_merge_data(char **dest_buffer){
+ 	   char *break_data;
+ 	   uint16_t total_len = 0;
+ 	   uint8_t queue_len = uxQueueMessagesWaiting(data_queue);
+ 	   /** get total string length */
+ 	   for(uint8_t i=0; i<queue_len; i++){
+ 		   if(xQueueReceive(data_queue, &break_data, 2) == pdTRUE){
+ 			   total_len += strlen(break_data);
+ 			   xQueueSend(data_queue, &break_data, 2);
+ 		   }
+ 	   }
+
+ 	   /** string concatenate */
+ 	  *dest_buffer = (char *)malloc(total_len + 1);
+ 	   char *tmp_data = *dest_buffer;
+ 	   for(uint8_t i=0; i<queue_len; i++){
+ 		   if(xQueueReceive(data_queue, &break_data, 2) == pdTRUE){
+ 			   uint16_t len = strlen(break_data);
+ 			   memcpy(tmp_data, break_data, len);
+ 			   tmp_data += len;
+ 			   free(break_data);
+ 		   }
+ 	   }
+ 	  (*dest_buffer)[total_len] = '\0';
 }
 
 static int wifiif_is_err(char *str){
@@ -90,21 +132,25 @@ static void wifiif_request(wifi_cmd_t cmd, char *data){
 	char *cmd_str = cmd_to_str(cmd, command_string);
 	char *req_data;
 	asprintf(&req_data, "%s: %s", cmd_str, data);
-	fprequest(req_data);
+	wifiif_transmit(req_data);
 #if ENABLE_COMPONENT_WIFIIF_DEBUG
-	wifiif_debug(req_data, __LINE__, (char *)__FUNCTION__);
+	wifiif_debug(req_data, __LINE__, __FUNCTION__);
 #endif /* ENABLE_COMPONENT_WIFIIF_DEBUG */
 	free(req_data);
 
-	int resp_stt = wifiif_wait_response();
-	if(resp_stt){
+	EventBits_t bits = xEventGroupWaitBits(data_eventgrp, DATA_EVENTBIT, pdTRUE, pdFALSE, WIFI_DEFAULT_TIMEOUT);
+	if(bits == DATA_EVENTBIT){
+		char *response_data;
 		pkt_t pkt;
-		pkt_err_t err = parse_packet(response_data, &pkt);
+		pkt_err_t err = PKT_ERR_OK;
+
+		wifiif_merge_data(&response_data);
+		err = parse_packet(response_data, &pkt);
 		if(err != PKT_ERR_OK){
-			wifiif_debug((char *)"Can't parse response.", __LINE__, (char *)__FUNCTION__);
+			wifiif_debug((char *)"Can't parse response.", __LINE__, __FUNCTION__);
 
 			release_packet(&pkt);
-			wifiif_reset_response_state();
+			if(response_data != NULL) free(response_data);
 
 			return;
 		}
@@ -113,10 +159,10 @@ static void wifiif_request(wifi_cmd_t cmd, char *data){
 			memcpy(data, pkt.data_str, strlen(pkt.data_str));
 			data[strlen(pkt.data_str)] = '\0';
 
-			wifi_cmd_t command = cmd;
+			wifi_cmd_t command = (wifi_cmd_t)str_to_cmd(pkt.cmd_str, command_string, WIFI_CMD_NUM);
 			if(command == WIFI_ISCONNECTED){ // Check wifi connect state.
 				pkt_json_t json;
-				pkt_err_t err = json_get_object(pkt.data_str, &json, "isconnected");
+				pkt_err_t err = json_get_object(pkt.data_str, &json, (char *)"isconnected");
 				if(err == PKT_ERR_OK){
 					if(strcmp(json.value, "1") == 0) wifi_connected = true;
 					else if(strcmp(json.value, "0") == 0) wifi_connected = false;
@@ -124,46 +170,36 @@ static void wifiif_request(wifi_cmd_t cmd, char *data){
 				json_release_object(&json);
 			}
 
-			if(command == WIFI_HTTP_CLIENT_REQUEST) command = WIFI_HTTP_CLIENT_RESPONSE; //Send WIFI_HTTP_CLIENT_REQUEST get WIFI_HTTP_CLIENT_RESPONSE.
-			if(fpcommand_handler) fpcommand_handler(command, data);                      // Handle wifiif event.
+			if(fpcommand_handler) fpcommand_handler(command, data); // Handle wifiif event.
 
 			if(data != NULL) free(data);
 		}
 		else{ // Wifi command error.
-			wifiif_debug((char *)"WiFi module error.", __LINE__, (char *)__FUNCTION__);
+			wifiif_debug((char *)"WiFi module error.", __LINE__, __FUNCTION__);
 			if(fpcommand_handler) fpcommand_handler(WIFI_ERR, NULL);
 		}
 		release_packet(&pkt);
+		if(response_data != NULL) free(response_data);
 	}
 	else{ // Parse packet fail.
-		wifiif_debug((char *)"WiFi module not response the request.", __LINE__, (char *)__FUNCTION__);
+		wifiif_debug((char *)"WiFi module not response the request.", __LINE__, __FUNCTION__);
+		wifi_state = false;
 		if(fpcommand_handler) fpcommand_handler(WIFI_ERR, NULL);
 	}
-
-	wifiif_reset_response_state();
 }
+
 /**
  * WiFi setup function.
  */
-void wifiif_register_request_function(void (*prequest)(char *)){
+void wifiif_init(void (*prequest)(char *, uint16_t)){
 	fprequest = prequest;
+
+	data_queue = xQueueCreate(20, sizeof(char *));
+	data_eventgrp = xEventGroupCreate();
 }
 
 void wifiif_register_command_handler(void (*pcommand_handler)(wifi_cmd_t cmd, void *param)){
 	fpcommand_handler = pcommand_handler;
-}
-
-void wifiif_set_response_state(char *resp_data){
-	had_response = true;
-	response_data = resp_data;
-}
-
-void wifiif_reset_response_state(void){
-	had_response = false;
-	if(response_data != NULL){
-		free(response_data);
-		response_data = NULL;
-	}
 }
 
 /**
@@ -171,6 +207,8 @@ void wifiif_reset_response_state(void){
  */
 void wifiif_restart(void){
 	wifiif_request(WIFI_RESTART, (char *)"{}");
+	wifi_state = false;
+	wifi_connected = false;
 }
 void wifiif_scan(void){
 	wifiif_request(WIFI_SCAN, (char *)"{}");
@@ -195,8 +233,6 @@ void wifiif_disconnect(void){
 void wifiif_getIP(void){
 	wifiif_request(WIFI_GETIP, (char *)"{}");
 }
-
-
 
 
 /**
