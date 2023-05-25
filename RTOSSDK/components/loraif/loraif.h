@@ -24,6 +24,7 @@
 using namespace std;
 
 #define LORAIF_QUEUE_SIZE 30
+#define LORAIF_INVALID_ADDRESS 0x00000000U
 typedef enum {
 	LORA_ERR,
 
@@ -63,7 +64,7 @@ extern "C"{
 #endif
 
 void loraif_init(sx127x *lora, uint8_t send_syncword, uint8_t recv_syncword, uint32_t timeout, uint8_t max_not_response);
-void loraif_register_event_handler(void (*peventhandler)(lora_event_t event, char *data));
+void loraif_register_event_handler(void (*peventhandler)(lora_event_t event, uint32_t device_address, char *data));
 
 bool loraif_check_crc(char *data);
 
@@ -73,10 +74,10 @@ void loraif_rx_process(void *param);
 void loraif_response(void);
 void loraif_check_timeout(void);
 
-
-void loraif_add_device(char *jdata, void *dev_data);
-void loraif_remove_device(char *jdata);
-loraif_dev_t *loraif_select_device(char *jdata);
+bool loraif_isvalid_address(uint32_t address);
+void loraif_add_device(uint32_t device_address, char *jdata, void *dev_data);
+void loraif_remove_device(uint32_t device_address);
+loraif_dev_t *loraif_select_device(uint32_t device_address);
 
 
 #ifdef __cplusplus

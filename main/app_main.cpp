@@ -52,10 +52,10 @@ sx127x lora(GPIOF, 6, GPIOE, 3, GPIOA, 0);
 QueueHandle_t lora_queue;
 void gpioA0_event_handler(void *);
 void lora_event_handler(void *, uint8_t len);
-void loraif_event_handler(lora_event_t event, char *data);
-void lora_request(char *str);
+void loraif_event_handler(lora_event_t event, uint32_t device_address, char *data);
 void task_loratx(void *);
 void task_lorarx(void *);
+TaskHandle_t task_loratx_handle = NULL, task_lorarx_handle = NULL;
 
 #define WF_BUFF_SIZE 2048
 usart_config_t wf_uart_conf = {
@@ -74,41 +74,6 @@ void wifi_command_handler(wifi_cmd_t cmd, void *param);
 void wifi_request(char *str, uint16_t size);
 void task_wifi(void *);
 
-dev_struct_t kho3 = {
-	kho3.env.temp = 31.2,
-	kho3.env.humi = 65.8,
-	kho3.env.curr = 3.25,
-	kho3.env.time = (char *)"14:30:00 05/05/23",
-	kho3.ctrl.relay1 = 1,
-	kho3.ctrl.relay2 = 0,
-	kho3.ctrl.relay3 = 1,
-	kho3.ctrl.relay4 = 0,
-	kho3.sett.mode = 1,
-	kho3.sett.type = 0,
-	kho3.sett.max_temp = 38.0,
-	kho3.sett.min_temp = 26.0,
-	kho3.sett.time_start = (char *)"00:00:00",
-	kho3.sett.time_stop = (char *)"00:00:00",
-	kho3.prop.address = 0xFDEA15DE,
-	kho3.prop.name = (char *)"Kho3",
-};
-
-static void wifiif_transmit(char *str){
-	uint8_t MAX_UART_TX_BUFFER_SIZE = 100;
-	int16_t len = strlen(str);
-	int16_t remaining = len;
-
-	while(remaining > 0){
-		int16_t sendSize = (remaining > MAX_UART_TX_BUFFER_SIZE)? MAX_UART_TX_BUFFER_SIZE : remaining;
-		usart1->transmit((uint8_t *)str, sendSize);
-		remaining -= sendSize;
-		str += sendSize;
-		vTaskDelay(1);
-	}
-	vTaskDelay(1);
-	usart1->transmit((uint8_t *)"\r\nend\r\n", 7);
-}
-
 void app_main(void){
 	extern void HAL_Driver_Init(void);
 	HAL_Driver_Init();
@@ -119,11 +84,8 @@ void app_main(void){
 	gpio_set_mode(GPIOB, 14, GPIO_OUTPUT_PUSHPULL);
 	register_exception_handler(exception_handler);
 
-	xTaskCreate(task_lorarx, "task_lorarx", byte_to_word(8192), NULL, 15, NULL);
 
-	xTaskCreate(task_loratx, "task_loratx", byte_to_word(4096), NULL, 5, NULL);
-
-//	xTaskCreate(task_wifi, "task_wifi", byte_to_word(8192), NULL, 2, NULL);
+	xTaskCreate(task_wifi, "task_wifi", byte_to_word(8192), NULL, 2, NULL);
 
 	while(1){
 		gpio_toggle(GPIOC, 13);
@@ -173,6 +135,7 @@ void lora_event_handler(void *, uint8_t len){
 		lora_RxBuf = (char *)malloc(packetSize+1);
 		lora.receive(lora_RxBuf);
 		lora_RxBuf[packetSize] = '\0';
+		LOG_WARN(TAG, "%s  [packet RSSI = %d, RSSI = %d]", lora_RxBuf, lora.packetRssi(), lora.rssi());
 		if(loraif_check_crc(lora_RxBuf) == true){
 			BaseType_t pxHigherPriorityTaskWoken = pdFALSE;
 			if(xQueueSendFromISR(lora_queue, &lora_RxBuf, &pxHigherPriorityTaskWoken) != pdPASS){
@@ -185,8 +148,8 @@ void lora_event_handler(void *, uint8_t len){
 	}
 }
 
-void loraif_event_handler(lora_event_t event, char *data){
-	if(data != NULL) LOG_INFO(TAG, "LoRa data: %s [packet RSSI = %d, RSSI = %d]", data, lora.packetRssi(), lora.rssi());
+void loraif_event_handler(lora_event_t event, uint32_t device_address, char *data){
+	if(data != NULL) LOG_INFO(TAG, "LoRa data: %s", data);
 	switch(event){
 		case LORA_REQ_ADDRESS:
 			LOG_EVENT(TAG, "LORA_REQ_ADDRESS");
@@ -195,10 +158,14 @@ void loraif_event_handler(lora_event_t event, char *data){
 		case LORA_ADD_DEVICE:{ //148016
 			LOG_EVENT(TAG, "LORA_ADD_DEVICE");
 			beep_loop(3, 50, 50);
-			dev_struct_t *dev = add_device_properties(data);
-			loraif_add_device(data, dev);
-//			vTaskDelay(500);
-//			firebase_new_device(dev);
+			if(loraif_isvalid_address(device_address)){
+				dev_struct_t *dev = add_device_properties(device_address, data);
+				loraif_add_device(device_address, data, dev);
+				firebase_new_device(dev);
+			}
+			else{
+				LOG_ERROR(TAG, "Event device address invalid.");
+			}
 		}
 		break;
 		case LORA_UPDATE_STATE:
@@ -219,8 +186,17 @@ void loraif_event_handler(lora_event_t event, char *data){
 		break;
 		case LORA_REMOVE_DEVICE:
 			LOG_WARN(TAG, "LORA_REMOVE_DEVICE");
-			loraif_remove_device(data);
-			remove_device_properties(data);
+			if(loraif_isvalid_address(device_address)){
+				dev_struct_t *dev = select_device_properties(device_address);
+				if(dev != NULL) {
+					firebase_remove_device(dev);
+					remove_device_properties(device_address);
+					loraif_remove_device(device_address);
+				}
+			}
+			else{
+				LOG_ERROR(TAG, "Event device address invalid.");
+			}
 		break;
 		case LORA_ERR:
 			LOG_EVENT(TAG, "LORA_ERR");
@@ -245,11 +221,15 @@ void task_wifi(void *){
 
 	wifiif_restart();
 	restart_wifi:
+
+	if(task_lorarx_handle != NULL) vTaskDelete(task_lorarx_handle);
+	if(task_loratx_handle != NULL) vTaskDelete(task_loratx_handle);
+
 	beep_loop(1, 20, 1);
 	if(!wifiif_state_is_running()) wifiif_restart();
 	vTaskDelay(1000);
 
-	wifiif_connect((char *)"D305GV2.4GHz", (char *)"NoPassword132132", (char *)"WIFI_AUTH_WPA2_PSK");
+	wifiif_connect((char *)"FREE", (char *)"0986382835", (char *)"WIFI_AUTH_WPA2_PSK");
 	vTaskDelay(1000);
 	uint8_t reconn_num = 0;
 	while(wifiif_wificonnected() == false) {
@@ -260,14 +240,15 @@ void task_wifi(void *){
 	}
 	wifiif_state_running(true);
 
+	if(task_lorarx_handle == NULL) xTaskCreate(task_lorarx, "task_lorarx", byte_to_word(8192), NULL, 15, NULL);
+	if(task_loratx_handle == NULL) xTaskCreate(task_loratx, "task_loratx", byte_to_word(8192), NULL, 5, NULL);
+
 	vTaskDelay(1000);
-	firebase_init((char *)"https://iotnhakho-default-rtdb.asia-southeast1.firebasedatabase.app", (char *)"YAg8QGH48Xlbjpk9UMh5JkjgYCCbeMSM4Ak5SNHp");
+	firebase_init((char *)"https://iotnhakho-default-rtdb.asia-southeast1.firebasedatabase.app/", NULL);
 
-	wifiif_http_client_set_url((char *)"/Kho3/.json");
-	wifiif_http_client_set_data((char *)"{}");
-	wifiif_http_client_set_method((char *)"HTTP_METHOD_GET");
-
-
+//	wifiif_http_client_set_url((char *)"/Kho3/.json");
+//	wifiif_http_client_set_data((char *)"{}");
+//	wifiif_http_client_set_method((char *)"HTTP_METHOD_GET");
 
 	while(1){
 		wifiif_checkconnect();
@@ -276,9 +257,9 @@ void task_wifi(void *){
 			goto restart_wifi;
 		}
 
-		wifiif_http_client_set_url((char *)"/Kho3/.json");
-		wifiif_http_client_set_method((char *)"HTTP_METHOD_GET");
-		wifiif_http_client_request();
+//		wifiif_http_client_set_url((char *)"/Kho3/.json");
+//		wifiif_http_client_set_method((char *)"HTTP_METHOD_GET");
+//		wifiif_http_client_request();
 
 		vTaskDelay(5000);
 	}
@@ -292,24 +273,30 @@ void wifi_command_handler(wifi_cmd_t cmd, void *param){
 
 	switch(cmd){
 		case WIFI_ISCONNECTED:
-//			LOG_EVENT("WIFI_ISCONNECTED", "%s.", resp_data);
+
 		break;
 		case WIFI_ERR:
 			wifiif_state_running(false);
 			LOG_EVENT(TAG, "WiFi module error reset.");
 			wifiif_restart();
-//			beep_loop(1, 50, 1);
+			beep_loop(1, 50, 1);
 		break;
 		case WIFI_SCAN:
+			wifiif_state_running(true);
 			LOG_EVENT("WIFI_CMD_WIFI_SCAN", "%s.", resp_data);
+		break;
+		case WIFI_CONN:
+			wifiif_state_running(true);
+			wifiif_set_wificonnect_state(true);
+			LOG_EVENT("WIFI_CONN", "%s.", resp_data);
 		break;
 		case WIFI_HTTP_CLIENT_RESPONSE:
 			LOG_EVENT("HTTP DATA", "%s.", resp_data);
 		break;
 
 		default:
-			LOG_EVENT(TAG, "WiFi module responded: %s.", resp_data);
-//			wifiif_restart();
+//			LOG_EVENT(TAG, "WiFi module responded: %s.", resp_data);
+
 		break;
 	}
 }

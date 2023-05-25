@@ -17,11 +17,6 @@ extern "C"{
 #include "stdlib.h"
 
 extern char *full_struct;
-extern char *data_struct;
-extern char *ctrl_struct;
-extern char *set1_struct;
-extern char *set2_struct;
-extern char *prop_struct;
 
 struct dev_env_t{
 	float temp = 0.0;
@@ -55,8 +50,9 @@ typedef struct {
 	dev_prop_t prop;
 } dev_struct_t;
 
-dev_struct_t *add_device_properties(char *jdata);
-void remove_device_properties(char *jdata);
+dev_struct_t *add_device_properties(uint32_t device_address, char *jdata);
+void remove_device_properties(uint32_t device_address);
+dev_struct_t *select_device_properties(uint32_t device_address);
 
 void firebase_init(char *url, char *secret_key);
 

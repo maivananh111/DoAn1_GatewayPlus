@@ -20,6 +20,7 @@ static const char *TAG = "Device";
 #define LOG_LEVEL LOG_DEBUG
 
 char *secret = NULL;
+char *prj_url = NULL;
 char *data_struct = (char *)"{\"data\":{\"temp\":%.02f,\"humi\":%.02f,\"current\":%.02f,\"time\":\"%s\"}}";
 char *ctrl_struct = (char *)"{\"control\":{\"relay1\":%d,\"relay2\":%d,\"relay3\":%d,\"relay4\":%d}}";
 char *set1_struct = (char *)"{\"mode\":%d,\"type\":%d,\"max_temp\":%.02f,\"min_temp\":%.02f}";
@@ -40,12 +41,6 @@ static void device_debug(char *str, int line, const char *func){
 #endif /* ENABLE_COMPONENT_LORAIF_DEBUG */
 }
 
-static void show_device_list(void){
-    for (auto device = device_properties_list.begin(); device != device_properties_list.end(); ++device) {
-    	LOG_WARN(TAG, "Device 0x%08x[%s].", (unsigned int)(*device)->prop.address, (*device)->prop.name);
-    }
-}
-
 static void assign_struct(char ** str, dev_struct_t *dev){
 	asprintf(str, full_struct,
 			dev->env.temp, dev->env.humi, dev->env.curr, dev->env.time,
@@ -55,11 +50,13 @@ static void assign_struct(char ** str, dev_struct_t *dev){
 	);
 }
 
-dev_struct_t *add_device_properties(char *jdata){
+dev_struct_t *add_device_properties(uint32_t device_address, char *jdata){
 	pkt_err_t err;
 	pkt_json_t json;
 
 	dev_struct_t *dev_prop = (dev_struct_t *)malloc(sizeof(dev_struct_t));
+
+	dev_prop->prop.address = device_address;
 
 	dev_prop->env.temp = 0.0;
 	dev_prop->env.humi = 0.0;
@@ -76,32 +73,17 @@ dev_struct_t *add_device_properties(char *jdata){
 	asprintf(&(dev_prop->sett.time_stop), "00:00:00");
 	asprintf(&(dev_prop->env.time), "14:30:00 05/05/23");
 
-	err = json_get_object(jdata, &json, (char *)"addr");
-	if(err == PKT_ERR_OK)
-		dev_prop->prop.address = strtol(json.value, NULL, 16);
-	json_release_object(&json);
-
 	err = json_get_object(jdata, &json, (char *)"name");
 	if(err == PKT_ERR_OK)
 		asprintf(&(dev_prop->prop.name), "%s", json.value);
 	json_release_object(&json);
 
 	device_properties_list.push_back(dev_prop);
-	show_device_list();
 
 	return dev_prop;
 }
 
-void remove_device_properties(char *jdata){
-	pkt_err_t err;
-	pkt_json_t json;
-	uint32_t rm_addr = 0x00U;
-
-	err = json_get_object(jdata, &json, (char *)"addr");
-	if(err == PKT_ERR_OK)
-		rm_addr = strtol(json.value, NULL, 16);
-	json_release_object(&json);
-
+void remove_device_properties(uint32_t device_address){
     if (device_properties_list.empty()) {
     	device_debug((char *)"Device properties list empty", __LINE__, __FUNCTION__);
         return;
@@ -109,7 +91,7 @@ void remove_device_properties(char *jdata){
 
     auto device = device_properties_list.begin();
     while (device != device_properties_list.end()) {
-        if ((*device)->prop.address == rm_addr) {
+        if ((*device)->prop.address == device_address) {
             break;
         }
         ++device;
@@ -119,8 +101,8 @@ void remove_device_properties(char *jdata){
     	device_debug((char *)"This device not available in device list", __LINE__, __FUNCTION__);
         return;
     }
-	if((*device) == NULL) return;
 
+	if((*device) == NULL) return;
 	if((*device)->prop.name != NULL) free((*device)->prop.name);
 	if((*device)->sett.time_start != NULL) free((*device)->sett.time_start);
 	if((*device)->sett.time_stop != NULL) free((*device)->sett.time_stop);
@@ -128,12 +110,34 @@ void remove_device_properties(char *jdata){
 	free((*device));
 
 	device_properties_list.erase(device);
-	show_device_list();
+}
+
+dev_struct_t *select_device_properties(uint32_t device_address){
+    if (device_properties_list.empty()) {
+    	device_debug((char *)"Device properties list empty", __LINE__, __FUNCTION__);
+        return NULL;
+    }
+
+    auto device = device_properties_list.begin();
+    while (device != device_properties_list.end()) {
+        if ((*device)->prop.address == device_address) {
+            break;
+        }
+        ++device;
+    }
+
+    if (device == device_properties_list.end()) {
+    	device_debug((char *)"This device not available in device list", __LINE__, __FUNCTION__);
+        return NULL;
+    }
+
+    return (*device);
 }
 
 void firebase_init(char *url, char *secret_key){
 	char *tmp;
 
+	asprintf(&prj_url, "%s", url);
 	asprintf(&tmp, "{\"url\":\"%s\", \"transport_ssl\":1, \"crt_bundle\":1}", url);
 	if(secret_key != NULL) asprintf(&secret, "%s", secret_key);
 
@@ -150,6 +154,7 @@ void firebase_new_device(dev_struct_t *dev){
 
 	if(secret != NULL) asprintf(&path, "/%s/.json?auth=%s", dev->prop.name, secret);
 	else asprintf(&path, "/%s/.json", dev->prop.name);
+	LOG_RET(TAG, "Set url: %s", path);
 
 	wifiif_http_client_set_url(path);
 	wifiif_http_client_set_method((char *)"HTTP_METHOD_PATCH");
@@ -162,7 +167,8 @@ void firebase_new_device(dev_struct_t *dev){
 }
 
 void firebase_remove_device(dev_struct_t *dev){
-	char *path;
+	if(dev == NULL || dev->prop.name == NULL) return;
+	char *path = NULL;
 
 	wifiif_http_client_set_method((char *)"HTTP_METHOD_DELETE");
 	wifiif_http_client_set_data((char *)"{}");
@@ -172,7 +178,7 @@ void firebase_remove_device(dev_struct_t *dev){
 	wifiif_http_client_set_url(path);
 
 	wifiif_http_client_request();
-	free(path);
+	if(path != NULL) free(path);
 }
 
 void send_envdata_to_firebase (dev_struct_t *dev){

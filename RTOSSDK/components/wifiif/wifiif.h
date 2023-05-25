@@ -62,6 +62,7 @@ void wifiif_restart(void);
 void wifiif_scan(void);
 void wifiif_checkconnect(void);
 bool wifiif_wificonnected(void);
+void wifiif_set_wificonnect_state(bool state);
 void wifiif_connect(char *ssid, char *pass, char *auth);
 void wifiif_disconnect(void);
 void wifiif_getIP(void);

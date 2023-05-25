@@ -219,6 +219,9 @@ void wifiif_checkconnect(void){
 bool wifiif_wificonnected(void){
 	return wifi_connected;
 }
+void wifiif_set_wificonnect_state(bool state){
+	wifi_connected = state;
+}
 void wifiif_connect(char *ssid, char *pass, char *auth){
 	char *data;
 	asprintf(&data, "{\"ssid\":\"%s\",\"pass\":\"%s\",\"auth\":\"%s\"}", ssid, pass, auth);
