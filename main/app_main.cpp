@@ -103,8 +103,9 @@ static void wifiif_transmit(char *str){
 		usart1->transmit((uint8_t *)str, sendSize);
 		remaining -= sendSize;
 		str += sendSize;
+		vTaskDelay(1);
 	}
-	delay_ms(1);
+	vTaskDelay(1);
 	usart1->transmit((uint8_t *)"\r\nend\r\n", 7);
 }
 
@@ -118,10 +119,11 @@ void app_main(void){
 	gpio_set_mode(GPIOB, 14, GPIO_OUTPUT_PUSHPULL);
 	register_exception_handler(exception_handler);
 
-	xTaskCreate(task_lorarx, "task_lorarx", byte_to_word(8192), NULL, 8, NULL);
+	xTaskCreate(task_lorarx, "task_lorarx", byte_to_word(8192), NULL, 15, NULL);
+
 	xTaskCreate(task_loratx, "task_loratx", byte_to_word(4096), NULL, 5, NULL);
 
-	xTaskCreate(task_wifi, "task_wifi", byte_to_word(8192), NULL, 4, NULL);
+//	xTaskCreate(task_wifi, "task_wifi", byte_to_word(8192), NULL, 2, NULL);
 
 	while(1){
 		gpio_toggle(GPIOC, 13);
@@ -158,7 +160,6 @@ void task_lorarx(void *){
 	while(1){
 		loraif_rx_process(&lora_queue);
 		loraif_response();
-		vTaskDelay(20);
 	}
 }
 
@@ -196,7 +197,8 @@ void loraif_event_handler(lora_event_t event, char *data){
 			beep_loop(3, 50, 50);
 			dev_struct_t *dev = add_device_properties(data);
 			loraif_add_device(data, dev);
-			firebase_new_device(dev);
+//			vTaskDelay(500);
+//			firebase_new_device(dev);
 		}
 		break;
 		case LORA_UPDATE_STATE:
@@ -207,6 +209,7 @@ void loraif_event_handler(lora_event_t event, char *data){
 		break;
 		case LORA_REQ_DATA:
 			LOG_EVENT(TAG, "LORA_REQ_DATA");
+			beep_loop(1, 50, 1);
 		break;
 		case LORA_UPDATE_DATA:
 			LOG_EVENT(TAG, "LORA_UPDATE_DATA");
@@ -216,8 +219,8 @@ void loraif_event_handler(lora_event_t event, char *data){
 		break;
 		case LORA_REMOVE_DEVICE:
 			LOG_WARN(TAG, "LORA_REMOVE_DEVICE");
-			remove_device_properties(data);
 			loraif_remove_device(data);
+			remove_device_properties(data);
 		break;
 		case LORA_ERR:
 			LOG_EVENT(TAG, "LORA_ERR");
@@ -257,10 +260,8 @@ void task_wifi(void *){
 	}
 	wifiif_state_running(true);
 
-	firebase_init((char *)"https://iotnhakho-default-rtdb.asia-southeast1.firebasedatabase.app", (char *)"YAg8QGH48Xlbjpk9UMh5JkjgYCCbeMSM4Ak5SNHp");
 	vTaskDelay(1000);
-
-//	firebase_new_device(&kho3);
+	firebase_init((char *)"https://iotnhakho-default-rtdb.asia-southeast1.firebasedatabase.app", (char *)"YAg8QGH48Xlbjpk9UMh5JkjgYCCbeMSM4Ak5SNHp");
 
 	wifiif_http_client_set_url((char *)"/Kho3/.json");
 	wifiif_http_client_set_data((char *)"{}");
@@ -275,6 +276,8 @@ void task_wifi(void *){
 			goto restart_wifi;
 		}
 
+		wifiif_http_client_set_url((char *)"/Kho3/.json");
+		wifiif_http_client_set_method((char *)"HTTP_METHOD_GET");
 		wifiif_http_client_request();
 
 		vTaskDelay(5000);

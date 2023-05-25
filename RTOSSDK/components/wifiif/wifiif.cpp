@@ -79,12 +79,12 @@ static void wifiif_transmit(char *str){
 
 	while(remaining > 0){
 		int16_t sendSize = (remaining > MAX_UART_TX_BUFFER_SIZE)? MAX_UART_TX_BUFFER_SIZE : remaining;
-		fprequest(str, sendSize);
+		if(fprequest) fprequest(str, sendSize);
 		remaining -= sendSize;
 		str += sendSize;
 	}
 	delay_ms(1);
-	fprequest((char *)"\r\nend\r\n", 7);
+	if(fprequest) fprequest((char *)"\r\nend\r\n", 7);
 }
 
 void wifiif_get_break_data(char *brk_data){
@@ -134,7 +134,7 @@ static void wifiif_request(wifi_cmd_t cmd, char *data){
 	asprintf(&req_data, "%s: %s", cmd_str, data);
 	wifiif_transmit(req_data);
 #if ENABLE_COMPONENT_WIFIIF_DEBUG
-	wifiif_debug(req_data, __LINE__, __FUNCTION__);
+//	wifiif_debug(req_data, __LINE__, __FUNCTION__);
 #endif /* ENABLE_COMPONENT_WIFIIF_DEBUG */
 	free(req_data);
 

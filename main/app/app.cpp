@@ -26,6 +26,12 @@ char *set1_struct = (char *)"{\"mode\":%d,\"type\":%d,\"max_temp\":%.02f,\"min_t
 char *set2_struct = (char *)"{\"time_start\":\"10:25:15\",\"time_stop\":\"11:30:00\"}";
 char *prop_struct = (char *)"{\"properties\":{\"address\":\"0x%08x\",\"name\":\"%s\"}}";
 
+char *full_struct = (char *)"{\"data\":{\"temp\":%.02f,\"humi\":%.02f,\"current\":%.02f,\"time\":\"%s\"},"
+						     "\"control\":{\"relay1\":%d,\"relay2\":%d,\"relay3\":%d,\"relay4\":%d},"
+							 "\"properties\":{\"address\":\"0x%08x\",\"name\":\"%s\"},"
+							 "\"settings\":{\"mode\":%d,\"type\":%d,\"max_temp\":%.02f,\"min_temp\":%.02f,\"time_start\":\"%s\",\"time_stop\":\"%s\"}"
+							 "}";
+
 list<dev_struct_t *> device_properties_list;
 
 static void device_debug(char *str, int line, const char *func){
@@ -38,6 +44,15 @@ static void show_device_list(void){
     for (auto device = device_properties_list.begin(); device != device_properties_list.end(); ++device) {
     	LOG_WARN(TAG, "Device 0x%08x[%s].", (unsigned int)(*device)->prop.address, (*device)->prop.name);
     }
+}
+
+static void assign_struct(char ** str, dev_struct_t *dev){
+	asprintf(str, full_struct,
+			dev->env.temp, dev->env.humi, dev->env.curr, dev->env.time,
+			dev->ctrl.relay1, dev->ctrl.relay2, dev->ctrl.relay3, dev->ctrl.relay4,
+			dev->prop.address, dev->prop.name,
+			dev->sett.mode, dev->sett.type, dev->sett.max_temp, dev->sett.min_temp, dev->sett.time_start, dev->sett.time_stop
+	);
 }
 
 dev_struct_t *add_device_properties(char *jdata){
@@ -119,15 +134,12 @@ void remove_device_properties(char *jdata){
 void firebase_init(char *url, char *secret_key){
 	char *tmp;
 
-	asprintf(&tmp, "{\"url\":\"%s\"}", url);
+	asprintf(&tmp, "{\"url\":\"%s\", \"transport_ssl\":1, \"crt_bundle\":1}", url);
 	if(secret_key != NULL) asprintf(&secret, "%s", secret_key);
 
 	wifiif_http_client_new();
 	wifiif_http_client_config(tmp);
-	wifiif_http_client_config((char *)"{\"transport_ssl\":1}");
-	wifiif_http_client_config((char *)"{\"crt_bundle\":1}");
 	wifiif_http_client_init();
-
 	wifiif_http_client_set_header((char *)"Content-Type", (char *)"application/json");
 
 	free(tmp);
@@ -136,37 +148,12 @@ void firebase_init(char *url, char *secret_key){
 void firebase_new_device(dev_struct_t *dev){
 	char *path, *data;
 
-	wifiif_http_client_set_method((char *)"HTTP_METHOD_PATCH");
-
 	if(secret != NULL) asprintf(&path, "/%s/.json?auth=%s", dev->prop.name, secret);
 	else asprintf(&path, "/%s/.json", dev->prop.name);
-	wifiif_http_client_set_url(path);
-
-	asprintf(&data, data_struct, dev->env.temp, dev->env.humi, dev->env.curr, dev->env.time);
-	wifiif_http_client_set_data(data);
-	wifiif_http_client_request();
-	free(data);
-
-	asprintf(&data, ctrl_struct, dev->ctrl.relay1, dev->ctrl.relay2, dev->ctrl.relay3, dev->ctrl.relay4);
-	wifiif_http_client_set_data(data);
-	wifiif_http_client_request();
-	free(data);
-
-	asprintf(&data, prop_struct, dev->prop.address, dev->prop.name);
-	wifiif_http_client_set_data(data);
-	wifiif_http_client_request();
-	free(data);
-
-	free(path);
-	if(secret != NULL) asprintf(&path, "/%s/settings/.json?auth=%s", dev->prop.name, secret);
-	else asprintf(&path, "/%s/settings/.json", dev->prop.name);
 
 	wifiif_http_client_set_url(path);
-	asprintf(&data, set1_struct, dev->sett.mode, dev->sett.type, dev->sett.max_temp, dev->sett.min_temp);
-	wifiif_http_client_set_data(data);
-	wifiif_http_client_request();
-	free(data);
-	asprintf(&data, set2_struct, dev->sett.time_start, dev->sett.time_stop);
+	wifiif_http_client_set_method((char *)"HTTP_METHOD_PATCH");
+	assign_struct(&data, dev);
 	wifiif_http_client_set_data(data);
 	wifiif_http_client_request();
 

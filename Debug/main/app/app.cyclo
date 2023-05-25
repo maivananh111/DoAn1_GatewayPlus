@@ -1,11 +1,11 @@
-app.cpp:43:15:dev_struct_t* add_device_properties(char*)	5
-app.cpp:80:6:void remove_device_properties(char*)	11
-app.cpp:119:6:void firebase_init(char*, char*)	2
-app.cpp:136:6:void firebase_new_device(dev_struct_t*)	3
-app.cpp:177:6:void firebase_remove_device(dev_struct_t*)	2
-app.cpp:191:6:void send_envdata_to_firebase(dev_struct_t*)	2
-app.cpp:208:6:void send_devctrl_to_firebase(dev_struct_t*)	2
-app.cpp:225:6:void get_devctrl(dev_struct_t*)	2
-app.cpp:239:6:void get_devsettings(dev_struct_t*)	2
-app.cpp:251:1:cpp)	1
-app.cpp:251:1:cpp)	3
+app.cpp:58:15:dev_struct_t* add_device_properties(char*)	5
+app.cpp:95:6:void remove_device_properties(char*)	11
+app.cpp:134:6:void firebase_init(char*, char*)	2
+app.cpp:148:6:void firebase_new_device(dev_struct_t*)	2
+app.cpp:164:6:void firebase_remove_device(dev_struct_t*)	2
+app.cpp:178:6:void send_envdata_to_firebase(dev_struct_t*)	2
+app.cpp:195:6:void send_devctrl_to_firebase(dev_struct_t*)	2
+app.cpp:212:6:void get_devctrl(dev_struct_t*)	2
+app.cpp:226:6:void get_devsettings(dev_struct_t*)	2
+app.cpp:238:1:cpp)	1
+app.cpp:238:1:cpp)	3
