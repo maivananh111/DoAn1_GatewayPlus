@@ -64,7 +64,7 @@ uint8_t max_not_resp;
 uint8_t _send_syncword, _recv_syncword;
 
 QueueHandle_t wait_response_queue, response_queue;
-SemaphoreHandle_t tranfer_smp;
+SemaphoreHandle_t tranfer_smp, req_data_smp;
 list<loraif_dev_t *> loraif_device_list;
 
 static void loraif_transmit(char *str);
@@ -105,8 +105,11 @@ void loraif_init(sx127x *lora, uint8_t send_syncword, uint8_t recv_syncword, uin
 
 	wait_response_queue = xQueueCreate(LORAIF_QUEUE_SIZE, sizeof(loraif_request_prop_t *));
 	response_queue = xQueueCreate(LORAIF_QUEUE_SIZE, sizeof(char *));
+
 	tranfer_smp = xSemaphoreCreateBinary();
 	xSemaphoreGive(tranfer_smp);
+	req_data_smp = xSemaphoreCreateBinary();
+	xSemaphoreGive(req_data_smp);
 }
 
 void loraif_register_event_handler(void (*peventhandler)(lora_event_t event, uint32_t device_address, char *data)){
@@ -168,62 +171,70 @@ static void set_response_ok(uint32_t addr, lora_event_t cmd){
 
 	asprintf(&response_to_device, "%s: {\"addr\":0x%08x,\"state\":OK,\"crc\":0x%04x}", cmd_str, (unsigned int)addr, crc);
 
-	if(xQueueSend(response_queue, &response_to_device, 2) == pdFALSE){
+	if(xQueueSend(response_queue, &response_to_device, 5) == pdFALSE){
 		loraif_debug((char *)"Can't send to response_queue", __LINE__, __FUNCTION__);
 	}
 }
 
 void loraif_request(uint32_t dev_address, lora_event_t cmd, char *data, int require_resp){
-	uint16_t crc = 0;
-	char *req_data = NULL, *temp = NULL;
+	if(xSemaphoreTake(req_data_smp, 5)){
+		if (loraif_device_list.empty()) {
+			loraif_debug((char *)"Device list empty", __LINE__, __FUNCTION__);
+			return;
+		}
 
-	char *cmd_str = cmd_to_str(cmd, command_string);
-	asprintf(&temp, "%s: {\"addr\":0x%08x,\"data\":%s,\"require_response\":%d,", cmd_str, (unsigned int)dev_address, data, require_resp);
-	crc = cal_crc16((uint8_t *)temp, strlen(temp));
-	if(temp != NULL) free(temp);
+		uint16_t crc = 0;
+		char *req_data = NULL, *temp = NULL;
 
-	asprintf(&req_data, "%s: {\"addr\":0x%08x,\"data\":%s,\"require_response\":%d,\"crc\":0x%04x}", cmd_str, (unsigned int)dev_address, data, require_resp, crc);
+		char *cmd_str = cmd_to_str(cmd, command_string);
+		asprintf(&temp, "%s: {\"addr\":0x%08x,\"data\":%s,\"require_response\":%d,", cmd_str, (unsigned int)dev_address, data, require_resp);
+		crc = cal_crc16((uint8_t *)temp, strlen(temp));
+		if(temp != NULL) free(temp);
 
-	loraif_dev_t *dev = loraif_select_device(dev_address);
-	if(dev == NULL){
-		if(req_data != NULL) free(req_data);
-		LOG_ERROR(TAG, "No device to request");
-		return;
-	}
-	else if(dev != NULL){
-		if(require_resp != 0){
-			/** Create new require response profile */
-			loraif_request_prop_t *wait_response = (loraif_request_prop_t *)malloc(sizeof(loraif_request_prop_t));
-			if(wait_response == NULL){
-				loraif_debug((char *)"Memory allocation fail", __LINE__, __FUNCTION__);
-			}
-			wait_response->address = dev_address;
-			wait_response->tick_start = get_tick();
-			/** Send wait_response to_queue */
-			loraif_request_prop_t *in_queue = NULL;
-			uint8_t queue_len = uxQueueMessagesWaiting(wait_response_queue);
-			for(uint8_t i=0; i<queue_len; i++){
-				if(xQueueReceive(wait_response_queue, &in_queue, 2) == pdTRUE && in_queue != NULL){
-					if(in_queue->address == wait_response->address){
-						if(wait_response != NULL) free(wait_response);
-						wait_response = NULL;
+		asprintf(&req_data, "%s: {\"addr\":0x%08x,\"data\":%s,\"require_response\":%d,\"crc\":0x%04x}", cmd_str, (unsigned int)dev_address, data, require_resp, crc);
+
+		loraif_dev_t *dev = loraif_select_device(dev_address);
+		if(dev == NULL){
+			if(req_data != NULL) free(req_data);
+			LOG_ERROR(TAG, "No device to request");
+			return;
+		}
+		else if(dev != NULL){
+			if(require_resp != 0){
+				/** Create new require response profile */
+				loraif_request_prop_t *wait_response = (loraif_request_prop_t *)malloc(sizeof(loraif_request_prop_t));
+				if(wait_response == NULL){
+					loraif_debug((char *)"Memory allocation fail", __LINE__, __FUNCTION__);
+				}
+				wait_response->address = dev_address;
+				wait_response->tick_start = get_tick();
+				/** Send wait_response to_queue */
+				loraif_request_prop_t *in_queue = NULL;
+				uint8_t queue_len = uxQueueMessagesWaiting(wait_response_queue);
+				for(uint8_t i=0; i<queue_len; i++){
+					if(xQueueReceive(wait_response_queue, &in_queue, 5) == pdTRUE && in_queue != NULL){
+						if(in_queue->address == wait_response->address){
+							if(wait_response != NULL) free(wait_response);
+							wait_response = NULL;
+						}
+						if(xQueueSend(wait_response_queue, &in_queue, 5) != pdTRUE){
+							loraif_debug((char *)"Can't send to wait_response_queue", __LINE__, __FUNCTION__);
+						}
 					}
-					if(xQueueSend(wait_response_queue, &in_queue, 2) != pdTRUE){
+				}
+				if(wait_response != NULL){
+					if(xQueueSend(wait_response_queue, &wait_response, 5) != pdTRUE){
 						loraif_debug((char *)"Can't send to wait_response_queue", __LINE__, __FUNCTION__);
 					}
 				}
 			}
-			if(wait_response != NULL){
-				if(xQueueSend(wait_response_queue, &wait_response, 2) != pdTRUE){
-					loraif_debug((char *)"Can't send to wait_response_queue", __LINE__, __FUNCTION__);
-				}
-			}
+
+			loraif_transmit(req_data);
 		}
 
-		loraif_transmit(req_data);
+		if(req_data != NULL) free(req_data);
+		xSemaphoreGive(req_data_smp);
 	}
-
-	if(req_data != NULL) free(req_data);
 }
 
 
@@ -231,7 +242,7 @@ void loraif_rx_process(void *param){
 	QueueHandle_t *queue = (QueueHandle_t *)param;
 	char *rx_full;
 
-	if(xQueueReceive(*queue, &rx_full, 2)){
+	if(xQueueReceive(*queue, &rx_full, 5)){
 		pkt_err_t err;
 		pkt_t pkt;
 		pkt_json_t json;
@@ -269,7 +280,7 @@ void loraif_rx_process(void *param){
 					if(temp != NULL) free(temp);
 
 					asprintf(&response_to_device, "LORA_RES_ADDRESS: {\"addr\":0x%08x,\"key\":0x%08x,\"crc\":0x%04x}", (unsigned int)addr_by_gw, (unsigned int)rand_num, crc);
-					if(xQueueSend(response_queue, &response_to_device, 2) == pdFALSE){
+					if(xQueueSend(response_queue, &response_to_device, 5) == pdFALSE){
 						loraif_debug((char *)"Can't send address to new device", __LINE__, __FUNCTION__);
 					}
 
@@ -314,7 +325,7 @@ void loraif_rx_process(void *param){
 						loraif_request_prop_t *require_resp_prop = NULL;
 
 						for(uint8_t i=0; i<uxQueueMessagesWaiting(wait_response_queue); i++){
-							if(xQueueReceive(wait_response_queue, &require_resp_prop, 2) == pdTRUE && require_resp_prop != NULL){
+							if(xQueueReceive(wait_response_queue, &require_resp_prop, 5) == pdTRUE && require_resp_prop != NULL){
 								if(require_resp_prop->address == addr){
 									free(require_resp_prop);
 									require_resp_prop = NULL;
@@ -322,7 +333,7 @@ void loraif_rx_process(void *param){
 									break;
 								}
 								else{
-									if(xQueueSend(wait_response_queue, &require_resp_prop, 2) != pdTRUE){
+									if(xQueueSend(wait_response_queue, &require_resp_prop, 5) != pdTRUE){
 										loraif_debug((char *)"Can't send to wait_response_queue", __LINE__, __FUNCTION__);
 									}
 								}
@@ -371,44 +382,46 @@ void loraif_rx_process(void *param){
 void loraif_response(void){
 	char *response;
 
-	if(xQueueReceive(response_queue, &response, 2) && response != NULL){
+	while(xQueueReceive(response_queue, &response, 5) && response != NULL){
 		loraif_transmit(response);
 		free(response);
 	}
 	loraif_check_timeout();
-	vTaskDelay(5);
 }
 
 void loraif_check_timeout(void){
 	loraif_request_prop_t *wait_response = NULL;
 
 	uint8_t queue_len = uxQueueMessagesWaiting(wait_response_queue);
-	for(uint8_t i=0; i<queue_len; i++){
-		if(xQueueReceive(wait_response_queue, &wait_response, 2) == pdTRUE && wait_response != NULL){
 
+	for(uint8_t i=0; i<queue_len; i++){
+		if(xQueueReceive(wait_response_queue, &wait_response, 5) == pdTRUE && wait_response != NULL){
 			uint32_t dt = 0, tick_now = get_tick();
 			if(tick_now >= wait_response->tick_start) dt = tick_now - wait_response->tick_start;
 			else                                      dt = (4294967295 - wait_response->tick_start) + tick_now;
 
 			if(dt >= resp_timeout){
 				loraif_dev_t *err_dev = loraif_select_device(wait_response->address);
-				char *evt_data = NULL;
-				asprintf(&evt_data, "{\"addr\":0x%08x,\"name\":\"%s\"}", (unsigned int)wait_response->address, err_dev->name);
-				err_dev->err_count++;
+				if(err_dev != NULL){
+					char *evt_data = NULL;
+					asprintf(&evt_data, "{\"addr\":0x%08x,\"name\":\"%s\"}", (unsigned int)wait_response->address, err_dev->name);
+					err_dev->err_count++;
 
-
-				if(err_dev->err_count >= max_not_resp){
-					if(fpeventhandler != NULL) fpeventhandler(LORA_REMOVE_DEVICE, wait_response->address, evt_data);
-				}
-				else{
+					xSemaphoreTake(req_data_smp, 5);
 					if(fpeventhandler != NULL) fpeventhandler(LORA_DEVICE_NOT_RESPONSE, wait_response->address, evt_data);
+					if(err_dev->err_count >= max_not_resp){
+						if(fpeventhandler != NULL) fpeventhandler(LORA_REMOVE_DEVICE, wait_response->address, evt_data);
+					}
+
+					LOG_RET(TAG, "Device 0x%08x time = %lu, %d time not response. Queue size %d", (unsigned int)wait_response->address, dt, err_dev->err_count, uxQueueMessagesWaiting(wait_response_queue));
+					if(evt_data != NULL) free(evt_data);
+					if(wait_response != NULL) free(wait_response);
+					wait_response = NULL;
+					xSemaphoreGive(req_data_smp);
 				}
-				LOG_RET(TAG, "Device 0x%08x time = %lu, %d time not response. Queue size %d", (unsigned int)wait_response->address, dt, err_dev->err_count, uxQueueMessagesWaiting(wait_response_queue));
-				if(evt_data != NULL) free(evt_data);
-				free(wait_response);
 			}
-			else{
-				if(xQueueSend(wait_response_queue, &wait_response, 2) != pdTRUE){
+			else if(dt < resp_timeout){
+				if(xQueueSend(wait_response_queue, &wait_response, 5) != pdTRUE){
 					loraif_debug((char *)"Can't send to wait_response_queue", __LINE__, __FUNCTION__);
 				}
 			}
@@ -420,16 +433,14 @@ void loraif_request_data(void){
     if(loraif_device_list.empty()) return;
 
     for (auto device = loraif_device_list.begin(); device != loraif_device_list.end(); ++device) {
-//    	loraif_request((*device)->address, LORA_UPDATE_STATE, (char *)"{\"relay1\":0,\"relay2\":1,\"relay3\":0,\"relay4\":1}", 1);
-//        vTaskDelay(1000);
-
-        loraif_request((*device)->address, LORA_REQ_DATA, (char *)"?", 1);
-        vTaskDelay(1000);
+    	loraif_request((*device)->address, LORA_REQ_DATA, (char *)"?", 1);
+        vTaskDelay(100);
     }
 }
 
 
 void loraif_add_device(uint32_t device_address, char *jdata, void *dev_data){
+
 	pkt_err_t err;
 	pkt_json_t json;
     loraif_dev_t *newdev = (loraif_dev_t *)malloc(sizeof(loraif_dev_t));
@@ -450,6 +461,7 @@ void loraif_add_device(uint32_t device_address, char *jdata, void *dev_data){
 }
 
 void loraif_remove_device(uint32_t device_address){
+
     if (loraif_device_list.empty()) {
     	loraif_debug((char *)"Device list empty", __LINE__, __FUNCTION__);
         return;
@@ -469,14 +481,14 @@ void loraif_remove_device(uint32_t device_address){
     }
 
     if((*device)->name != NULL) free((*device)->name);
-    if((*device) != NULL) free((*device));
-
     loraif_device_list.erase(device);
+    if((*device) != NULL) free((*device));
 
 	show_device_list();
 }
 
 loraif_dev_t *loraif_select_device(uint32_t device_address){
+
     if (loraif_device_list.empty()) {
     	loraif_debug((char *)"Device list empty", __LINE__, __FUNCTION__);
         return NULL;

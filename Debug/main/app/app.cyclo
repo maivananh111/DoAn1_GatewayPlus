@@ -1,5 +1,5 @@
 app.cpp:53:15:dev_struct_t* add_device_properties(uint32_t, char*)	2
-app.cpp:86:6:void remove_device_properties(uint32_t)	8
+app.cpp:86:6:void remove_device_properties(uint32_t)	9
 app.cpp:115:15:dev_struct_t* select_device_properties(uint32_t)	4
 app.cpp:137:6:void firebase_init(char*, char*)	2
 app.cpp:152:6:void firebase_new_device(dev_struct_t*)	2

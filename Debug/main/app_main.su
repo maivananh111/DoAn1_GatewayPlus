@@ -1,12 +1,12 @@
-../main/app_main.cpp:329:23:volatile void exception_handler()	0	static
-../main/app_main.cpp:98:6:void task_loratx(void*)	8	static
-../main/app_main.cpp:107:6:void task_lorarx(void*)	24	static
-../main/app_main.cpp:128:6:void gpioA0_event_handler(void*)	0	static
-../main/app_main.cpp:267:6:void wifi_request(char*, uint16_t)	16	static
-../main/app_main.cpp:131:6:void lora_event_handler(void*, uint8_t)	40	static
-../main/app_main.cpp:303:6:void wifi_uart_handler(usart_event_t, void*)	40	static
-../main/app_main.cpp:214:6:void task_wifi(void*)	40	static
-../main/app_main.cpp:151:6:void loraif_event_handler(lora_event_t, uint32_t, char*)	24	static
-../main/app_main.cpp:271:6:void wifi_command_handler(wifi_cmd_t, void*)	8	static
-../main/app_main.cpp:77:6:void app_main()	16	static
-../main/app_main.cpp:331:1:cpp)	24	static
+../main/app_main.cpp:368:23:volatile void exception_handler()	0	static
+../main/app_main.cpp:108:6:void task_loratx(void*)	16	static
+../main/app_main.cpp:123:6:void task_lorarx(void*)	24	static
+../main/app_main.cpp:146:6:void gpioA0_event_handler(void*)	0	static
+../main/app_main.cpp:292:6:void wifi_request(char*, uint16_t)	16	static
+../main/app_main.cpp:296:6:void wifi_command_handler(wifi_cmd_t, void*)	24	static
+../main/app_main.cpp:149:6:void lora_event_handler(void*, uint8_t)	40	static
+../main/app_main.cpp:339:6:void wifi_uart_handler(usart_event_t, void*)	40	static
+../main/app_main.cpp:242:6:void task_wifi(void*)	48	static
+../main/app_main.cpp:176:6:void loraif_event_handler(lora_event_t, uint32_t, char*)	24	static
+../main/app_main.cpp:81:6:void app_main()	16	static
+../main/app_main.cpp:370:1:cpp)	24	static

@@ -107,9 +107,9 @@ void remove_device_properties(uint32_t device_address){
 	if((*device)->sett.time_start != NULL) free((*device)->sett.time_start);
 	if((*device)->sett.time_stop != NULL) free((*device)->sett.time_stop);
 	if((*device)->env.time != NULL) free((*device)->env.time);
-	free((*device));
 
 	device_properties_list.erase(device);
+	if((*device) != NULL) free((*device));
 }
 
 dev_struct_t *select_device_properties(uint32_t device_address){
@@ -242,5 +242,4 @@ void get_devsettings(dev_struct_t *dev){
 
 	free(path);
 }
-
 

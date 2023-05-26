@@ -58,6 +58,7 @@ typedef struct{
 	void *data;
 } loraif_dev_t;
 
+extern list<loraif_dev_t *> loraif_device_list;
 
 #ifdef __cplusplus
 extern "C"{

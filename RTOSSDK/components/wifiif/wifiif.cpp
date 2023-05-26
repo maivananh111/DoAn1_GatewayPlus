@@ -186,6 +186,7 @@ static void wifiif_request(wifi_cmd_t cmd, char *data){
 		wifi_state = false;
 		if(fpcommand_handler) fpcommand_handler(WIFI_ERR, NULL);
 	}
+
 }
 
 /**

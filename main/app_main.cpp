@@ -56,6 +56,7 @@ void loraif_event_handler(lora_event_t event, uint32_t device_address, char *dat
 void task_loratx(void *);
 void task_lorarx(void *);
 TaskHandle_t task_loratx_handle = NULL, task_lorarx_handle = NULL;
+SemaphoreHandle_t lora_rx_smp;
 
 #define WF_BUFF_SIZE 2048
 usart_config_t wf_uart_conf = {
@@ -74,6 +75,9 @@ void wifi_command_handler(wifi_cmd_t cmd, void *param);
 void wifi_request(char *str, uint16_t size);
 void task_wifi(void *);
 
+/**
+ * Main application.
+ */
 void app_main(void){
 	extern void HAL_Driver_Init(void);
 	HAL_Driver_Init();
@@ -84,23 +88,35 @@ void app_main(void){
 	gpio_set_mode(GPIOB, 14, GPIO_OUTPUT_PUSHPULL);
 	register_exception_handler(exception_handler);
 
-
-	xTaskCreate(task_wifi, "task_wifi", byte_to_word(8192), NULL, 2, NULL);
+	if(task_lorarx_handle == NULL) xTaskCreate(task_lorarx, "task_lorarx", byte_to_word(8192), NULL, 15, &task_lorarx_handle);
+	if(task_loratx_handle == NULL) xTaskCreate(task_loratx, "task_loratx", byte_to_word(4096), NULL, 5, &task_loratx_handle);
+	xTaskCreate(task_wifi, "task_wifi", byte_to_word(4096), NULL, 2, NULL);
 
 	while(1){
+		LOG_MEM(TAG, "Free heap = %lu.", sys_get_free_heap_size());
 		gpio_toggle(GPIOC, 13);
-		vTaskDelay(100);
+		vTaskDelay(500);
+		gpio_toggle(GPIOC, 13);
+		vTaskDelay(500);
 	}
 }
 
 
-
+/**
+ * LoRa application.
+ */
 void task_loratx(void *){
-
+	__IO uint32_t tick = get_tick();
 	while(1){
-		loraif_request_data();
-		LOG_MEM(TAG, "Free heap = %lu.", sys_get_free_heap_size());
-		vTaskDelay(5000);
+	    if(!loraif_device_list.empty()){
+			for (auto device = loraif_device_list.begin(); device != loraif_device_list.end(); ++device) {
+				if(get_tick() - tick > 5000){
+					loraif_request((*device)->address, LORA_REQ_DATA, (char *)"?", 1);
+					tick = get_tick();
+				}
+			}
+	    }
+		vTaskDelay(60000);
 	}
 }
 
@@ -112,12 +128,14 @@ void task_lorarx(void *){
 	else LOG_ERROR(TAG, "Lora Initialize Failed.");
 
 	lora_queue = xQueueCreate(20, sizeof(uint32_t));
-	loraif_init(&lora, LORA_SEND_SYNCWORD, LORA_RECV_SYNCWORD, 10000, 3);
+	loraif_init(&lora, LORA_SEND_SYNCWORD, LORA_RECV_SYNCWORD, 5000, 3);
 	loraif_register_event_handler(loraif_event_handler);
 
-	lora.setSyncWord(0x3F);
+	lora.setSyncWord(LORA_RECV_SYNCWORD);
 	lora.register_event_handler(NULL, lora_event_handler);
 	lora.Receive(0);
+	lora_rx_smp = xSemaphoreCreateBinary();
+
 
 	while(1){
 		loraif_rx_process(&lora_queue);
@@ -138,17 +156,25 @@ void lora_event_handler(void *, uint8_t len){
 		LOG_WARN(TAG, "%s  [packet RSSI = %d, RSSI = %d]", lora_RxBuf, lora.packetRssi(), lora.rssi());
 		if(loraif_check_crc(lora_RxBuf) == true){
 			BaseType_t pxHigherPriorityTaskWoken = pdFALSE;
-			if(xQueueSendFromISR(lora_queue, &lora_RxBuf, &pxHigherPriorityTaskWoken) != pdPASS){
-				LOG_ERROR(TAG, "LoRa error queue receive.");
+			if(xSemaphoreTakeFromISR(lora_rx_smp, &pxHigherPriorityTaskWoken)){
+				if(xQueueSendFromISR(lora_queue, &lora_RxBuf, &pxHigherPriorityTaskWoken) != pdPASS){
+					LOG_ERROR(TAG, "LoRa error queue receive.");
+				}
+				xSemaphoreGiveFromISR(lora_rx_smp, &pxHigherPriorityTaskWoken);
+			}
+			else{
+				free(lora_RxBuf);
 			}
 		}
 		else{
 			LOG_ERROR(TAG, "LoRa received packet error CRC.");
+			free(lora_RxBuf);
 		}
 	}
 }
 
 void loraif_event_handler(lora_event_t event, uint32_t device_address, char *data){
+	vTaskSuspend(task_loratx_handle);
 	if(data != NULL) LOG_INFO(TAG, "LoRa data: %s", data);
 	switch(event){
 		case LORA_REQ_ADDRESS:
@@ -161,7 +187,7 @@ void loraif_event_handler(lora_event_t event, uint32_t device_address, char *dat
 			if(loraif_isvalid_address(device_address)){
 				dev_struct_t *dev = add_device_properties(device_address, data);
 				loraif_add_device(device_address, data, dev);
-				firebase_new_device(dev);
+//				firebase_new_device(dev);
 			}
 			else{
 				LOG_ERROR(TAG, "Event device address invalid.");
@@ -187,12 +213,13 @@ void loraif_event_handler(lora_event_t event, uint32_t device_address, char *dat
 		case LORA_REMOVE_DEVICE:
 			LOG_WARN(TAG, "LORA_REMOVE_DEVICE");
 			if(loraif_isvalid_address(device_address)){
-				dev_struct_t *dev = select_device_properties(device_address);
-				if(dev != NULL) {
-					firebase_remove_device(dev);
-					remove_device_properties(device_address);
-					loraif_remove_device(device_address);
-				}
+//				dev_struct_t *dev = select_device_properties(device_address);
+//				if(dev != NULL) firebase_remove_device(dev);
+//				else LOG_ERROR(TAG, "Event device error.");
+
+				remove_device_properties(device_address);
+				loraif_remove_device(device_address);
+				beep_loop(1, 500, 1);
 			}
 			else{
 				LOG_ERROR(TAG, "Event device address invalid.");
@@ -205,12 +232,13 @@ void loraif_event_handler(lora_event_t event, uint32_t device_address, char *dat
 			LOG_EVENT(TAG, "LoRa other event.");
 		break;
 	}
+	vTaskResume(task_loratx_handle);
 }
 
 
-
-
-
+/**
+ * WiFi application.
+ */
 void task_wifi(void *){
 	usart1->init(&wf_uart_conf);
 	usart1->register_event_handler(wifi_uart_handler, NULL);
@@ -222,8 +250,10 @@ void task_wifi(void *){
 	wifiif_restart();
 	restart_wifi:
 
-	if(task_lorarx_handle != NULL) vTaskDelete(task_lorarx_handle);
-	if(task_loratx_handle != NULL) vTaskDelete(task_loratx_handle);
+	LOG_DEBUG(TAG, "Suspend LoRa task.");
+	vTaskSuspend(task_lorarx_handle);
+	vTaskSuspend(task_loratx_handle);
+	xSemaphoreTake(lora_rx_smp, 5);
 
 	beep_loop(1, 20, 1);
 	if(!wifiif_state_is_running()) wifiif_restart();
@@ -233,34 +263,29 @@ void task_wifi(void *){
 	vTaskDelay(1000);
 	uint8_t reconn_num = 0;
 	while(wifiif_wificonnected() == false) {
+		LOG_MEM(TAG, "Free heap = %lu.", sys_get_free_heap_size());
 		wifiif_checkconnect();
-		vTaskDelay(1000);
+		vTaskDelay(2000);
 		reconn_num++;
-		if(reconn_num > 5) goto restart_wifi;
+		if(reconn_num > 2) goto restart_wifi;
 	}
 	wifiif_state_running(true);
 
-	if(task_lorarx_handle == NULL) xTaskCreate(task_lorarx, "task_lorarx", byte_to_word(8192), NULL, 15, NULL);
-	if(task_loratx_handle == NULL) xTaskCreate(task_loratx, "task_loratx", byte_to_word(8192), NULL, 5, NULL);
-
 	vTaskDelay(1000);
 	firebase_init((char *)"https://iotnhakho-default-rtdb.asia-southeast1.firebasedatabase.app/", NULL);
+	vTaskDelay(1000);
 
-//	wifiif_http_client_set_url((char *)"/Kho3/.json");
-//	wifiif_http_client_set_data((char *)"{}");
-//	wifiif_http_client_set_method((char *)"HTTP_METHOD_GET");
+	vTaskResume(task_lorarx_handle);
+	vTaskResume(task_loratx_handle);
+	LOG_DEBUG(TAG, "Resume LoRa task.");
+	xSemaphoreGive(lora_rx_smp);
 
 	while(1){
 		wifiif_checkconnect();
-		if(!wifiif_state_is_running() || wifiif_wificonnected() == false) {
-			LOG_ERROR(TAG, "WiFi module error reset.");
+		if(wifiif_state_is_running() == false || wifiif_wificonnected() == false) {
+			LOG_ERROR(TAG, "WiFi module error.");
 			goto restart_wifi;
 		}
-
-//		wifiif_http_client_set_url((char *)"/Kho3/.json");
-//		wifiif_http_client_set_method((char *)"HTTP_METHOD_GET");
-//		wifiif_http_client_request();
-
 		vTaskDelay(5000);
 	}
 }
@@ -270,16 +295,27 @@ void wifi_request(char *str, uint16_t size){
 }
 void wifi_command_handler(wifi_cmd_t cmd, void *param){
 	char *resp_data = (char *)param;
+	pkt_json_t json;
 
 	switch(cmd){
 		case WIFI_ISCONNECTED:
-
+			if(json_get_object(resp_data, &json, (char *)"isconnected") == PKT_ERR_OK){
+				if(strcmp(json.value, "1") == 0){
+					wifiif_state_running(true);
+					wifiif_set_wificonnect_state(true);
+				}
+				else if(strcmp(json.value, "0") == 0){
+					wifiif_state_running(false);
+					wifiif_set_wificonnect_state(false);
+				}
+			}
+			json_release_object(&json);
 		break;
 		case WIFI_ERR:
-			wifiif_state_running(false);
-			LOG_EVENT(TAG, "WiFi module error reset.");
+//			wifiif_state_running(false);
+			LOG_EVENT(TAG, "WIFI_ERR");
 			wifiif_restart();
-			beep_loop(1, 50, 1);
+//			beep_loop(1, 50, 1);
 		break;
 		case WIFI_SCAN:
 			wifiif_state_running(true);
@@ -308,7 +344,10 @@ void wifi_uart_handler(usart_event_t event, void *param){
 			LOG_ERROR(TAG, "Can't get UART data.");
 			return;
 		}
-		if(strcmp(rxdata, "WIFI_RESTART: OK") == 0) wifiif_state_running(false);
+		if(strcmp(rxdata, "WIFI_RESTART: OK") == 0) {
+			wifiif_state_running(false);
+			LOG_ERROR("WIFI", "wifi module restart.");
+		}
 
 		wifiif_get_break_data(rxdata);
 
@@ -329,12 +368,3 @@ static void beep_loop(uint8_t loop, uint16_t active_time, uint16_t idle_time){
 static volatile  void exception_handler(void){
 	gpio_set(GPIOB, 14);
 }
-
-
-
-
-
-
-
-
-
