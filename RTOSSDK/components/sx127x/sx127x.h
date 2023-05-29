@@ -89,7 +89,7 @@ class sx127x{
 		void register_event_handler(void (*TxHandler)(void *arg), void (*RxHandler)(void *arg, uint8_t len));
 		bool beginPacket(bool implicitHeader = false);
 		bool endPacket(bool async = false);
-		void Receive(uint8_t size);
+		void receive_it(uint8_t size);
 
 		uint8_t parsePacket(uint8_t size = 0);
 		int packetRssi(void);

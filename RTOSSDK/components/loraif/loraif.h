@@ -33,12 +33,10 @@ typedef enum {
 	 */
 	LORA_REQ_ADDRESS, // No address.
 	LORA_UPDATE_ADDRESS,
-	LORA_UPDATE_STATE,
 
 	/**
 	 * Gateway proactive.
 	 */
-	LORA_UPDATE_SETTINGS,
 	LORA_REQ_DATA,
 	LORA_RES_DATA,
 	LORA_UPDATE_DATA,
@@ -67,15 +65,14 @@ extern "C"{
 void loraif_init(sx127x *lora, uint8_t send_syncword, uint8_t recv_syncword, uint32_t timeout, uint8_t max_not_response);
 void loraif_register_event_handler(void (*peventhandler)(lora_event_t event, uint32_t device_address, char *data));
 
-bool loraif_check_crc(char *data);
-
-void loraif_request(uint32_t dev_address, lora_event_t cmd, char *data, int require_resp);
-void loraif_request_data(void);
-void loraif_rx_process(void *param);
-void loraif_response(void);
-void loraif_check_timeout(void);
-
+bool loraif_check_receive_data_crc(char *data);
 bool loraif_isvalid_address(uint32_t address);
+
+void loraif_send_request(uint32_t dev_address, lora_event_t cmd, char *data, int require_resp);
+void loraif_receive_process(void *param);
+void loraif_response_to_device(void);
+void loraif_check_device_timeout(void);
+
 void loraif_add_device(uint32_t device_address, char *jdata, void *dev_data);
 void loraif_remove_device(uint32_t device_address);
 loraif_dev_t *loraif_select_device(uint32_t device_address);

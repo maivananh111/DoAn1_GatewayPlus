@@ -14,7 +14,7 @@
 ../RTOSSDK/components/sx127x/sx127x.cpp:182:9:uint8_t sx127x::available()	40	static
 ../RTOSSDK/components/sx127x/sx127x.cpp:186:9:uint8_t sx127x::receive(char*)	56	static
 ../RTOSSDK/components/sx127x/sx127x.cpp:196:9:uint8_t sx127x::peek()	48	static
-../RTOSSDK/components/sx127x/sx127x.cpp:208:6:void sx127x::Receive(uint8_t)	56	static
+../RTOSSDK/components/sx127x/sx127x.cpp:208:6:void sx127x::receive_it(uint8_t)	56	static
 ../RTOSSDK/components/sx127x/sx127x.cpp:223:6:void sx127x::idle()	40	static
 ../RTOSSDK/components/sx127x/sx127x.cpp:227:6:void sx127x::sleep()	32	static
 ../RTOSSDK/components/sx127x/sx127x.cpp:231:6:void sx127x::setTxPower(uint8_t, uint8_t)	56	static

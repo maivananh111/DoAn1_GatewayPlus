@@ -61,9 +61,8 @@ static const char *command_string[] = {
 static void (*fprequest)(char *str, uint16_t len) = NULL;
 static void (*fpcommand_handler)(wifi_cmd_t cmd, void *param);
 static volatile bool wifi_state = false, wifi_connected = false;
-static QueueHandle_t data_queue;
-static EventGroupHandle_t data_eventgrp;
-#define DATA_EVENTBIT (1<<8)
+static QueueHandle_t q_response;
+static EventGroupHandle_t e_response;
 
 
 static void wifiif_debug(char *str, int line, const char *func){
@@ -90,23 +89,23 @@ static void wifiif_transmit(char *str){
 void wifiif_get_break_data(char *brk_data){
 	BaseType_t xHigherPriorityTaskWoken = pdFALSE;
     if(strcmp(brk_data, "\r\nend\r\n") != 0) {
-		if(xQueueSendFromISR(data_queue, &brk_data, &xHigherPriorityTaskWoken) != pdTRUE) LOG_ERROR(TAG, "Send to queue fail.");
+		if(xQueueSendFromISR(q_response, &brk_data, &xHigherPriorityTaskWoken) != pdTRUE) LOG_ERROR(TAG, "Send to queue fail.");
     }
     else{
     	free(brk_data);
-    	xEventGroupSetBitsFromISR(data_eventgrp, DATA_EVENTBIT, &xHigherPriorityTaskWoken);
+    	xEventGroupSetBitsFromISR(e_response, DATA_EVENTBIT, &xHigherPriorityTaskWoken);
     }
 }
 
 static void wifiif_merge_data(char **dest_buffer){
  	   char *break_data;
  	   uint16_t total_len = 0;
- 	   uint8_t queue_len = uxQueueMessagesWaiting(data_queue);
+ 	   uint8_t queue_len = uxQueueMessagesWaiting(q_response);
  	   /** get total string length */
  	   for(uint8_t i=0; i<queue_len; i++){
- 		   if(xQueueReceive(data_queue, &break_data, 2) == pdTRUE){
+ 		   if(xQueueReceive(q_response, &break_data, 2) == pdTRUE){
  			   total_len += strlen(break_data);
- 			   xQueueSend(data_queue, &break_data, 2);
+ 			   xQueueSend(q_response, &break_data, 2);
  		   }
  	   }
 
@@ -114,7 +113,7 @@ static void wifiif_merge_data(char **dest_buffer){
  	  *dest_buffer = (char *)malloc(total_len + 1);
  	   char *tmp_data = *dest_buffer;
  	   for(uint8_t i=0; i<queue_len; i++){
- 		   if(xQueueReceive(data_queue, &break_data, 2) == pdTRUE){
+ 		   if(xQueueReceive(q_response, &break_data, 2) == pdTRUE){
  			   uint16_t len = strlen(break_data);
  			   memcpy(tmp_data, break_data, len);
  			   tmp_data += len;
@@ -138,7 +137,7 @@ static void wifiif_request(wifi_cmd_t cmd, char *data){
 #endif /* ENABLE_COMPONENT_WIFIIF_DEBUG */
 	free(req_data);
 
-	EventBits_t bits = xEventGroupWaitBits(data_eventgrp, DATA_EVENTBIT, pdTRUE, pdFALSE, WIFI_DEFAULT_TIMEOUT);
+	EventBits_t bits = xEventGroupWaitBits(e_response, DATA_EVENTBIT, pdTRUE, pdFALSE, WIFI_DEFAULT_TIMEOUT);
 	if(bits == DATA_EVENTBIT){
 		char *response_data;
 		pkt_t pkt;
@@ -148,7 +147,6 @@ static void wifiif_request(wifi_cmd_t cmd, char *data){
 		err = parse_packet(response_data, &pkt);
 		if(err != PKT_ERR_OK){
 			wifiif_debug((char *)"Can't parse response.", __LINE__, __FUNCTION__);
-
 			release_packet(&pkt);
 			if(response_data != NULL) free(response_data);
 
@@ -160,14 +158,24 @@ static void wifiif_request(wifi_cmd_t cmd, char *data){
 			data[strlen(pkt.data_str)] = '\0';
 
 			wifi_cmd_t command = (wifi_cmd_t)str_to_cmd(pkt.cmd_str, command_string, WIFI_CMD_NUM);
-			if(command == WIFI_ISCONNECTED){ // Check wifi connect state.
+			if(command == WIFI_ISCONNECTED){
 				pkt_json_t json;
 				pkt_err_t err = json_get_object(pkt.data_str, &json, (char *)"isconnected");
 				if(err == PKT_ERR_OK){
-					if(strcmp(json.value, "1") == 0) wifi_connected = true;
-					else if(strcmp(json.value, "0") == 0) wifi_connected = false;
+					if(strcmp(json.value, "1") == 0) {
+						wifi_state = true;
+						wifi_connected = true;
+					}
+					else if(strcmp(json.value, "0") == 0) {
+						wifi_state = false;
+						wifi_connected = false;
+					}
 				}
 				json_release_object(&json);
+			}
+			else if(command == WIFI_RESTART){
+				wifi_state = false;
+				wifi_connected = false;
 			}
 
 			if(fpcommand_handler) fpcommand_handler(command, data); // Handle wifiif event.
@@ -182,8 +190,7 @@ static void wifiif_request(wifi_cmd_t cmd, char *data){
 		if(response_data != NULL) free(response_data);
 	}
 	else{ // Parse packet fail.
-		wifiif_debug((char *)"WiFi module not response the request.", __LINE__, __FUNCTION__);
-		wifi_state = false;
+		wifiif_debug((char *)"WiFi module not response the request", __LINE__, __FUNCTION__);
 		if(fpcommand_handler) fpcommand_handler(WIFI_ERR, NULL);
 	}
 
@@ -195,8 +202,8 @@ static void wifiif_request(wifi_cmd_t cmd, char *data){
 void wifiif_init(void (*prequest)(char *, uint16_t)){
 	fprequest = prequest;
 
-	data_queue = xQueueCreate(20, sizeof(char *));
-	data_eventgrp = xEventGroupCreate();
+	q_response = xQueueCreate(20, sizeof(char *));
+	e_response = xEventGroupCreate();
 }
 
 void wifiif_register_command_handler(void (*pcommand_handler)(wifi_cmd_t cmd, void *param)){

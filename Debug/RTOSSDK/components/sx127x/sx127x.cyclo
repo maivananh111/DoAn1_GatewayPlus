@@ -14,7 +14,7 @@ sx127x.cpp:170:8:size_t sx127x::transmit(const uint8_t*, size_t)	4
 sx127x.cpp:182:9:uint8_t sx127x::available()	1
 sx127x.cpp:186:9:uint8_t sx127x::receive(char*)	2
 sx127x.cpp:196:9:uint8_t sx127x::peek()	2
-sx127x.cpp:208:6:void sx127x::Receive(uint8_t)	3
+sx127x.cpp:208:6:void sx127x::receive_it(uint8_t)	3
 sx127x.cpp:223:6:void sx127x::idle()	1
 sx127x.cpp:227:6:void sx127x::sleep()	1
 sx127x.cpp:231:6:void sx127x::setTxPower(uint8_t, uint8_t)	3

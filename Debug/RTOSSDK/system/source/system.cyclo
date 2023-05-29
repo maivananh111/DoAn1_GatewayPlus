@@ -1,0 +1,19 @@
+system.cpp:47:10:uint32_t get_revid()	1
+system.cpp:51:10:uint32_t get_devid()	1
+system.cpp:55:10:uint32_t get_flashsize()	1
+system.cpp:63:6:void system_init()	1
+system.cpp:77:6:void embedded_flash_init()	1
+system.cpp:104:6:void embedded_flash_set_latency(uint32_t)	1
+system.cpp:108:6:void embedded_flash_update_latency()	7
+system.cpp:119:10:uint32_t embedded_flash_calculate_latency(uint32_t)	7
+system.cpp:132:10:uint32_t embedded_flash_get_latency()	1
+system.cpp:137:6:void NVIC_Set_Priority(IRQn_Type, uint32_t, uint32_t)	3
+system.cpp:148:15:memory_info_t sys_get_memory_info()	1
+system.cpp:163:10:uint32_t sys_get_free_heap_size()	1
+system.cpp:171:10:uint32_t sys_get_used_heap_size()	1
+system.cpp:177:6:void sys_calculate_cpu_load_percent()	2
+system.cpp:184:7:float sys_get_cpu_percent()	1
+system.cpp:188:7:float sys_get_ram_percent()	1
+system.cpp:194:6:void register_exception_handler(volatile void (*)())	1
+system.cpp:198:6:void exception_interrupt_handler(const char*, char*)	2
+system.cpp:203:1:cpp)	1

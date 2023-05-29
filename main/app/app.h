@@ -59,10 +59,9 @@ void firebase_init(char *url, char *secret_key);
 void firebase_new_device(dev_struct_t *);
 void firebase_remove_device(dev_struct_t *);
 
-void send_envdata_to_firebase (dev_struct_t *);
+void send_envdata_to_firebase(uint32_t address, char *jdata);
 void send_devctrl_to_firebase(dev_struct_t *);
-void get_devctrl(dev_struct_t *);
-void get_devsettings(dev_struct_t *);
+void firebase_get_device_data(dev_struct_t *);
 
 
 #ifdef __cplusplus

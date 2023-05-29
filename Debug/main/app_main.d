@@ -35,7 +35,7 @@ main/app_main.o: ../main/app_main.cpp ../Core/Inc/main.h \
  ../RTOSSDK/peripherals/peripheral_config.h \
  ../RTOSSDK/peripherals/periph/rng.h \
  ../RTOSSDK/peripherals/periph/usart.h \
- ../RTOSSDK/peripherals/periph/dma.h \
+ ../RTOSSDK/peripherals/periph/dma.h ../RTOSSDK/peripherals/periph/tim.h \
  ../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h \
  ../Middlewares/Third_Party/FreeRTOS/Source/include/projdefs.h \
  ../Middlewares/Third_Party/FreeRTOS/Source/include/portable.h \
@@ -48,6 +48,8 @@ main/app_main.o: ../main/app_main.cpp ../Core/Inc/main.h \
  ../Middlewares/Third_Party/FreeRTOS/Source/include/queue.h \
  ../Middlewares/Third_Party/FreeRTOS/Source/include/task.h \
  ../Middlewares/Third_Party/FreeRTOS/Source/include/queue.h \
+ ../Middlewares/Third_Party/FreeRTOS/Source/include/event_groups.h \
+ ../Middlewares/Third_Party/FreeRTOS/Source/include/timers.h \
  ../RTOSSDK/components/sx127x/sx127x.h \
  ../RTOSSDK/components/component_config.h \
  ../RTOSSDK/peripherals/periph/spi.h ../FATFS/App/fatfs.h \
@@ -150,6 +152,7 @@ main/app_main.o: ../main/app_main.cpp ../Core/Inc/main.h \
 ../RTOSSDK/peripherals/periph/rng.h:
 ../RTOSSDK/peripherals/periph/usart.h:
 ../RTOSSDK/peripherals/periph/dma.h:
+../RTOSSDK/peripherals/periph/tim.h:
 ../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h:
 ../Middlewares/Third_Party/FreeRTOS/Source/include/projdefs.h:
 ../Middlewares/Third_Party/FreeRTOS/Source/include/portable.h:
@@ -162,6 +165,8 @@ main/app_main.o: ../main/app_main.cpp ../Core/Inc/main.h \
 ../Middlewares/Third_Party/FreeRTOS/Source/include/queue.h:
 ../Middlewares/Third_Party/FreeRTOS/Source/include/task.h:
 ../Middlewares/Third_Party/FreeRTOS/Source/include/queue.h:
+../Middlewares/Third_Party/FreeRTOS/Source/include/event_groups.h:
+../Middlewares/Third_Party/FreeRTOS/Source/include/timers.h:
 ../RTOSSDK/components/sx127x/sx127x.h:
 ../RTOSSDK/components/component_config.h:
 ../RTOSSDK/peripherals/periph/spi.h:

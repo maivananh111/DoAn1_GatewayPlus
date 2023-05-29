@@ -299,58 +299,89 @@ typedef tim* tim_t;
 #if defined(TIM1)
 extern tim_t tim1;
 void TIM1_CC_IRQHandler(void);
+#if !defined(TIM9)
+void TIM1_BRK_TIM9_IRQHandler(void);
+#endif /* !defined(TIM9) */
+#if !defined(TIM10)
+void TIM1_UP_TIM10_IRQHandler(void);
+#endif /* !defined(TIM10) */
+#if !defined(TIM11)
+void TIM1_TRG_COM_TIM11_IRQHandler(void);
+#endif /* !defined(TIM11) */
 #endif /* defined(TIM1) */
 
 #if defined(TIM2)
 extern tim_t tim2;
+void TIM2_IRQHandler(void);
 #endif
 
 #if defined(TIM3)
 extern tim_t tim3;
+void TIM3_IRQHandler(void);
 #endif
 
 #if defined(TIM4)
 extern tim_t tim4;
+void TIM4_IRQHandler(void);
 #endif
 
 #if defined(TIM5)
 extern tim_t tim5;
+void TIM5_IRQHandler(void);
 #endif
 
 #if defined(TIM6)
 extern tim_t tim6;
+void TIM6_DAC_IRQHandler(void);
 #endif
 
 #if defined(TIM7)
 extern tim_t tim7;
+void TIM7_IRQHandler(void);
 #endif
 
 #if defined(TIM8)
 extern tim_t tim8;
+void TIM8_CC_IRQHandler(void);
+#if !defined(TIM12)
+void TIM8_BRK_TIM12_IRQHandler(void);
+#endif /* !defined(TIM12) */
+#if !defined(TIM13)
+void TIM8_UP_TIM13_IRQHandler(void);
+#endif /* !defined(TIM13) */
+#if !defined(TIM14)
+void TIM8_TRG_COM_TIM14_IRQHandler(void);
+#endif /* !defined(TIM14) */
 #endif
 
 #if defined(TIM9)
 extern tim_t tim9;
+void TIM1_BRK_TIM9_IRQHandler(void);
 #endif
 
 #if defined(TIM10)
 extern tim_t tim10;
+void TIM1_UP_TIM10_IRQHandler(void);
 #endif
 
 #if defined(TIM11)
 extern tim_t tim11;
+void TIM1_TRG_COM_TIM11_IRQHandler(void);
 #endif
 
 #if defined(TIM12)
 extern tim_t tim12;
+void TIM8_BRK_TIM12_IRQHandler(void);
 #endif
 
 #if defined(TIM13)
 extern tim_t tim13;
+void TIM8_UP_TIM13_IRQHandler(void);
 #endif
 
 #if defined(TIM14)
 extern tim_t tim14;
+void TIM8_TRG_COM_TIM14_IRQHandler(void);
 #endif
 
 #ifdef __cplusplus

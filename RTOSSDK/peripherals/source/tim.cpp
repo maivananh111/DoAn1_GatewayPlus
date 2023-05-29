@@ -1546,7 +1546,6 @@ void TIM1_CC_IRQHandler(void){
 	TIM_IRQHandler(&tim_1);
 }
 #if !defined(TIM9)
-void TIM1_BRK_TIM9_IRQHandler(void);
 void TIM1_BRK_TIM9_IRQHandler(void){
 #if USE_TIM1
 //	TIM_IRQHandler(&tim_1);
@@ -1554,7 +1553,6 @@ void TIM1_BRK_TIM9_IRQHandler(void){
 }
 #endif /* !defined(TIM9) */
 #if !defined(TIM10)
-void TIM1_UP_TIM10_IRQHandler(void);
 void TIM1_UP_TIM10_IRQHandler(void){
 #if USE_TIM1
 //	TIM_IRQHandler(&tim_1);
@@ -1562,7 +1560,6 @@ void TIM1_UP_TIM10_IRQHandler(void){
 }
 #endif /* !defined(TIM10) */
 #if !defined(TIM11)
-void TIM1_TRG_COM_TIM11_IRQHandler(void);
 void TIM1_TRG_COM_TIM11_IRQHandler(void){
 #if USE_TIM1
 //	TIM_IRQHandler(&tim_1);
@@ -1574,7 +1571,6 @@ void TIM1_TRG_COM_TIM11_IRQHandler(void){
 #if defined(TIM2)
 tim tim_2(TIM2);
 tim_t tim2 = &tim_2;
-void TIM2_IRQHandler(void);
 void TIM2_IRQHandler(void){
 	TIM_IRQHandler(&tim_2);
 }
@@ -1583,7 +1579,6 @@ void TIM2_IRQHandler(void){
 #if defined(TIM3)
 tim tim_3(TIM3);
 tim_t tim3 = &tim_3;
-void TIM3_IRQHandler(void);
 void TIM3_IRQHandler(void){
 	TIM_IRQHandler(&tim_3);
 }
@@ -1592,7 +1587,6 @@ void TIM3_IRQHandler(void){
 #if defined(TIM4)
 tim tim_4(TIM4);
 tim_t tim4 = &tim_4;
-void TIM4_IRQHandler(void);
 void TIM4_IRQHandler(void){
 	TIM_IRQHandler(&tim_4);
 }
@@ -1601,7 +1595,6 @@ void TIM4_IRQHandler(void){
 #if defined(TIM5)
 tim tim_5(TIM5);
 tim_t tim5 = &tim_5;
-void TIM5_IRQHandler(void);
 void TIM5_IRQHandler(void){
 	TIM_IRQHandler(&tim_5);
 }
@@ -1610,7 +1603,6 @@ void TIM5_IRQHandler(void){
 #if defined(TIM6)
 tim tim_6(TIM6);
 tim_t tim6 = &tim_6;
-void TIM6_DAC_IRQHandler(void);
 void TIM6_DAC_IRQHandler(void){
 	TIM_IRQHandler(&tim_6);
 #if ENABLE_DAC
@@ -1622,7 +1614,6 @@ void TIM6_DAC_IRQHandler(void){
 #if defined(TIM7)
 tim tim_7(TIM7);
 tim_t tim7 = &tim_7;
-void TIM7_IRQHandler(void);
 void TIM7_IRQHandler(void){
 	TIM_IRQHandler(&tim_7);
 }
@@ -1631,12 +1622,10 @@ void TIM7_IRQHandler(void){
 #if defined(TIM8)
 tim tim_8(TIM8);
 tim_t tim8 = &tim_8;
-void TIM8_CC_IRQHandler(void);
 void TIM8_CC_IRQHandler(void){
 	TIM_IRQHandler(&tim_8);
 }
 #if !defined(TIM12)
-void TIM8_BRK_TIM12_IRQHandler(void);
 void TIM8_BRK_TIM12_IRQHandler(void){
 #if USE_TIM8
 	TIM_IRQHandler(&tim_8);
@@ -1644,7 +1633,6 @@ void TIM8_BRK_TIM12_IRQHandler(void){
 }
 #endif /* !defined(TIM12) */
 #if !defined(TIM13)
-void TIM8_UP_TIM13_IRQHandler(void);
 void TIM8_UP_TIM13_IRQHandler(void){
 #if USE_TIM8
 	TIM_IRQHandler(&tim_8);
@@ -1652,7 +1640,6 @@ void TIM8_UP_TIM13_IRQHandler(void){
 }
 #endif /* !defined(TIM13) */
 #if !defined(TIM14)
-void TIM8_TRG_COM_TIM14_IRQHandler(void);
 void TIM8_TRG_COM_TIM14_IRQHandler(void){
 #if USE_TIM8
 	TIM_IRQHandler(&tim_8);
@@ -1665,7 +1652,6 @@ void TIM8_TRG_COM_TIM14_IRQHandler(void){
 #if defined(TIM9) && defined(TIM1)
 tim tim_9(TIM9);
 tim_t tim9 = &tim_9;
-void TIM1_BRK_TIM9_IRQHandler(void);
 void TIM1_BRK_TIM9_IRQHandler(void){
 #if USE_TIM1
 	TIM_IRQHandler(&tim_1);
@@ -1677,7 +1663,6 @@ void TIM1_BRK_TIM9_IRQHandler(void){
 #if defined(TIM10) && defined(TIM1)
 tim tim_10(TIM10);
 tim_t tim10 = &tim_10;
-void TIM1_UP_TIM10_IRQHandler(void);
 void TIM1_UP_TIM10_IRQHandler(void){
 #if USE_TIM1
 	TIM_IRQHandler(&tim_1);
@@ -1689,7 +1674,6 @@ void TIM1_UP_TIM10_IRQHandler(void){
 #if defined(TIM11) && defined(TIM1)
 tim tim_11(TIM11);
 tim_t tim11 = &tim_11;
-void TIM1_TRG_COM_TIM11_IRQHandler(void);
 void TIM1_TRG_COM_TIM11_IRQHandler(void){
 #if USE_TIM1
 	TIM_IRQHandler(&tim_1);
@@ -1701,7 +1685,6 @@ void TIM1_TRG_COM_TIM11_IRQHandler(void){
 #if defined(TIM12) && defined(TIM8)
 tim tim_12(TIM12);
 tim_t tim12 = &tim_12;
-void TIM8_BRK_TIM12_IRQHandler(void);
 void TIM8_BRK_TIM12_IRQHandler(void){
 #if USE_TIM8
 	TIM_IRQHandler(&tim_8);
@@ -1713,7 +1696,6 @@ void TIM8_BRK_TIM12_IRQHandler(void){
 #if defined(TIM13) && defined(TIM8)
 tim tim_13(TIM13);
 tim_t tim13 = &tim_13;
-void TIM8_UP_TIM13_IRQHandler(void);
 void TIM8_UP_TIM13_IRQHandler(void){
 #if USE_TIM8
 	TIM_IRQHandler(&tim_8);
@@ -1725,7 +1707,6 @@ void TIM8_UP_TIM13_IRQHandler(void){
 #if defined(TIM14) && defined(TIM8)
 tim tim_14(TIM14);
 tim_t tim14 = &tim_14;
-void TIM8_TRG_COM_TIM14_IRQHandler(void);
 void TIM8_TRG_COM_TIM14_IRQHandler(void){
 #if USE_TIM8
 	TIM_IRQHandler(&tim_8);

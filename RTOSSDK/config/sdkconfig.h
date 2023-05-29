@@ -49,7 +49,7 @@ extern "C"{
 #if CONFIG_RTOS_USE_IWDG
 #define CONFIG_IWDG_PRESCALER                       4U
 #define CONFIG_IWDG_AUTORELOAD                      2500U
-/* CONFIG_IWDG_PRESCALER(ms) = (CONFIG_IWDG_AUTORELOAD * 4000U * 2^CONFIG_IWDG_PRESCALER) / LSI_VALUE */
+/* IWDG RESET TIME(ms) = (CONFIG_IWDG_AUTORELOAD * 4000U * 2^CONFIG_IWDG_PRESCALER) / LSI_VALUE */
 #endif /* CONFIG_RTOS_USE_IWDG */
 #define byte_to_word(x)                      		(x/4)
 

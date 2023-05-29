@@ -205,7 +205,7 @@ uint8_t sx127x::peek(void){
 	return b;
 }
 
-void sx127x::Receive(uint8_t size){
+void sx127x::receive_it(uint8_t size){
 	if(RxDoneHandler)writeRegister(REG_DIO_MAPPING_1, 0x00); // DIO0 => RXDONE
 
 	if (size > 0) {

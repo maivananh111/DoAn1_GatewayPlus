@@ -59,17 +59,17 @@ tim.cpp:1465:11:stm_ret_t tim::outputcompare_stop_dma(tim_channel_t)	9
 tim.cpp:1471:11:stm_ret_t tim::set_pulse(tim_channel_t, uint32_t)	1
 tim.cpp:1479:6:void TIM_IRQHandler(tim*)	16
 tim.cpp:1545:6:void TIM1_CC_IRQHandler()	16
-tim.cpp:1578:6:void TIM2_IRQHandler()	16
-tim.cpp:1587:6:void TIM3_IRQHandler()	16
-tim.cpp:1596:6:void TIM4_IRQHandler()	16
-tim.cpp:1605:6:void TIM5_IRQHandler()	16
-tim.cpp:1614:6:void TIM6_DAC_IRQHandler()	16
-tim.cpp:1626:6:void TIM7_IRQHandler()	16
-tim.cpp:1635:6:void TIM8_CC_IRQHandler()	16
-tim.cpp:1669:6:void TIM1_BRK_TIM9_IRQHandler()	31
-tim.cpp:1681:6:void TIM1_UP_TIM10_IRQHandler()	31
-tim.cpp:1693:6:void TIM1_TRG_COM_TIM11_IRQHandler()	31
-tim.cpp:1705:6:void TIM8_BRK_TIM12_IRQHandler()	31
-tim.cpp:1717:6:void TIM8_UP_TIM13_IRQHandler()	31
-tim.cpp:1729:6:void TIM8_TRG_COM_TIM14_IRQHandler()	31
-tim.cpp:1734:1:cpp)	1
+tim.cpp:1574:6:void TIM2_IRQHandler()	16
+tim.cpp:1582:6:void TIM3_IRQHandler()	16
+tim.cpp:1590:6:void TIM4_IRQHandler()	16
+tim.cpp:1598:6:void TIM5_IRQHandler()	16
+tim.cpp:1606:6:void TIM6_DAC_IRQHandler()	16
+tim.cpp:1617:6:void TIM7_IRQHandler()	16
+tim.cpp:1625:6:void TIM8_CC_IRQHandler()	16
+tim.cpp:1655:6:void TIM1_BRK_TIM9_IRQHandler()	31
+tim.cpp:1666:6:void TIM1_UP_TIM10_IRQHandler()	31
+tim.cpp:1677:6:void TIM1_TRG_COM_TIM11_IRQHandler()	31
+tim.cpp:1688:6:void TIM8_BRK_TIM12_IRQHandler()	31
+tim.cpp:1699:6:void TIM8_UP_TIM13_IRQHandler()	31
+tim.cpp:1710:6:void TIM8_TRG_COM_TIM14_IRQHandler()	31
+tim.cpp:1715:1:cpp)	1

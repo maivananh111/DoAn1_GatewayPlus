@@ -21,6 +21,8 @@ extern "C"{
 
 
 #define WIFI_DEFAULT_TIMEOUT 10000U // 3S
+#define DATA_EVENTBIT        (1<<9)
+
 
 typedef enum {
 	WIFI_ERR = 0x00,

@@ -9,7 +9,9 @@
 
 #include "wifiif/wifiif.h"
 #include "parse_packet/parse_packet.h"
+
 #include "list"
+#include "string.h"
 
 #include "system/log.h"
 
@@ -23,8 +25,7 @@ char *secret = NULL;
 char *prj_url = NULL;
 char *data_struct = (char *)"{\"data\":{\"temp\":%.02f,\"humi\":%.02f,\"current\":%.02f,\"time\":\"%s\"}}";
 char *ctrl_struct = (char *)"{\"control\":{\"relay1\":%d,\"relay2\":%d,\"relay3\":%d,\"relay4\":%d}}";
-char *set1_struct = (char *)"{\"mode\":%d,\"type\":%d,\"max_temp\":%.02f,\"min_temp\":%.02f}";
-char *set2_struct = (char *)"{\"time_start\":\"10:25:15\",\"time_stop\":\"11:30:00\"}";
+char *sett_struct = (char *)"{\"settings\":{\"mode\":%d,\"type\":%d,\"max_temp\":%.02f,\"min_temp\":%.02f,\"time_start\":\"%s\",\"time_stop\":\"%s\"}}";
 char *prop_struct = (char *)"{\"properties\":{\"address\":\"0x%08x\",\"name\":\"%s\"}}";
 
 char *full_struct = (char *)"{\"data\":{\"temp\":%.02f,\"humi\":%.02f,\"current\":%.02f,\"time\":\"%s\"},"
@@ -71,7 +72,7 @@ dev_struct_t *add_device_properties(uint32_t device_address, char *jdata){
 	dev_prop->sett.min_temp = 0.0;
 	asprintf(&(dev_prop->sett.time_start), "00:00:00");
 	asprintf(&(dev_prop->sett.time_stop), "00:00:00");
-	asprintf(&(dev_prop->env.time), "14:30:00 05/05/23");
+	asprintf(&(dev_prop->env.time), "14:30:00 05/05/23 thu 2");
 
 	err = json_get_object(jdata, &json, (char *)"name");
 	if(err == PKT_ERR_OK)
@@ -137,6 +138,7 @@ dev_struct_t *select_device_properties(uint32_t device_address){
 void firebase_init(char *url, char *secret_key){
 	char *tmp;
 
+	if(prj_url != NULL) free(prj_url);
 	asprintf(&prj_url, "%s", url);
 	asprintf(&tmp, "{\"url\":\"%s\", \"transport_ssl\":1, \"crt_bundle\":1}", url);
 	if(secret_key != NULL) asprintf(&secret, "%s", secret_key);
@@ -154,7 +156,6 @@ void firebase_new_device(dev_struct_t *dev){
 
 	if(secret != NULL) asprintf(&path, "/%s/.json?auth=%s", dev->prop.name, secret);
 	else asprintf(&path, "/%s/.json", dev->prop.name);
-	LOG_RET(TAG, "Set url: %s", path);
 
 	wifiif_http_client_set_url(path);
 	wifiif_http_client_set_method((char *)"HTTP_METHOD_PATCH");
@@ -181,8 +182,23 @@ void firebase_remove_device(dev_struct_t *dev){
 	if(path != NULL) free(path);
 }
 
-void send_envdata_to_firebase (dev_struct_t *dev){
+void send_envdata_to_firebase(uint32_t address, char *jdata){
 	char *path, *data;
+	pkt_json_t json;
+
+	dev_struct_t *dev = select_device_properties(address);
+	if(json_get_object(jdata, &json, "temp") == PKT_ERR_OK)
+		dev->env.temp = atof(json.value);
+	json_release_object(&json);
+	if(json_get_object(jdata, &json, "humi") == PKT_ERR_OK)
+		dev->env.humi = atof(json.value);
+	json_release_object(&json);
+	if(json_get_object(jdata, &json, "current") == PKT_ERR_OK)
+		dev->env.curr = atof(json.value);
+	json_release_object(&json);
+	if(json_get_object(jdata, &json, "time") == PKT_ERR_OK)
+		memcpy(dev->env.time, json.value, strlen(json.value));
+	json_release_object(&json);
 
 	if(secret != NULL) asprintf(&path, "/%s/.json?auth=%s", dev->prop.name, secret);
 	else asprintf(&path, "/%s/.json", dev->prop.name);
@@ -215,11 +231,11 @@ void send_devctrl_to_firebase(dev_struct_t *dev){
 	free(data);
 }
 
-void get_devctrl(dev_struct_t *dev){
+void firebase_get_device_data(dev_struct_t *dev){
 	char *path;
 
-	if(secret != NULL) asprintf(&path, "/%s/control/.json?auth=%s", dev->prop.name, secret);
-	else asprintf(&path, "/%s/control/.json", dev->prop.name);
+	if(secret != NULL) asprintf(&path, "/%s/.json?auth=%s", dev->prop.name, secret);
+	else asprintf(&path, "/%s/.json", dev->prop.name);
 
 	wifiif_http_client_set_method((char *)"HTTP_METHOD_GET");
 	wifiif_http_client_set_url(path);
@@ -229,17 +245,4 @@ void get_devctrl(dev_struct_t *dev){
 	free(path);
 }
 
-void get_devsettings(dev_struct_t *dev){
-	char *path;
-
-	if(secret != NULL) asprintf(&path, "/%s/settings/.json?auth=%s", dev->prop.name, secret);
-	else asprintf(&path, "/%s/settings/.json", dev->prop.name);
-
-	wifiif_http_client_set_method((char *)"HTTP_METHOD_GET");
-	wifiif_http_client_set_url(path);
-	wifiif_http_client_set_data((char *)"{}");
-	wifiif_http_client_request();
-
-	free(path);
-}
 
