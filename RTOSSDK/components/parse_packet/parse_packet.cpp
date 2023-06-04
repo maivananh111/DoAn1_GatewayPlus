@@ -51,7 +51,7 @@ pkt_err_t json_get_object(char *src, pkt_json_t *dest, char *key){
 	pkstart = strstr(src_cpy, tmp);
 	free(tmp);
 	if(pkstart == NULL){
-		parse_error_handler((char *)"Error key not appear in the input request string", (int)__LINE__, (char *)__FUNCTION__);
+//		parse_error_handler((char *)"Error key not appear in the input request string", (int)__LINE__, (char *)__FUNCTION__);
 		ret = PKT_ERR_NOKEY;
 		return ret;
 	}
@@ -157,7 +157,7 @@ pkt_err_t parse_packet(char *src, pkt_t *dest){
 	/** Get ": " */
 	pvstart = strstr(src, ": ");
 	if(pvstart == NULL){
-		parse_error_handler((char *)"Error packet format", (int)__LINE__, (char *)__FUNCTION__);
+//		parse_error_handler((char *)"Error packet format", (int)__LINE__, (char *)__FUNCTION__);
 		ret = PKT_ERR_FORMAT;
 		return ret;
 	}

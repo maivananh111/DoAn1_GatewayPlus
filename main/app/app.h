@@ -19,8 +19,8 @@ extern "C"{
 extern char *full_struct;
 
 struct dev_env_t{
-	float temp = 0.0;
-	float humi = 0.0;
+	float temp = 31.5;
+	float humi = 51.2;
 	float curr = 0.0;
 	char *time = NULL;
 };
@@ -31,10 +31,10 @@ struct dev_ctrl_t{
 	uint8_t relay4 = 0;
 };
 struct dev_set_t{
-	uint8_t mode = 0;
+	uint8_t mode = 1;
 	uint8_t type = 0;
-	float max_temp = 0.0;
-	float min_temp = 0.0;
+	float max_temp = 35.0;
+	float min_temp = 40.0;
 	char *time_start = NULL;
 	char *time_stop = NULL;
 };
@@ -59,9 +59,8 @@ void firebase_init(char *url, char *secret_key);
 void firebase_new_device(dev_struct_t *);
 void firebase_remove_device(dev_struct_t *);
 
-void send_envdata_to_firebase(uint32_t address, char *jdata);
-void send_devctrl_to_firebase(dev_struct_t *);
-void firebase_get_device_data(dev_struct_t *);
+void send_data_to_firebase(uint32_t address, char *jdata);
+void firebase_get_device_data(uint32_t address);
 
 
 #ifdef __cplusplus

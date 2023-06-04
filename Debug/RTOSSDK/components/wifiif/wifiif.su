@@ -1,23 +1,14 @@
-../RTOSSDK/components/wifiif/wifiif.cpp:130:13:void wifiif_request(wifi_cmd_t, char*)	88	static
-../RTOSSDK/components/wifiif/wifiif.cpp:89:6:void wifiif_get_break_data(char*)	32	static
-../RTOSSDK/components/wifiif/wifiif.cpp:202:6:void wifiif_init(void (*)(char*, uint16_t))	8	static
-../RTOSSDK/components/wifiif/wifiif.cpp:209:6:void wifiif_register_command_handler(void (*)(wifi_cmd_t, void*))	0	static
-../RTOSSDK/components/wifiif/wifiif.cpp:216:6:void wifiif_restart()	8	static
-../RTOSSDK/components/wifiif/wifiif.cpp:221:6:void wifiif_scan()	0	static
-../RTOSSDK/components/wifiif/wifiif.cpp:224:6:void wifiif_checkconnect()	0	static
-../RTOSSDK/components/wifiif/wifiif.cpp:227:6:bool wifiif_wificonnected()	0	static
-../RTOSSDK/components/wifiif/wifiif.cpp:230:6:void wifiif_set_wificonnect_state(bool)	0	static
-../RTOSSDK/components/wifiif/wifiif.cpp:233:6:void wifiif_connect(char*, char*, char*)	24	static
-../RTOSSDK/components/wifiif/wifiif.cpp:241:6:void wifiif_disconnect()	0	static
-../RTOSSDK/components/wifiif/wifiif.cpp:244:6:void wifiif_getIP()	0	static
-../RTOSSDK/components/wifiif/wifiif.cpp:252:6:void wifiif_http_client_new()	0	static
-../RTOSSDK/components/wifiif/wifiif.cpp:256:6:void wifiif_http_client_config(char*)	0	static
-../RTOSSDK/components/wifiif/wifiif.cpp:260:6:void wifiif_http_client_init()	0	static
-../RTOSSDK/components/wifiif/wifiif.cpp:264:6:void wifiif_http_client_clean()	0	static
-../RTOSSDK/components/wifiif/wifiif.cpp:268:6:void wifiif_http_client_set_header(char*, char*)	16	static
-../RTOSSDK/components/wifiif/wifiif.cpp:277:6:void wifiif_http_client_set_url(char*)	16	static
-../RTOSSDK/components/wifiif/wifiif.cpp:286:6:void wifiif_http_client_set_method(char*)	16	static
-../RTOSSDK/components/wifiif/wifiif.cpp:295:6:void wifiif_http_client_set_data(char*)	16	static
-../RTOSSDK/components/wifiif/wifiif.cpp:304:6:void wifiif_http_client_request()	0	static
-../RTOSSDK/components/wifiif/wifiif.cpp:309:6:void wifiif_state_running(bool)	0	static
-../RTOSSDK/components/wifiif/wifiif.cpp:312:6:bool wifiif_state_is_running()	0	static
+../RTOSSDK/components/wifiif/wifiif.cpp:121:13:void wifiif_request(wifi_cmd_t, char*)	88	static
+../RTOSSDK/components/wifiif/wifiif.cpp:80:6:void wifiif_get_break_data(char*)	32	static
+../RTOSSDK/components/wifiif/wifiif.cpp:195:6:void wifiif_init(void (*)(char*, uint16_t))	16	static
+../RTOSSDK/components/wifiif/wifiif.cpp:206:6:void wifiif_register_command_handler(void (*)(wifi_cmd_t, void*))	0	static
+../RTOSSDK/components/wifiif/wifiif.cpp:213:6:void wifiif_restart()	8	static
+../RTOSSDK/components/wifiif/wifiif.cpp:219:6:void wifiif_check_connection()	0	static
+../RTOSSDK/components/wifiif/wifiif.cpp:223:6:void wifiif_wifi_connect(char*, char*, char*)	24	static
+../RTOSSDK/components/wifiif/wifiif.cpp:232:6:void wifiif_disconnect()	0	static
+../RTOSSDK/components/wifiif/wifiif.cpp:239:6:void wifiif_firebase_init(char*, char*)	16	static
+../RTOSSDK/components/wifiif/wifiif.cpp:252:6:void wifiif_firebase_set_data(char*, char*)	16	static
+../RTOSSDK/components/wifiif/wifiif.cpp:261:6:void wifiif_firebase_get_data(char*)	16	static
+../RTOSSDK/components/wifiif/wifiif.cpp:270:6:void wifiif_firebase_remove_data(char*)	16	static
+../RTOSSDK/components/wifiif/wifiif.cpp:279:6:bool wifiif_state_is_running()	0	static
+../RTOSSDK/components/wifiif/wifiif.cpp:282:6:bool wifiif_wificonnected()	0	static

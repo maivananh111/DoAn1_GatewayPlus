@@ -70,7 +70,7 @@ bool loraif_isvalid_address(uint32_t address);
 
 void loraif_send_request(uint32_t dev_address, lora_event_t cmd, char *data, int require_resp);
 void loraif_receive_process(void *param);
-void loraif_response_to_device(void);
+void loraif_response_to_device(void*);
 void loraif_check_device_timeout(void);
 
 void loraif_add_device(uint32_t device_address, char *jdata, void *dev_data);

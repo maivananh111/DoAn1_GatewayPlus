@@ -33,7 +33,6 @@ main/app_main.o: ../main/app_main.cpp ../Core/Inc/main.h \
  ../RTOSSDK/peripherals/periph/gpio.h \
  ../RTOSSDK/peripherals/periph/exti.h \
  ../RTOSSDK/peripherals/peripheral_config.h \
- ../RTOSSDK/peripherals/periph/rng.h \
  ../RTOSSDK/peripherals/periph/usart.h \
  ../RTOSSDK/peripherals/periph/dma.h ../RTOSSDK/peripherals/periph/tim.h \
  ../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h \
@@ -52,62 +51,7 @@ main/app_main.o: ../main/app_main.cpp ../Core/Inc/main.h \
  ../Middlewares/Third_Party/FreeRTOS/Source/include/timers.h \
  ../RTOSSDK/components/sx127x/sx127x.h \
  ../RTOSSDK/components/component_config.h \
- ../RTOSSDK/peripherals/periph/spi.h ../FATFS/App/fatfs.h \
- ../Middlewares/Third_Party/FatFs/src/ff.h \
- ../Middlewares/Third_Party/FatFs/src/integer.h ../FATFS/Target/ffconf.h \
- ../FATFS/Target/bsp_driver_sd.h \
- ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os.h \
- ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.h \
- ../Middlewares/Third_Party/FatFs/src/ff_gen_drv.h \
- ../Middlewares/Third_Party/FatFs/src/diskio.h \
- ../Middlewares/Third_Party/FatFs/src/ff.h ../FATFS/Target/sd_diskio.h \
- ../RTOSSDK/network/network/netconnect.h \
- ../RTOSSDK/network/net_protocols_config.h ../LWIP/App/lwip.h \
- ../Middlewares/Third_Party/LwIP/src/include/lwip/opt.h \
- ../LWIP/Target/lwipopts.h \
- ../Middlewares/Third_Party/LwIP/src/include/lwip/debug.h \
- ../Middlewares/Third_Party/LwIP/src/include/lwip/arch.h \
- ../Middlewares/Third_Party/LwIP/system/arch/cc.h \
- ../Middlewares/Third_Party/LwIP/system/arch/cpu.h \
- ../Middlewares/Third_Party/LwIP/src/include/lwip/mem.h \
- ../Middlewares/Third_Party/LwIP/src/include/lwip/memp.h \
- ../Middlewares/Third_Party/LwIP/src/include/lwip/priv/memp_std.h \
- ../Middlewares/Third_Party/LwIP/src/include/lwip/priv/memp_priv.h \
- ../Middlewares/Third_Party/LwIP/src/include/lwip/priv/mem_priv.h \
- ../Middlewares/Third_Party/LwIP/src/include/lwip/stats.h \
- ../Middlewares/Third_Party/LwIP/src/include/netif/etharp.h \
- ../Middlewares/Third_Party/LwIP/src/include/lwip/etharp.h \
- ../Middlewares/Third_Party/LwIP/src/include/lwip/pbuf.h \
- ../Middlewares/Third_Party/LwIP/src/include/lwip/err.h \
- ../Middlewares/Third_Party/LwIP/src/include/lwip/ip4_addr.h \
- ../Middlewares/Third_Party/LwIP/src/include/lwip/def.h \
- ../Middlewares/Third_Party/LwIP/src/include/lwip/netif.h \
- ../Middlewares/Third_Party/LwIP/src/include/lwip/ip_addr.h \
- ../Middlewares/Third_Party/LwIP/src/include/lwip/ip6_addr.h \
- ../Middlewares/Third_Party/LwIP/src/include/lwip/def.h \
- ../Middlewares/Third_Party/LwIP/src/include/lwip/ip4.h \
- ../Middlewares/Third_Party/LwIP/src/include/lwip/prot/ip4.h \
- ../Middlewares/Third_Party/LwIP/src/include/lwip/prot/ethernet.h \
- ../Middlewares/Third_Party/LwIP/src/include/lwip/prot/ieee.h \
- ../Middlewares/Third_Party/LwIP/src/include/lwip/prot/etharp.h \
- ../Middlewares/Third_Party/LwIP/src/include/netif/ethernet.h \
- ../Middlewares/Third_Party/LwIP/src/include/lwip/dhcp.h \
- ../Middlewares/Third_Party/LwIP/src/include/lwip/udp.h \
- ../Middlewares/Third_Party/LwIP/src/include/lwip/ip.h \
- ../Middlewares/Third_Party/LwIP/src/include/lwip/ip6.h \
- ../Middlewares/Third_Party/LwIP/src/include/lwip/prot/ip.h \
- ../Middlewares/Third_Party/LwIP/src/include/lwip/prot/udp.h \
- ../Middlewares/Third_Party/LwIP/src/include/lwip/timeouts.h \
- ../Middlewares/Third_Party/LwIP/src/include/lwip/sys.h \
- ../Middlewares/Third_Party/LwIP/system/arch/sys_arch.h \
- ../LWIP/Target/ethernetif.h \
- ../Middlewares/Third_Party/LwIP/src/include/lwip/tcpip.h \
- ../RTOSSDK/network/protocols/tcp/tcp_client.h \
- ../RTOSSDK/network/protocols/tcp/tcp.h \
- ../Middlewares/Third_Party/LwIP/src/include/lwip/tcp.h \
- ../Middlewares/Third_Party/LwIP/src/include/lwip/tcpbase.h \
- ../Middlewares/Third_Party/LwIP/src/include/lwip/icmp.h \
- ../Middlewares/Third_Party/LwIP/src/include/lwip/prot/icmp.h \
+ ../RTOSSDK/peripherals/periph/spi.h \
  ../RTOSSDK/components/wifiif/wifiif.h \
  ../RTOSSDK/components/loraif/loraif.h \
  ../RTOSSDK/components/parse_packet/parse_packet.h ../main/app/app.h
@@ -149,7 +93,6 @@ main/app_main.o: ../main/app_main.cpp ../Core/Inc/main.h \
 ../RTOSSDK/peripherals/periph/gpio.h:
 ../RTOSSDK/peripherals/periph/exti.h:
 ../RTOSSDK/peripherals/peripheral_config.h:
-../RTOSSDK/peripherals/periph/rng.h:
 ../RTOSSDK/peripherals/periph/usart.h:
 ../RTOSSDK/peripherals/periph/dma.h:
 ../RTOSSDK/peripherals/periph/tim.h:
@@ -170,65 +113,6 @@ main/app_main.o: ../main/app_main.cpp ../Core/Inc/main.h \
 ../RTOSSDK/components/sx127x/sx127x.h:
 ../RTOSSDK/components/component_config.h:
 ../RTOSSDK/peripherals/periph/spi.h:
-../FATFS/App/fatfs.h:
-../Middlewares/Third_Party/FatFs/src/ff.h:
-../Middlewares/Third_Party/FatFs/src/integer.h:
-../FATFS/Target/ffconf.h:
-../FATFS/Target/bsp_driver_sd.h:
-../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os.h:
-../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.h:
-../Middlewares/Third_Party/FatFs/src/ff_gen_drv.h:
-../Middlewares/Third_Party/FatFs/src/diskio.h:
-../Middlewares/Third_Party/FatFs/src/ff.h:
-../FATFS/Target/sd_diskio.h:
-../RTOSSDK/network/network/netconnect.h:
-../RTOSSDK/network/net_protocols_config.h:
-../LWIP/App/lwip.h:
-../Middlewares/Third_Party/LwIP/src/include/lwip/opt.h:
-../LWIP/Target/lwipopts.h:
-../Middlewares/Third_Party/LwIP/src/include/lwip/debug.h:
-../Middlewares/Third_Party/LwIP/src/include/lwip/arch.h:
-../Middlewares/Third_Party/LwIP/system/arch/cc.h:
-../Middlewares/Third_Party/LwIP/system/arch/cpu.h:
-../Middlewares/Third_Party/LwIP/src/include/lwip/mem.h:
-../Middlewares/Third_Party/LwIP/src/include/lwip/memp.h:
-../Middlewares/Third_Party/LwIP/src/include/lwip/priv/memp_std.h:
-../Middlewares/Third_Party/LwIP/src/include/lwip/priv/memp_priv.h:
-../Middlewares/Third_Party/LwIP/src/include/lwip/priv/mem_priv.h:
-../Middlewares/Third_Party/LwIP/src/include/lwip/stats.h:
-../Middlewares/Third_Party/LwIP/src/include/netif/etharp.h:
-../Middlewares/Third_Party/LwIP/src/include/lwip/etharp.h:
-../Middlewares/Third_Party/LwIP/src/include/lwip/pbuf.h:
-../Middlewares/Third_Party/LwIP/src/include/lwip/err.h:
-../Middlewares/Third_Party/LwIP/src/include/lwip/ip4_addr.h:
-../Middlewares/Third_Party/LwIP/src/include/lwip/def.h:
-../Middlewares/Third_Party/LwIP/src/include/lwip/netif.h:
-../Middlewares/Third_Party/LwIP/src/include/lwip/ip_addr.h:
-../Middlewares/Third_Party/LwIP/src/include/lwip/ip6_addr.h:
-../Middlewares/Third_Party/LwIP/src/include/lwip/def.h:
-../Middlewares/Third_Party/LwIP/src/include/lwip/ip4.h:
-../Middlewares/Third_Party/LwIP/src/include/lwip/prot/ip4.h:
-../Middlewares/Third_Party/LwIP/src/include/lwip/prot/ethernet.h:
-../Middlewares/Third_Party/LwIP/src/include/lwip/prot/ieee.h:
-../Middlewares/Third_Party/LwIP/src/include/lwip/prot/etharp.h:
-../Middlewares/Third_Party/LwIP/src/include/netif/ethernet.h:
-../Middlewares/Third_Party/LwIP/src/include/lwip/dhcp.h:
-../Middlewares/Third_Party/LwIP/src/include/lwip/udp.h:
-../Middlewares/Third_Party/LwIP/src/include/lwip/ip.h:
-../Middlewares/Third_Party/LwIP/src/include/lwip/ip6.h:
-../Middlewares/Third_Party/LwIP/src/include/lwip/prot/ip.h:
-../Middlewares/Third_Party/LwIP/src/include/lwip/prot/udp.h:
-../Middlewares/Third_Party/LwIP/src/include/lwip/timeouts.h:
-../Middlewares/Third_Party/LwIP/src/include/lwip/sys.h:
-../Middlewares/Third_Party/LwIP/system/arch/sys_arch.h:
-../LWIP/Target/ethernetif.h:
-../Middlewares/Third_Party/LwIP/src/include/lwip/tcpip.h:
-../RTOSSDK/network/protocols/tcp/tcp_client.h:
-../RTOSSDK/network/protocols/tcp/tcp.h:
-../Middlewares/Third_Party/LwIP/src/include/lwip/tcp.h:
-../Middlewares/Third_Party/LwIP/src/include/lwip/tcpbase.h:
-../Middlewares/Third_Party/LwIP/src/include/lwip/icmp.h:
-../Middlewares/Third_Party/LwIP/src/include/lwip/prot/icmp.h:
 ../RTOSSDK/components/wifiif/wifiif.h:
 ../RTOSSDK/components/loraif/loraif.h:
 ../RTOSSDK/components/parse_packet/parse_packet.h:

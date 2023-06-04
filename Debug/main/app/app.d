@@ -31,7 +31,15 @@ main/app/app.o: ../main/app/app.cpp ../main/app/app.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_sd.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_ll_sdmmc.h \
  ../RTOSSDK/components/parse_packet/parse_packet.h \
- ../RTOSSDK/system/system/log.h ../RTOSSDK/system/system/ret_err.h
+ ../RTOSSDK/system/system/log.h ../RTOSSDK/system/system/ret_err.h \
+ ../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h \
+ ../Middlewares/Third_Party/FreeRTOS/Source/include/projdefs.h \
+ ../Middlewares/Third_Party/FreeRTOS/Source/include/portable.h \
+ ../Middlewares/Third_Party/FreeRTOS/Source/include/deprecated_definitions.h \
+ ../Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/portmacro.h \
+ ../Middlewares/Third_Party/FreeRTOS/Source/include/mpu_wrappers.h \
+ ../Middlewares/Third_Party/FreeRTOS/Source/include/task.h \
+ ../Middlewares/Third_Party/FreeRTOS/Source/include/list.h
 ../main/app/app.h:
 ../RTOSSDK/components/wifiif/wifiif.h:
 ../RTOSSDK/components/component_config.h:
@@ -68,3 +76,11 @@ main/app/app.o: ../main/app/app.cpp ../main/app/app.h \
 ../RTOSSDK/components/parse_packet/parse_packet.h:
 ../RTOSSDK/system/system/log.h:
 ../RTOSSDK/system/system/ret_err.h:
+../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h:
+../Middlewares/Third_Party/FreeRTOS/Source/include/projdefs.h:
+../Middlewares/Third_Party/FreeRTOS/Source/include/portable.h:
+../Middlewares/Third_Party/FreeRTOS/Source/include/deprecated_definitions.h:
+../Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/portmacro.h:
+../Middlewares/Third_Party/FreeRTOS/Source/include/mpu_wrappers.h:
+../Middlewares/Third_Party/FreeRTOS/Source/include/task.h:
+../Middlewares/Third_Party/FreeRTOS/Source/include/list.h:

@@ -20,36 +20,25 @@ extern "C"{
 #include "stdio.h"
 
 
-#define WIFI_DEFAULT_TIMEOUT 10000U // 3S
-#define DATA_EVENTBIT        (1<<9)
+#define WIFI_DEFAULT_TIMEOUT 15000U // 3S
+#define DATA_EVENTBIT        (1<<15)
 
 
 typedef enum {
 	WIFI_ERR = 0x00,
 
+	WIFI_CHECK_CONNECTION,
 	WIFI_RESTART,
-	/**
-	 * Network control command.
-	 */
-	WIFI_SCAN,
-	WIFI_ISCONNECTED,
-	WIFI_CONN,
-	WIFI_DISCONN,
-	WIFI_GETIP,
+	WIFI_REQUIRE_CONNECT,
 
-	/**
-	 * HTTP client command.
-	 */
-	WIFI_HTTP_CLIENT_NEW,
-	WIFI_HTTP_CLIENT_CONFIG,
-	WIFI_HTTP_CLIENT_INIT,
-	WIFI_HTTP_CLIENT_CLEAN,
-	WIFI_HTTP_CLIENT_SET_HEADER,
-	WIFI_HTTP_CLIENT_SET_URL,
-	WIFI_HTTP_CLIENT_SET_METHOD,
-	WIFI_HTTP_CLIENT_SET_DATA,
-	WIFI_HTTP_CLIENT_REQUEST,
-	WIFI_HTTP_CLIENT_RESPONSE,
+	WIFI_CONNECT,
+	WIFI_DISCONNECT,
+
+	WIFI_FIREBASE_INIT,
+	WIFI_FIREBASE_SET_DATA,
+	WIFI_FIREBASE_GET_DATA,
+	WIFI_FIREBASE_REMOVE_DATA,
+	WIFI_FIREBASE_RESPONSE,
 
 	WIFI_CMD_NUM,
 } wifi_cmd_t;
@@ -57,29 +46,20 @@ typedef enum {
 
 void wifiif_init(void (*prequest)(char *, uint16_t));
 void wifiif_register_command_handler(void (*pcommand_handler)(wifi_cmd_t cmd, void *param));
-
 void wifiif_get_break_data(char *brk_data);
 
 void wifiif_restart(void);
-void wifiif_scan(void);
-void wifiif_checkconnect(void);
+
+void wifiif_check_connection(void);
+void wifiif_wifi_connect(char *ssid, char *pass, char *auth);
+void wifiif_wifi_disconnect(void);
+
+void wifiif_firebase_init(char *project_url, char *auth);
+void wifiif_firebase_set_data(char *path, char *data);
+void wifiif_firebase_get_data(char *path);
+void wifiif_firebase_remove_data(char *path);
+
 bool wifiif_wificonnected(void);
-void wifiif_set_wificonnect_state(bool state);
-void wifiif_connect(char *ssid, char *pass, char *auth);
-void wifiif_disconnect(void);
-void wifiif_getIP(void);
-
-void wifiif_http_client_new(void);
-void wifiif_http_client_config(char *config);
-void wifiif_http_client_init(void);
-void wifiif_http_client_clean(void);
-void wifiif_http_client_set_header(char *key, char *value);
-void wifiif_http_client_set_url(char *url);
-void wifiif_http_client_set_method(char *method);
-void wifiif_http_client_set_data(char *data);
-void wifiif_http_client_request(void);
-
-void wifiif_state_running(bool state);
 bool wifiif_state_is_running(void);
 
 

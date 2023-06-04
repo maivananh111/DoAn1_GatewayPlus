@@ -14,6 +14,8 @@
 #include "string.h"
 
 #include "system/log.h"
+#include "FreeRTOS.h"
+#include "task.h"
 
 
 using namespace std;
@@ -21,8 +23,7 @@ using namespace std;
 static const char *TAG = "Device";
 #define LOG_LEVEL LOG_DEBUG
 
-char *secret = NULL;
-char *prj_url = NULL;
+
 char *data_struct = (char *)"{\"data\":{\"temp\":%.02f,\"humi\":%.02f,\"current\":%.02f,\"time\":\"%s\"}}";
 char *ctrl_struct = (char *)"{\"control\":{\"relay1\":%d,\"relay2\":%d,\"relay3\":%d,\"relay4\":%d}}";
 char *sett_struct = (char *)"{\"settings\":{\"mode\":%d,\"type\":%d,\"max_temp\":%.02f,\"min_temp\":%.02f,\"time_start\":\"%s\",\"time_stop\":\"%s\"}}";
@@ -136,113 +137,59 @@ dev_struct_t *select_device_properties(uint32_t device_address){
 }
 
 void firebase_init(char *url, char *secret_key){
-	char *tmp;
-
-	if(prj_url != NULL) free(prj_url);
-	asprintf(&prj_url, "%s", url);
-	asprintf(&tmp, "{\"url\":\"%s\", \"transport_ssl\":1, \"crt_bundle\":1}", url);
-	if(secret_key != NULL) asprintf(&secret, "%s", secret_key);
-
-	wifiif_http_client_new();
-	wifiif_http_client_config(tmp);
-	wifiif_http_client_init();
-	wifiif_http_client_set_header((char *)"Content-Type", (char *)"application/json");
-
-	free(tmp);
+	wifiif_firebase_init(url, secret_key);
+	vTaskDelay(50);
 }
 
 void firebase_new_device(dev_struct_t *dev){
-	char *path, *data;
+	char *data;
 
-	if(secret != NULL) asprintf(&path, "/%s/.json?auth=%s", dev->prop.name, secret);
-	else asprintf(&path, "/%s/.json", dev->prop.name);
-
-	wifiif_http_client_set_url(path);
-	wifiif_http_client_set_method((char *)"HTTP_METHOD_PATCH");
 	assign_struct(&data, dev);
-	wifiif_http_client_set_data(data);
-	wifiif_http_client_request();
+	wifiif_firebase_set_data(dev->prop.name, data);
+	vTaskDelay(50);
 
 	free(data);
-	free(path);
 }
 
 void firebase_remove_device(dev_struct_t *dev){
 	if(dev == NULL || dev->prop.name == NULL) return;
-	char *path = NULL;
 
-	wifiif_http_client_set_method((char *)"HTTP_METHOD_DELETE");
-	wifiif_http_client_set_data((char *)"{}");
-
-	if(secret != NULL) asprintf(&path, "/%s/.json?auth=%s", dev->prop.name, secret);
-	else asprintf(&path, "/%s/.json", dev->prop.name);
-	wifiif_http_client_set_url(path);
-
-	wifiif_http_client_request();
-	if(path != NULL) free(path);
+	wifiif_firebase_remove_data(dev->prop.name);
+	vTaskDelay(50);
 }
 
-void send_envdata_to_firebase(uint32_t address, char *jdata){
-	char *path, *data;
+void send_data_to_firebase(uint32_t address, char *jdata){
+	char *data = NULL;
 	pkt_json_t json;
 
 	dev_struct_t *dev = select_device_properties(address);
-	if(json_get_object(jdata, &json, "temp") == PKT_ERR_OK)
+	if(json_get_object(jdata, &json, (char *)"temp") == PKT_ERR_OK)
 		dev->env.temp = atof(json.value);
 	json_release_object(&json);
-	if(json_get_object(jdata, &json, "humi") == PKT_ERR_OK)
+	if(json_get_object(jdata, &json, (char *)"humi") == PKT_ERR_OK)
 		dev->env.humi = atof(json.value);
 	json_release_object(&json);
-	if(json_get_object(jdata, &json, "current") == PKT_ERR_OK)
+	if(json_get_object(jdata, &json, (char *)"current") == PKT_ERR_OK)
 		dev->env.curr = atof(json.value);
 	json_release_object(&json);
-	if(json_get_object(jdata, &json, "time") == PKT_ERR_OK)
+	if(json_get_object(jdata, &json, (char *)"time") == PKT_ERR_OK)
 		memcpy(dev->env.time, json.value, strlen(json.value));
 	json_release_object(&json);
 
-	if(secret != NULL) asprintf(&path, "/%s/.json?auth=%s", dev->prop.name, secret);
-	else asprintf(&path, "/%s/.json", dev->prop.name);
+	assign_struct(&data, dev);
 
-	asprintf(&data, data_struct, dev->env.temp, dev->env.humi, dev->env.curr, dev->env.time);
+	wifiif_firebase_set_data(dev->prop.name, data);
+	vTaskDelay(50);
 
-	wifiif_http_client_set_method((char *)"HTTP_METHOD_PATCH");
-	wifiif_http_client_set_url(path);
-	wifiif_http_client_set_data(data);
-	wifiif_http_client_request();
-
-	free(path);
 	free(data);
 }
 
-void send_devctrl_to_firebase(dev_struct_t *dev){
-	char *path, *data;
 
-	if(secret != NULL) asprintf(&path, "/%s/.json?auth=%s", dev->prop.name, secret);
-	else asprintf(&path, "/%s/.json", dev->prop.name);
+void firebase_get_device_data(uint32_t address){
+	dev_struct_t *dev = select_device_properties(address);
 
-	asprintf(&data, ctrl_struct, dev->ctrl.relay1, dev->ctrl.relay2, dev->ctrl.relay3, dev->ctrl.relay4);
-
-	wifiif_http_client_set_method((char *)"HTTP_METHOD_PATCH");
-	wifiif_http_client_set_url(path);
-	wifiif_http_client_set_data(data);
-	wifiif_http_client_request();
-
-	free(path);
-	free(data);
-}
-
-void firebase_get_device_data(dev_struct_t *dev){
-	char *path;
-
-	if(secret != NULL) asprintf(&path, "/%s/.json?auth=%s", dev->prop.name, secret);
-	else asprintf(&path, "/%s/.json", dev->prop.name);
-
-	wifiif_http_client_set_method((char *)"HTTP_METHOD_GET");
-	wifiif_http_client_set_url(path);
-	wifiif_http_client_set_data((char *)"{}");
-	wifiif_http_client_request();
-
-	free(path);
+	wifiif_firebase_get_data(dev->prop.name);
+	vTaskDelay(50);
 }
 
 
